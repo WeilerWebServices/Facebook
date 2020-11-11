@@ -1,0 +1,3 @@
+string(5) "class"
+string(1) "C"
+string(%d) "%s in %s/test/slow/autoload/autoload-fail-c.inc on line %d"

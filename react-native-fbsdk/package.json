@@ -1,0 +1,105 @@
+{
+  "name": "react-native-fbsdk",
+  "version": "2.0.0",
+  "description": "Facebook SDK support for React Native apps.",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "react-native": "src/index.js",
+  "sideEffects": false,
+  "author": {
+    "name": "Zhuowen Deng"
+  },
+  "contributors": [
+    {
+      "name": "Chris Hackmann"
+    },
+    {
+      "name": "Pouya Larjani"
+    },
+    {
+      "name": "Cody Winton"
+    },
+    {
+      "name": "Janic Duplessis"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facebook/react-native-fbsdk.git"
+  },
+  "homepage": "https://github.com/facebook/react-native-fbsdk/",
+  "keywords": [
+    "react",
+    "react-native",
+    "react-component",
+    "ios",
+    "android",
+    "facebook",
+    "core"
+  ],
+  "license": "Facebook Platform License",
+  "scripts": {
+    "start": "react-native start",
+    "prepare": "bob build",
+    "flow": "flow",
+    "lint": "eslint ./src",
+    "test": "yarn validate:prettier && yarn validate:eslint && yarn validate:flow",
+    "validate:eslint": "eslint \"src/**/*\" \"example/src/**/*\"",
+    "validate:flow": "flow",
+    "validate:prettier": "prettier \"src/**/*.js\" \"example/src/**/*.js\" --check",
+    "example:ios": "cd ./example && react-native run-ios",
+    "example:android": "cd ./example && react-native run-android --no-jetifier"
+  },
+  "files": [
+    "android/src/main/AndroidManifest.xml",
+    "android/src/main/java/",
+    "android/build.gradle",
+    "ios",
+    "lib",
+    "src",
+    "LICENSE.txt",
+    "README.md",
+    "react-native-fbsdk.podspec"
+  ],
+  "dependencies": {},
+  "peerDependencies": {
+    "react-native": ">=0.59.0"
+  },
+  "devDependencies": {
+    "@react-native-community/bob": "^0.14.2",
+    "@react-native-community/eslint-config": "^1.1.0",
+    "@babel/core": "^7.9.6",
+    "@babel/runtime": "^7.9.6",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-jest": "^26.0.1",
+    "eslint": "7.0.0",
+    "flow-bin": "^0.122.0",
+    "jest": "^26.0.1",
+    "metro-react-native-babel-preset": "^0.59.0",
+    "prettier": "^2.0.5",
+    "react-native": "^0.63.0-rc.1",
+    "react-test-renderer": "16.13.1",
+    "react": "16.13.1"
+  },
+  "prettier": {
+    "requirePragma": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "jsxBracketSameLine": true,
+    "parser": "flow"
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "copyFlow": true
+        }
+      ],
+      "module"
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+---
+  r: 1
+  spec: "http://www.w3.org/TR/orientation-event/"
+  title: "Device Orientation Event"
+  reviewed: "20120816"

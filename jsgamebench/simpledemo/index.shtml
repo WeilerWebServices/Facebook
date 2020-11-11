@@ -1,0 +1,18 @@
+<html>
+  <head>
+    #include '/engine/include/fb_jssdk.include'
+    #include 'app_id'
+    #include '/engine/include/core.include'
+    <script type="text/javascript" src="/simpledemo/publish.js"></script>
+    <script type="text/javascript" src="/simpledemo/demo.js"></script>
+
+  </head>
+  <body
+    onresize="Init.winresize();"
+    onload="Init.init();"
+    onorientationchange="Init.winresize();"
+    onunload="Init.quit()">
+    <div id="fb-root"></div>
+    <div id="gamebody"></div>
+  </body>
+</html>

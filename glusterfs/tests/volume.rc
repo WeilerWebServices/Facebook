@@ -1,0 +1,267 @@
+function volinfo_field()
+{
+    local vol=$1;
+    local field=$2;
+
+    $CLI volume info $vol | grep "^$field: " | sed 's/.*: //';
+}
+
+
+function brick_count()
+{
+    local vol=$1;
+
+    $CLI volume info $vol | egrep "^Brick[0-9]+: " | wc -l;
+}
+
+function online_brick_count ()
+{
+    pidof glusterfsd | wc -w
+}
+
+function volume_option()
+{
+        local vol=$1
+        local key=$2
+        $CLI volume info $vol | egrep "^$key: " | cut -f2 -d' ';
+}
+
+function rebalance_status_field {
+        $CLI volume rebalance $1 status | awk '{print $6}' | sed -n 3p
+}
+
+function remove_brick_status_completed_field {
+        $CLI volume remove-brick $V0 $H0:$B0/r2d2_{4,5} status | awk '{print $6}' | sed -n 3p
+}
+
+function get_mount_process_pid {
+        local vol=$1
+        ps aux | grep glusterfs | grep -E "volfile-id[ =]/?$vol " | awk '{print $2}' | head -1
+}
+
+function get_nfs_pid ()
+{
+        ps aux | grep "volfile-id\ gluster\/nfs" | awk '{print $2}' | head -1
+}
+
+function read_nfs_pidfile ()
+{
+        echo `cat /var/lib/glusterd/nfs/run/nfs.pid`
+}
+
+function cleanup_statedump {
+       pid=$1
+       rm -f $statedumpdir/*$pid.dump.*
+       #.vimrc friendly comment */
+}
+
+function generate_statedump {
+        local fpath=""
+        pid=$1
+        #remove old stale statedumps
+        cleanup_statedump $pid
+        kill -USR1 $pid
+        #Wait till the statedump is generated
+        sleep 1
+        fname=$(ls $statedumpdir | grep -E "\.$pid\.dump\.")
+        echo $statedumpdir/$fname
+}
+
+function generate_mount_statedump {
+        local vol=$1
+        generate_statedump $(get_mount_process_pid $vol)
+}
+
+function cleanup_mount_statedump {
+        local vol=$1
+        cleanup_statedump $(get_mount_process_pid $vol)
+}
+
+function _afr_child_up_status {
+        local vol=$1
+        #brick_id is (brick-num in volume info - 1)
+        local brick_id=$2
+        local gen_state_dump=$3
+        local fpath=$($gen_state_dump $vol)
+        up=$(grep -B1 trusted.afr.$vol-client-$brick_id $fpath | head -1 | cut -f2 -d'=')
+        rm -f $fpath
+        echo "$up"
+}
+
+function afr_child_up_status {
+        local vol=$1
+        #brick_id is (brick-num in volume info - 1)
+        local brick_id=$2
+        _afr_child_up_status $vol $brick_id generate_mount_statedump
+}
+
+function get_shd_process_pid {
+        local vol=$1
+        ps aux | grep glusterfs | grep -E "glustershd/run/glustershd.pid" | awk '{print $2}' | head -1
+}
+
+function generate_shd_statedump {
+        local vol=$1
+        generate_statedump $(get_shd_process_pid $vol)
+}
+
+function generate_nfs_statedump {
+        local vol=$1
+        generate_statedump $(get_nfs_pid $vol)
+}
+
+function generate_brick_statedump {
+        local vol=$1
+        local host=$2
+        local brick=$3
+        generate_statedump $(get_brick_pid $vol $host $brick)
+}
+
+function afr_child_up_status_in_shd {
+        local vol=$1
+        #brick_id is (brick-num in volume info - 1)
+        local brick_id=$2
+        _afr_child_up_status $vol $brick_id generate_shd_statedump
+}
+
+function afr_child_up_status_in_nfs {
+        local vol=$1
+        #brick_id is (brick-num in volume info - 1)
+        local brick_id=$2
+        _afr_child_up_status $vol $brick_id generate_nfs_statedump
+}
+
+function nfs_up_status {
+        gluster volume status | grep "NFS Server" | awk '{print $6}'
+}
+
+function glustershd_up_status {
+        gluster volume status | grep "Self-heal Daemon" | awk '{print $6}'
+}
+
+function get_brick_pid {
+        local vol=$1
+        local host=$2
+        local brick=$3
+        local brick_hiphenated=$(echo $brick | tr '/' '-')
+        echo `cat /var/lib/glusterd/vols/$vol/run/${host}${brick_hiphenated}.pid`
+}
+
+function kill_brick {
+        local vol=$1
+        local host=$2
+        local brick=$3
+        kill -9 $(get_brick_pid $vol $host $brick)
+}
+
+function check_option_help_presence {
+        local option=$1
+        $CLI volume set help | grep "^Option:" | grep -w $option
+}
+
+function afr_get_changelog_xattr {
+        local file=$1
+        local xkey=$2
+        getfattr -n $xkey -e hex $file 2>/dev/null | grep "client-" | cut -f2 -d'='
+}
+
+function afr_get_pending_heal_count {
+        local vol=$1
+        gluster volume heal $vol info | grep "Number of entries" | awk '{ sum+=$4} END {print sum}'
+}
+
+function afr_get_index_path {
+        local brick_path=$1
+        echo "$brick_path/.glusterfs/indices/xattrop"
+}
+
+function afr_get_num_indices_in_brick {
+        local brick_path=$1
+        echo $(ls $(afr_get_index_path $brick_path) | grep -v xattrop | wc -l)
+}
+
+function gf_get_gfid_xattr {
+        file=$1
+        getfattr -n trusted.gfid -e hex $file 2>/dev/null | grep "trusted.gfid" | cut -f2 -d'='
+}
+
+function gf_gfid_xattr_to_str {
+        xval=$1
+        echo "${xval:2:8}-${xval:10:4}-${xval:14:4}-${xval:18:4}-${xval:22:12}"
+}
+
+function gf_check_file_opened_in_brick {
+        vol=$1
+        host=$2
+        brick=$3
+        realpath=$4
+        ls -l /proc/$(get_brick_pid $vol $host $brick)/fd | grep "${realpath}$" 2>&1 > /dev/null
+        if [ $? -eq 0 ]; then
+                echo "Y"
+        else
+                echo "N"
+        fi
+}
+
+function gf_get_gfid_backend_file_path {
+        brickpath=$1
+        filepath_in_brick=$2
+        gfid=$(gf_get_gfid_xattr "$brickpath/$filepath_in_brick")
+        gfidstr=$(gf_gfid_xattr_to_str $gfid)
+        echo "$brickpath/.glusterfs/${gfidstr:0:2}/${gfidstr:2:2}/$gfidstr"
+}
+
+function gf_rm_file_and_gfid_link {
+        brickpath=$1
+        filepath_in_brick=$2
+        rm -f $(gf_get_gfid_backend_file_path $brickpath $filepath_in_brick)
+        rm -f "$brickpath/$filepath_in_brick"
+}
+
+
+function gd_is_replace_brick_completed {
+        local host=$1
+        local vol=$2
+        local src_brick=$3
+        local dst_brick=$4
+        $CLI volume replace-brick $vol $src_brick $dst_brick status | grep -i "Migration complete"
+        if [ $? -eq 0 ]; then
+                echo "Y"
+        else
+                echo "N"
+        fi
+}
+
+function dht_get_layout {
+	local my_xa=trusted.glusterfs.dht
+	getfattr -d -e hex -n $my_xa $1 2> /dev/null | grep "$my_xa=" | cut -d= -f2
+}
+
+function afr_get_specific_changelog_xattr ()
+{
+        local path=$1
+        local key=$2
+        local type=$3
+        local specific_changelog=""
+
+        changelog_xattr=$(afr_get_changelog_xattr "$path" "$key")
+        if [ "$type" == "data" ]; then
+                specific_changelog=${changelog_xattr:2:8}
+        elif [ "$type" == "metadata" ]; then
+                specific_changelog=${changelog_xattr:10:8}
+        elif [ "$type" == "entry" ]; then
+                specific_changelog=${changelog_xattr:18:8}
+        else
+                specific_changlog="error"
+        fi
+
+        echo $specific_changelog
+}
+##
+ # query pathinfo xattr and extract POSIX pathname(s)
+ ##
+function get_backend_paths {
+       local path=$1
+
+       getfattr -m . -n trusted.glusterfs.pathinfo $path | tr ' ' '\n' | sed -n 's/<POSIX.*:.*:\(.*\)>.*/\1/p'
+}

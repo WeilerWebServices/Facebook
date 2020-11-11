@@ -1,0 +1,8 @@
+darray(2) {
+  ["a"]=>
+  string(2) "va"
+  [2]=>
+  varray(1) {
+    int(0)
+  }
+}

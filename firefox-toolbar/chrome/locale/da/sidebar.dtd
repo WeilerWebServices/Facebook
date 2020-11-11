@@ -1,0 +1,19 @@
+﻿<!ENTITY  sidebar.title                     "Facebook Sidebar">
+
+<!ENTITY  sidebar.settings.label            "Indstillinger">
+<!ENTITY  sidebar.sortlast.label            "Sidst opdateret">
+<!ENTITY  sidebar.sortstatus.label          "Status opdateret">
+<!ENTITY  sidebar.sortprofile.label         "Profil opdateret">
+<!ENTITY  sidebar.sortname.label            "Navn">
+
+<!ENTITY  sidebar.friendmessage.label       "besked">
+<!ENTITY  sidebar.friendpoke.label          "prik">
+<!ENTITY  sidebar.friendpost.label          "vægbesked">
+
+<!ENTITY  toolbar.search.user.label                      "Personer">
+<!ENTITY  toolbar.search.page.label                      "Sider">
+<!ENTITY  toolbar.search.event.label                     "Begivenheder">
+<!ENTITY  toolbar.search.group.label                     "Grupper">
+<!ENTITY  toolbar.search.place.label                     "Steder">
+<!ENTITY  toolbar.search.other.label                     "Andre resultater">
+

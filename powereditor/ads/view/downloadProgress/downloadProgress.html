@@ -1,0 +1,19 @@
+<table class="downloadProgress">
+  {{#progress}}
+    {{#show}}
+    <tr>
+      <td class="label">{{label}}:</td>
+      <td class="value {{#iscomplete}}complete{{/iscomplete}}">{{loaded}}</td>
+    </tr>
+    {{/show}}
+  {{/progress}}
+  {{#conflicts}}
+  <tr>
+    <td class="conflicts">Conflicting fields:</td>
+    <td class="conflicts">{{conflicts}}</td>
+  </tr>
+  {{/conflicts}}
+</table>
+{{#bct}}
+<div class="downloadProgress-bct" >{{bct}}</div>
+{{/bct}}

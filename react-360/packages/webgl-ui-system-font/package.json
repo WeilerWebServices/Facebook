@@ -1,0 +1,19 @@
+{
+  "name": "webgl-ui-system-font",
+  "version": "0.3.0",
+  "description": "Font implementation for webgl-ui using system fonts",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/react-360.git",
+    "directory": "packages/webgl-ui-system-font"
+  },
+  "bugs": "https://github.com/facebook/react-360/issues",
+  "files": [
+    "dist/",
+    "index.js"
+  ],
+  "scripts": {
+    "build": "babel src --out-dir dist --ignore \"src/**/__tests__/*.js\" --plugins=@babel/plugin-transform-flow-strip-types,@babel/plugin-proposal-class-properties"
+  }
+}

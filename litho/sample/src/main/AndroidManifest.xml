@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Facebook, Inc. and its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.facebook.samples.litho">
+
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+  <uses-sdk android:targetSdkVersion="28"/>
+
+  <application
+      android:name=".LithoSampleApplication"
+      android:label="@string/app_name"
+      android:icon="@drawable/ic_launcher"
+      android:allowBackup="false"
+      android:debuggable="true"
+      android:supportsRtl="true"
+      android:theme="@style/NoTitleBarWhiteBG"
+      tools:ignore="HardcodedDebugMode">
+    <activity android:name=".SampleRootActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name=".DemoListActivity" />
+    <activity android:name=".ComponentDemoActivity" />
+    <activity android:name=".lithography.LithographyActivity" />
+    <activity android:name=".bordereffects.BorderEffectsActivity" />
+    <activity android:name=".errors.ErrorHandlingActivity" />
+    <activity android:name=".hscroll.HorizontalScrollWithSnapActivity" />
+    <activity android:name=".staticscroll.horizontalscroll.HorizontalScrollActivity" />
+    <activity android:name=".animations.animatedbadge.AnimatedBadgeActivity" />
+    <activity android:name=".animations.animationcomposition.ComposedAnimationsActivity" />
+    <activity android:name=".animations.expandableelement.ExpandableElementActivity" />
+    <activity android:name=".animations.bounds.BoundsAnimationActivity" />
+    <activity android:name=".animations.pageindicators.PageIndicatorsActivity" />
+    <activity android:name=".animations.commondynamicprops.CommonDynamicPropsAnimationActivity" />
+    <activity android:name=".animations.animationcookbook.AnimationCookBookActivity" />
+    <activity android:name=".animations.transitions.TransitionsActivity" />
+    <activity android:name=".animations.animationcallbacks.AnimationCallbacksActivity" />
+    <activity android:name=".dynamicprops.DynamicPropsActivity"/>
+    <activity android:name=".fastscroll.FastScrollHandleActivity"/>
+    <activity android:name=".stats.StatsActivity"/>
+    <activity android:name=".duplicatestate.DuplicateStateActivity"/>
+    <activity android:name=".changesetdebug.StateResettingActivity"/>
+    <activity android:name=".changesetdebug.ItemsRerenderingActivity"/>
+    <activity android:name=".changesetdebug.PropUpdatingActivity"/>
+    <activity android:name=".changesetdebug.ScrollingToBottomActivity" />
+    <activity android:name=".incrementalmount.IncrementalMountWithCustomViewContainerActivity" />
+    <activity android:name=".stateupdates.StateUpdateFromOutsideTreeActivity" />
+    <activity android:name=".triggers.ClearTextTriggerExampleActivity" />
+    <activity android:name=".triggers.CustomEventTriggerExampleActivity" />
+    <activity android:name=".triggers.TooltipTriggerExampleActivity" />
+    <activity android:name=".lifecycle.LifecycleDelegateActivity" />
+    <activity android:name=".animations.sharedelements.SharedElementsActivity" />
+    <activity android:name=".animations.sharedelements.SharedElementsFragmentActivity" />
+    <activity android:name=".animations.sharedelements.DetailActivity" />
+    <activity android:name=".editor.SimpleEditorExampleActivity" />
+  </application>
+
+
+</manifest>

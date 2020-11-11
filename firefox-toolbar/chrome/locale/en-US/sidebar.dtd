@@ -1,0 +1,19 @@
+<!ENTITY  sidebar.title                     "Facebook Sidebar">
+
+<!ENTITY  sidebar.settings.label            "Settings">
+<!ENTITY  sidebar.sortlast.label            "Last update time">
+<!ENTITY  sidebar.sortstatus.label          "Status update time">
+<!ENTITY  sidebar.sortprofile.label         "Profile update time">
+<!ENTITY  sidebar.sortname.label            "Name">
+
+<!ENTITY  sidebar.friendmessage.label       "message">
+<!ENTITY  sidebar.friendpoke.label          "poke">
+<!ENTITY  sidebar.friendpost.label          "wall post">
+
+<!ENTITY  toolbar.search.user.label                      "People">
+<!ENTITY  toolbar.search.page.label                      "Pages">
+<!ENTITY  toolbar.search.event.label                     "Events">
+<!ENTITY  toolbar.search.group.label                     "Groups">
+<!ENTITY  toolbar.search.place.label                     "Places">
+<!ENTITY  toolbar.search.other.label                     "Other Results">
+

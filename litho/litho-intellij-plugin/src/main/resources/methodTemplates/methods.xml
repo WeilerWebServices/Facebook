@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Facebook, Inc. and its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<templateSet>
+  <OnAttached method="/* TODO: https://fblitho.com/docs/onattached-ondetached */@com.facebook.litho.annotations.OnAttached static void onAttached(com.facebook.litho.ComponentContext c) {}"/>
+  <OnCreateInitialState method="/* TODO: Use `File -> New -> Litho Component` menu */@com.facebook.litho.annotations.OnCreateInitialState static void OnCreateInitialState(com.facebook.litho.ComponentContext c) {}"/>
+  <OnCreateLayout method="/* TODO: Use `File -> New -> Litho Component` menu */@com.facebook.litho.annotations.OnCreateLayout static com.facebook.litho.Component OnCreateLayout(com.facebook.litho.ComponentContext c) {return com.facebook.litho.Column.create();}"/>
+  <OnCreateLayoutWithSizeSpec method="/* TODO: https://fblitho.com/docs/custom-layout.html */@com.facebook.litho.annotations.OnCreateLayoutWithSizeSpec static com.facebook.litho.Component OnCreateLayout(com.facebook.litho.ComponentContext c, int widthSpec, int heightSpecm) {return com.facebook.litho.Column.create();}"/>
+  <OnCreateTransition method="/* TODO: https://fblitho.com/docs/transition-basics */@com.facebook.litho.annotations.OnCreateTransition static com.facebook.litho.Transition OnCreateTransition(com.facebook.litho.ComponentContext c) {return com.facebook.litho.Transition.create();}"/>
+  <OnDetached method="/* TODO: https://fblitho.com/docs/onattached-ondetached */@com.facebook.litho.annotations.OnDetached static void OnDetached(com.facebook.litho.ComponentContext c) {}"/>
+  <OnUpdateState method="/* TODO: https://fblitho.com/docs/state#defining-state-updates */@com.facebook.litho.annotations.OnUpdateState static void OnUpdateState() {}"/>
+  <OnUpdateStateWithTransition method="/* TODO: https://fblitho.com/docs/transition-definitions#onupdatestatewithtransition */@com.facebook.litho.annotations.OnUpdateStateWithTransition static com.facebook.litho.Transition OnUpdateStateWithTransition() {return com.facebook.litho.Transition.create();}"/>
+  <OnCreateMountContent method="/* TODO: https://fblitho.com/docs/mount-specs#mounting */@androidx.annotation.UiThread @com.facebook.litho.annotations.OnCreateMountContent static android.graphics.drawable.ColorDrawable onCreateMountContent(android.content.Context context) {return new android.graphics.drawable.ColorDrawable();}"/>
+  <OnPrepare method="/* TODO: https://fblitho.com/docs/mount-specs#inter-stage-inputs-and-outputs */@com.facebook.litho.annotations.OnPrepare static void onPrepare(com.facebook.litho.ComponentContext c) {}"/>
+  <OnBoundsDefined method="/* TODO: https://fblitho.com/docs/mount-specs */@com.facebook.litho.annotations.OnBoundsDefined static void onBoundsDefined(com.facebook.litho.ComponentContext c, com.facebook.litho.ComponentLayout layout) {}"/>
+  <OnUnbind method="/* TODO: https://fblitho.com/docs/mount-specs */@androidx.annotation.UiThread @com.facebook.litho.annotations.OnUnbind static void onUnbind(com.facebook.litho.ComponentContext c, android.graphics.drawable.ColorDrawable colorDrawable) {}"/>
+  <OnBind method="/* TODO: https://fblitho.com/docs/mount-specs */@androidx.annotation.UiThread @com.facebook.litho.annotations.OnBind static void OnBind(com.facebook.litho.ComponentContext c, android.graphics.drawable.ColorDrawable colorDrawable) {}"/>
+  <OnUnmount method="/* TODO: https://fblitho.com/docs/mount-specs#mounting */@androidx.annotation.UiThread @com.facebook.litho.annotations.OnUnmount static void onUnmount(com.facebook.litho.ComponentContext c, android.graphics.drawable.ColorDrawable colorDrawable) {}"/>
+  <OnMeasure method="/* TODO: https://fblitho.com/docs/mount-specs#measurement */@com.facebook.litho.annotations.OnMeasure static void onMeasure(com.facebook.litho.ComponentContext c, com.facebook.litho.ComponentLayout layout, int widthSpec, int heightSpec, com.facebook.litho.Size size) {}"/>
+  <OnMount method="/* TODO: https://fblitho.com/docs/mount-specs#mounting */@androidx.annotation.UiThread @com.facebook.litho.annotations.OnMount static void onMount(com.facebook.litho.ComponentContext c, android.graphics.drawable.ColorDrawable colorDrawable) {}"/>
+  <ShouldUpdate method="/* https://fblitho.com/docs/mount-specs#shouldupdate */@com.facebook.litho.annotations.ShouldUpdate static boolean shouldUpdate() {return false;}"/>
+  <OnCalculateCachedValue method="/* TODO: https://fblitho.com/docs/cached-values */@com.facebook.litho.annotations.OnCalculateCachedValue(name = &quot;expensiveValue&quot;) static int onCalculateCachedValue() {return 0;}"/>
+</templateSet>

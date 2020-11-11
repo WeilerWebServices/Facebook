@@ -1,0 +1,10 @@
+0
+1
+2
+3
+
+Fatal error: Uncaught exception 'OutOfBoundsException' with message 'Out of bounds darray access: invalid index 4' in %s:9
+Stack trace:
+#0 %s(14): rain()
+#1 %S(%S): main()
+#2 {main}

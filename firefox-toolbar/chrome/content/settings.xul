@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://facebook/skin/settings.css" type="text/css"?>
+
+<!DOCTYPE prefwindow SYSTEM "chrome://facebook/locale/settings.dtd">
+
+<prefwindow id="facebook-settings"
+            title="&settings.window.title;"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            type="prefwindow"
+            windowtype="facebookToolbar:Preferences"
+            dlgbuttons="cancel,accept"
+            onload="var btnAccept=document.documentElement.getButton('accept');btnAccept.hidden = btnAccept.disabled = false;"
+            >
+  <script type="application/x-javascript" src="chrome://facebook/content/lib.js"/>
+
+  <prefpane id="facebook-you-pane" label="&settings.panel.title;"
+            selected="true">
+    <preferences>
+      <!-- General Notifications Preferences -->
+      <preference name="extensions.facebook.notifications.toggle"
+                  type="bool"
+                  id="toggle"
+                  />
+      <preference name="extensions.facebook.notifications.growl"
+                  type="bool"
+                  id="growl"
+                  />
+
+      <!-- Notifications About Me -->
+      <preference name="extensions.facebook.notifications.you.req"
+                  type="bool"
+                  id="you-req"
+                  />
+      <preference name="extensions.facebook.notifications.you.msg"
+                  type="bool"
+                  id="you-msg"
+                  />
+      <preference name="extensions.facebook.notifications.you.poke"
+                  type="bool"
+                  id="you-poke"
+                  />
+      <preference name="extensions.facebook.notifications.you.friend"
+                  type="bool"
+                  id="you-friend"
+                  />
+      <preference name="extensions.facebook.notifications.you.event.inv"
+                  type="bool"
+                  id="you-event-inv"
+                  />
+      <preference name="extensions.facebook.notifications.you.group.inv"
+                  type="bool"
+                  id="you-group-inv"
+                  />
+      <preference name="extensions.facebook.notifications.you.share"
+                  type="bool"
+                  id="you-share"
+                  />
+      <preference name="extensions.facebook.notifications.you.site"
+                  type="bool"
+                  id="you-site"
+                  />
+
+      <!-- Notifications About My Friends -->
+      <preference name="extensions.facebook.notifications.friend.profile"
+                  type="bool"
+                  id="friend-profile"
+                  />
+      <preference name="extensions.facebook.notifications.friend.status"
+                  type="bool"
+                  id="friend-status"
+                  />
+      <preference name="extensions.facebook.notifications.friend.album"
+                  type="bool"
+                  id="friend-album"
+                  />
+      <preference name="extensions.facebook.notifications.friend.wall"
+                  type="bool"
+                  id="friend-wall"
+                  />
+      <preference name="extensions.facebook.notifications.friend.note"
+                  type="bool"
+                  id="friend-note"
+                  />
+      <preference name="extensions.facebook.notifications.upload.complete"
+                  type="bool"
+                  id="upload-complete"
+                  />
+
+      <!-- Like Preferences -->
+      <preference name="extensions.facebook.like.enabled"
+                  type="bool"
+                  id="like"
+                  />
+
+      <!-- Search in Location Bar -->
+      <preference name="extensions.facebook.awesomebar_search.enabled"
+                  type="bool"
+                  id="awesome-search"
+                  />
+
+    </preferences>
+
+    <groupbox>
+      <hbox align="center">
+        <checkbox preference="awesome-search" label="&settings.awesomesearch.enable.label;"/>
+      </hbox>
+    </groupbox>
+
+    <groupbox>
+      <hbox align="center">
+        <checkbox preference="like"
+                  disabled="true"/>
+        <label value="&settings.like.enable.label;" class="left-flat"/>
+        <label class="text-link"
+               value="&settings.like.more.label;"
+               onclick="fbLib.launchLikeWindow();"/>
+      </hbox>
+    </groupbox>
+
+    <groupbox>
+      <checkbox preference="toggle" label="&settings.notificationmes.enable.label;"/>
+      <vbox class="indent">
+        <label class="header" value="&settings.notificationme.header.label;" />
+        <hbox>
+          <groupbox id="facebook-notifications-youbox">
+            <caption label="&settings.notificationme.about.label;"/>
+            <checkbox preference="you-req"       label="&settings.notificationme.friendreq.label;"/>
+            <checkbox preference="you-msg"       label="&settings.notificationme.message.label;"/>
+            <checkbox preference="you-poke"      label="&settings.notificationme.poke.label;"/>
+            <checkbox preference="you-friend"    label="&settings.notificationme.friend.label;"/>
+            <checkbox preference="you-event-inv" label="&settings.notificationme.event.label;"/>
+            <checkbox preference="you-group-inv" label="&settings.notificationme.group.label;"/>
+            <checkbox preference="you-share"     label="&settings.notificationme.share.label;"/>
+            <checkbox preference="you-site"
+                      label="&settings.notificationme.other.label;"/>
+          </groupbox>
+
+          <vbox>
+            <groupbox id="facebook-notifications-friendbox">
+              <caption label="&settings.notificationfriend.about.label;"/>
+              <checkbox preference="friend-profile" label="&settings.notificationfriend.profile.label;"/>
+              <checkbox preference="friend-status"  label="&settings.notificationfriend.status.label;"/>
+              <checkbox preference="friend-album"   label="&settings.notificationfriend.albums.label;"/>
+              <checkbox preference="friend-wall"    label="&settings.notificationfriend.wall.label;"/>
+              <checkbox preference="friend-note"    label="&settings.notificationfriend.note.label;"/>
+            </groupbox>
+            <groupbox id="facebook-notifications-other">
+              <caption label="&settings.notificationother.about.label;"/>
+              <checkbox preference="upload-complete" label="&settings.notificationother.upload.label;"/>
+          </groupbox>
+          </vbox>
+        </hbox>
+      </vbox>
+
+      <vbox id="facebook-notifications-method" class="indent">
+        <label class="header" value="&settings.notification.type.label;" />
+        <radiogroup preference="growl">
+          <radio label="&settings.notification.native.label;"
+                 value="false" />
+          <radio label="&settings.notification.firefox.label;"
+                 value="true" />
+        </radiogroup>
+
+        <!-- Help Text can't be included because Mac firefox doesn't
+             account for text overflow when sizing the dialog, so
+             the bottom of the prefs dialog gets cut off!
+             <description flex="10">
+               The appearance of Firefox's built-in notification windows
+               varies from platform to platform.
+               On Windows, a small window slides up from taskbar,
+               pauses for a few seconds, then slides down.
+               On Mac OS X, built-in Firefox alerts are delivered via the
+               Growl application, which allows customization of appearance and
+               on-screen duration.
+               (<label href="http://growl.info/about.php"
+                       class="text-link small-margin"
+                       style="font-size: 9px;">What is Growl</label>).
+             </description>
+             -->
+      </vbox>
+    </groupbox>
+  </prefpane>
+
+</prefwindow>

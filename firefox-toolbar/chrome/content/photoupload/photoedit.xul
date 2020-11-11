@@ -1,0 +1,108 @@
+<!--
+/**
+ *
+ * The source code included in this file is licensed to you by Facebook under
+ * the Apache License, Version 2.0.  Accordingly, the following notice
+ * applies to the source code included in this file:
+ *
+ * Copyright © 2012 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://facebook/skin/photoupload/photoupload.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://facebook/locale/photoupload/photoupload.dtd">
+
+<dialog id="facebook-photoupload"
+        title="&upload.tagandcaption.label;"
+        windowtype="facebook:photoedit"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        onload="PhotoEdit.init()"
+        buttons="accept,cancel"
+        ondialogaccept="return PhotoEdit.doOK();">
+
+  <script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
+  <script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
+  <script type="application/x-javascript" src="chrome://facebook/content/photoupload/jsbn/jsbn.js"/>
+  <script type="application/x-javascript" src="chrome://facebook/content/photoupload/jsbn/jsbn2.js"/>
+  <script type="application/x-javascript" src="chrome://facebook/content/photoupload/photoedit.js"/>
+
+  <stringbundle id="photouploadBundle"
+                src="chrome://facebook/locale/photoupload/photoupload.properties"/>
+
+  <vbox flex="1">
+
+    <hbox flex="1">
+      <vbox id="editPanel">
+        <caption label="&upload.clickonphoto.label;"/>
+        <vbox id="editImageContainer" align="center">
+          <!-- width/max-width as a CSS property or XUL attribute has no effect on the image width.
+               That's why a <browser> is used instead. -->
+          <browser id="editImageFrame" src="editimage.html" disablehistory="true"/>
+        </vbox>
+        <hbox align="center" collapsed="true">
+            <label value="&upload.photo.name.label;"/>
+            <label id="editFilenameField"/>
+        </hbox>
+        <hbox align="center" collapsed="true">
+            <label value="&upload.photo.size.label;"/>
+            <label id="editSizeField"/>
+        </hbox>
+        <hbox collapsed="true">
+          <label value="&upload.tag.start.label;"/>
+        </hbox>
+        <stack flex="1">
+          <listbox flex="1"
+                   rows="4"
+                   id="editTagList"
+                   seltype="multiple"
+                   onselect="EditPanel.onTagSelect(event);"
+                   onmouseover="EditPanel.onMouseOver(event);"
+                   onmouseout="EditPanel.onMouseOut(event);">
+          </listbox>
+          <!-- I wanted to put this help message below the listbox and make
+               the listbox transparent. It turns out setting background-color
+               to transparent on the listbox has no effect: it is always opaque.
+               The workaround is to put that box on top and collapse it when
+               there are list items to show -->
+          <vbox id="editTagHelpBox" flex="1">
+            <spacer flex="1"/>
+            <hbox>
+              <spacer flex="1"/>
+              <label value="&upload.tag.click.label;"
+                     style="color: gray"/>
+              <spacer flex="1"/>
+            </hbox>
+            <spacer flex="1"/>
+          </vbox>
+        </stack>
+        <hbox>
+          <button id="editRemoveTagsButton"
+                  oncommand="EditPanel.onRemoveSelectedTags(event)"
+                  label="&upload.tag.remove.label;"/>
+        </hbox>
+        <spacer flex="1"/>
+        <hbox align="center">
+            <label value="&upload.photo.caption.label;"/>
+            <textbox id="editCaptionField" multiline="false" disabled="true"
+                     oninput="EditPanel.onCaptionInput(event)" size="50"/>
+        </hbox>
+      </vbox>
+    </hbox>
+
+  </vbox>
+
+</dialog>

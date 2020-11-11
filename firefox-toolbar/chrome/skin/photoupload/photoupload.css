@@ -1,0 +1,50 @@
+#facebook-photoupload {
+  padding: 10px;
+}
+
+#existingAlbumPanel.loading-albums #loadingAlbumsLabel,
+#existingAlbumPanel:not(.loading-albums) #albumsList {
+  display: block;
+}
+
+#existingAlbumPanel:not(loading-albums) #loadingAlbumsLabel,
+#existingAlbumPanel.loading-albums #albumsList {
+  display: none;
+}
+
+#editPanel {
+  padding: 10px;
+}
+
+#editImageContainer {
+  padding: 10px 5px;
+}
+
+#editImageFrame {
+  /* Keep the size of the frame in sync with the max-width/max-height properties
+     of the img element in editimage.css */
+  width: 420px;
+  height: 270px;
+  /*-moz-box-shadow: gray 10px 10px 10px;
+  border: 3px solid #CCCCCC;*/
+}
+
+#addPhotosButton {
+  font-size: 130%;
+  font-weight: bold;
+}
+
+.upload-status.error {
+  color: red;
+}
+
+#editTagList {
+  min-height: 60px;
+}
+
+#picBox {
+  margin: 10px 10px 10px 0px;
+  min-width: 260px;
+  border: 1px solid #BBBBBB;
+  background-color: #ffffff;
+}

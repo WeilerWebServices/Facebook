@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "react": "*"
+  },
+  "jest": {
+    "automock": true,
+    "testEnvironment": "node"
+  }
+}

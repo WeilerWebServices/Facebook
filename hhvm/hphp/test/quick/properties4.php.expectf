@@ -1,0 +1,7 @@
+darray(1) {
+  ["w"]=>
+  int(3)
+}
+Done
+
+Fatal error: Class undefined: NonExistentClass in %s on line 24

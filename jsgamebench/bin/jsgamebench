@@ -1,0 +1,85 @@
+#! /usr/bin/env node
+
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+// Licensed under the Apache License, Version 2.0 (the "License"); you may
+// not use this file except in compliance with the License. You may obtain
+// a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
+
+sys = require('sys');
+fs = require('fs');
+path = require('path');
+events = require('events');
+http = require('http');
+crypto = require('crypto');
+url = require('url');
+querystring = require('querystring');
+net = require('net');
+io = require('socket.io');
+
+Log = require('../lib/log');
+LogProc = require('../lib/logproc');
+
+Utils = require('../engine/core/utils');
+Users = require('../lib/users');
+Graph = require('../lib/graph');
+Server = require('../lib/server');
+Comm = require('../lib/comm');
+Grid = require('../engine/shared/grid');
+GridSvr = require('../engine/shared/gridsvr');
+Vec = require('../engine/utils/vec');
+Mathx = require('../engine/utils/math');
+Socket = require('../lib/socket');
+Cmds = SvrCmds = require('../lib/svrcmds');
+SvrGame = require('../space/svrgame');
+
+sys.puts("starting server");
+var production_mode = false;
+var listenPort = 8081;
+var sslPort;
+
+SvrGame.init();
+for(var i=0;i<process.argv.length;i++) {
+  if (process.argv[i] == '-80') {
+    production_mode = true;
+    listenPort = 80;
+    sslPort = 443;
+  } else if (process.argv[i] == '-cache') {
+    Comm.cacheSHTML();
+  } else if (i+1 < process.argv.length) {
+    if (process.argv[i] === '--port') {
+      i++;
+      listenPort = process.argv[i];
+    } else if (process.argv[i] === '--sslport') {
+      i++;
+      sslPort = process.argv[i];
+    } else if (process.argv[i] === '--delay') {
+      i++;
+      Comm.setDelay(parseInt(process.argv[i]));
+    }
+  }
+}
+
+https = require('https');
+
+sys.puts("reading log file");
+LogProc.start('logs/stats.log',null);
+
+Server.init(Server.serverCallback,listenPort,0);
+
+if (sslPort) {
+  var options = {
+    key: fs.readFileSync('cert/privatekey.pem'),
+    cert: fs.readFileSync('cert/certificate.pem')
+  };
+  Server.listen(sslPort,options,Server.serverCallback);
+}
+Server.listen(listenPort,0,Server.serverCallback);

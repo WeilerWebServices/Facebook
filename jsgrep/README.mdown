@@ -1,0 +1,84 @@
+Archived Repo
+=============
+
+**This is an archived project and is no longer supported or updated by Facebook. Please do not file issues or pull-requests against this repo. If you wish to continue to develop this code yourself, we recommend you fork it.**
+
+**Proceed and be bold!**
+
+# jsgrep / jspatch - toolkit for searching and modifying JavaScript
+
+**Jsgrep** is program that searches for a particular JavaScript pattern using
+the abstract syntax tree (AST) of the program. This enables matching expressions
+based on their JavaScript meaning, rather than based on simple strings.
+**Jspatch** is a tool to take that information and programmatically modify the
+original source code.
+
+## Example
+
+**Jsgrep: find Javelin classes that have a 'path' property**
+
+    $ jsgrep -p C "JX.install(C, { properties: { path: X } })" tests/*.js
+    tests/javelin.js: 'Event'
+    tests/javelin.js: 'URI'
+
+Jsgrep allows easily drilling into the structure of JavaScript classes. In this
+example, jsgrep finds Javelin classes that contain a 'path' property. The class
+name is stored in the metavariable C, which will be output.
+
+**Jspatch: replace setTimeout with window.setTimeout in jQuery**
+
+    $ jspatch -e 's/setTimeout( A, B )/window.setTimeout( A, B )/' tests/jquery.js
+    --- tests/jquery.js 2012-01-10 14:51:36.000000000 -0800
+    +++ /tmp/jspatch.jquery.js  2012-01-11 17:13:56.000000000 -0800
+    @@ -420,7 +420,7 @@
+            if ( (wait === true && !--jQuery.readyWait) || (wait !== true && !jQuery.isReady) ) {
+                // Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
+                if ( !document.body ) {
+    -               return setTimeout( jQuery.ready, 1 );
+    +               return window.setTimeout( jQuery.ready, 1 );
+                }
+
+                // Remember that the DOM is ready
+    @@ -1987,7 +1987,7 @@
+            ( src === "mark" || !jQuery._data(elem, markDataKey) ) ) {
+            // Give room for hard-coded callbacks to fire first
+            // and eventually mark/queue something else on the element
+    -       setTimeout( function() {
+    +       window.setTimeout( function() {
+                if ( !jQuery._data( elem, queueDataKey ) &&
+                    !jQuery._data( elem, markDataKey ) ) {
+                    jQuery.removeData( elem, deferDataKey, true );
+
+Jspatch supports a versatile patch file format that can perform far more complex
+transformations as well. For more information, see the
+[online documentation](https://github.com/facebook/jsgrep/wiki).
+
+## Installation
+
+    npm install jsgrep-toolkit
+
+To install from source code:
+
+    git clone https://github.com/facebook/jsgrep.git
+    cd jsgrep
+    git submodule update --init
+    npm install
+
+## TODO
+
+* Consider a metavar that matches but doesn't save, to prevent ambiguities.
+* Rewrite forEachNode to be iterative rather than recursive (to fix ...)
+* Consider support for --where/--eval and/or not-patterns
+* Support for most statements in patterns
+* Formally testing the pattern matchers
+
+jspatch:
+
+* Testing
+
+## Contributors
+
+Jsgrep was written by Ryan Patterson at Facebook. Inspiration for this project
+draws heavily from pfff, a source code analyzer written at Facebook.
+
+* pfff - https://github.com/facebook/pfff

@@ -1,0 +1,65 @@
+interfaces of Base:
+darray(2) {
+  ["IA"]=>
+  string(2) "IA"
+  ["IB"]=>
+  string(2) "IB"
+}
+
+interfaces of Derived:
+darray(2) {
+  ["IA"]=>
+  string(2) "IA"
+  ["IB"]=>
+  string(2) "IB"
+}
+
+interfaces of DerivedDerived:
+darray(3) {
+  ["IA"]=>
+  string(2) "IA"
+  ["IB"]=>
+  string(2) "IB"
+  ["IC"]=>
+  string(2) "IC"
+}
+
+interfaces of LotsOfInterfaces:
+darray(3) {
+  ["IA"]=>
+  string(2) "IA"
+  ["ID"]=>
+  string(2) "ID"
+  ["IE"]=>
+  string(2) "IE"
+}
+
+interfaces of MostOfTheInterfaces:
+darray(5) {
+  ["IA"]=>
+  string(2) "IA"
+  ["IB"]=>
+  string(2) "IB"
+  ["ID"]=>
+  string(2) "ID"
+  ["IE"]=>
+  string(2) "IE"
+  ["IG"]=>
+  string(2) "IG"
+}
+
+interfaces of AllTheInterfaces:
+darray(6) {
+  ["IA"]=>
+  string(2) "IA"
+  ["IB"]=>
+  string(2) "IB"
+  ["IC"]=>
+  string(2) "IC"
+  ["ID"]=>
+  string(2) "ID"
+  ["IE"]=>
+  string(2) "IE"
+  ["IG"]=>
+  string(2) "IG"
+}

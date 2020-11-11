@@ -1,0 +1,10 @@
+darray(2) {
+  ["a"]=>
+  varray(1) {
+    int(1)
+  }
+  ["test"]=>
+  varray(1) {
+    int(0)
+  }
+}

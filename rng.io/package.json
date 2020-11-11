@@ -1,0 +1,49 @@
+{
+  "name": "ringmark",
+  "description": "The mobile Open Web test suite.",
+  "version": "1.4.0",
+  "homepage": "https://github.com/bocoup/tophat",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bocoup/tophat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bocoup/tophat/issues"
+  },
+  "licenses": [
+    {
+      "type": "W3C 3-clause BSD License",
+      "url": "http://www.w3.org/Consortium/Legal/2008/03-bsd-license.html"
+    },
+    {
+      "type": "W3C Test Suite License",
+      "url": "http://www.w3.org/Consortium/Legal/2008/04-testsuite-license"
+    }
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "lodash": ">=0.2.2",
+    "grunt": "0.3.11",
+    "jsdom": "*",
+    "js-yaml": "*",
+    "canvas": "*",
+    "clean-css": "*"
+  },
+  "keywords": [],
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "main": "lib/tophat",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "contributors": [
+    "Matt Kelly <mk@fb.com>",
+    "Tobie Langel <tobie@fb.com>",
+    "Adam Sontag <adam@bocoup.com> ",
+    "Boaz Sender <boaz@bocoup.com> ",
+    "Rick Waldron <rick@bocoup.com> "
+  ],
+  "author": "Facebook"
+}

@@ -1,0 +1,34 @@
+[package]
+name = "watchman_client"
+version = "0.5.1"
+authors = ["Wez Furlong"]
+edition = "2018"
+repository = "https://github.com/facebook/watchman/"
+description = "a client for the Watchman file watching service"
+license = "Apache-2.0"
+documentation = "https://docs.rs/watchman_client"
+
+[dev-dependencies]
+structopt = "0.3"
+
+[dependencies]
+maplit = "1.0"
+serde = { version = "1.0.102", features = ["derive"] }
+serde_bser = { version = "0.2", path = "../serde_bser" }
+thiserror = ">=1.0.6"
+tokio = { version = "0.2", features = [
+    "io-util",
+    "macros",
+    "process",
+    "rt-core",
+    "sync",
+    "uds",
+] }
+
+[target."cfg(windows)".dependencies]
+mio-named-pipes = "0.1"
+mio = "0.6"
+winapi = { version = "0.3", features = [
+    "handleapi",
+    "winuser",
+]}

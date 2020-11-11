@@ -1,0 +1,108 @@
+<?hh // strict
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * This file was moved from fbsource to www. View old history in diffusion:
+ * https://fburl.com/z8axydvl
+ */
+namespace Facebook\ShipIt;
+
+use type Facebook\ImportIt\FBImportItBranchResolutionPhase;
+
+use type Facebook\ShipIt\Config\FacebookPhabtest1Git;
+
+<<\Oncalls('open_source')>>
+final class FBShipItProjectRunnerTest extends FBBaseTest {
+
+  private static function getPhases(
+    FBShipItCLIAction $action,
+    FBShipItConfig $config_object,
+    ?string $external_branch = null,
+    ?IShipItArgumentParser $argument_parser = null,
+  ): vec<ShipItPhase> {
+    return FBShipItProjectRunner::getPhases(
+      $action,
+      $config_object,
+      $external_branch,
+      $argument_parser,
+    );
+  }
+
+  public function testGetPhasesNoBranch(): void {
+    $phase = self::getPhases(
+      FBShipItCLIAction::SHIP_IT,
+      self::getConfigObject(),
+    )[0];
+    invariant(
+      $phase is FBShipItBranchResolutionPhase,
+      'Unexpected phase type: %s',
+      /* HH_FIXME[4110] %s expects a string */
+      $phase,
+    );
+    \expect($phase)->toNotBeInstanceOf(FBImportItBranchResolutionPhase::class);
+    $branches = $phase->getBranchConfigs();
+    \expect(C\count($branches))->toBePHPEqual(3);
+  }
+
+  public function testGetPhasesWithBranch(): void {
+    $phase = self::getPhases(
+      FBShipItCLIAction::SHIP_IT,
+      self::getConfigObject(),
+      'side_branch',
+    )[0];
+    invariant(
+      $phase is FBShipItBranchResolutionPhase,
+      'Unexpected phase type: %s',
+      /* HH_FIXME[4110] %s expects a string */
+      $phase,
+    );
+    \expect($phase)->toNotBeInstanceOf(FBImportItBranchResolutionPhase::class);
+    $branches = $phase->getBranchConfigs();
+    \expect(C\count($branches))->toBePHPEqual(1);
+    \expect($branches[0]->getInternalBranch())->toBePHPEqual('side_branch');
+  }
+
+  public function testGetPhasesImportIt(): void {
+    $phase = self::getPhases(
+      FBShipItCLIAction::IMPORT_IT,
+      self::getConfigObject(),
+      'master',
+    )[0];
+    invariant(
+      $phase is FBImportItBranchResolutionPhase,
+      'Unexpected phase type: %s',
+      /* HH_FIXME[4110] %s expects a string */
+      $phase,
+    );
+    \expect($phase)->toBeInstanceOf(FBImportItBranchResolutionPhase::class);
+    $branches = $phase->getBranchConfigs();
+    \expect(C\count($branches))->toBePHPEqual(1);
+    \expect($branches[0]->getInternalBranch())->toBePHPEqual('master');
+  }
+
+  public function testGetPhasesImportItRequiresBranch(): void {
+    $phase = self::getPhases(
+      FBShipItCLIAction::IMPORT_IT,
+      self::getConfigObject(),
+    )[0];
+    invariant(
+      $phase is FBImportItBranchResolutionPhase,
+      'Unexpected phase type: %s',
+      /* HH_FIXME[4110] %s expects a string */
+      $phase,
+    );
+    \expect($phase)->toBeInstanceOf(FBImportItBranchResolutionPhase::class);
+    \expect(() ==> $phase->getBranchConfigs())
+      // @oss-disable: ->toThrow(\InvariantViolationException::class);
+    ->toThrow(InvariantException::class); // @oss-enable
+  }
+
+  private static function getConfigObject(): FBShipItConfig {
+    return \Facebook\ShipIt\FBShipItConfigRegistry::getInstanceForTesting();
+  }
+}

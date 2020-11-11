@@ -1,0 +1,8 @@
+darray(2) {
+  ["obj"]=>
+  object(stdClass) (0) {
+  }
+  ["unc"]=>
+  string(16) "foobar0123456789"
+}
+string(16) "foobar0123456789"

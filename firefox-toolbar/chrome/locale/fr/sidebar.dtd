@@ -1,0 +1,19 @@
+<!ENTITY  sidebar.title                     "Barre latérale Facebook">
+
+<!ENTITY  sidebar.settings.label            "Paramètres">
+<!ENTITY  sidebar.sortlast.label            "Heure de dernière mise à jour">
+<!ENTITY  sidebar.sortstatus.label          "Heure de mise à jour de statut">
+<!ENTITY  sidebar.sortprofile.label         "Heure de mise à jour de profil">
+<!ENTITY  sidebar.sortname.label            "Nom">
+
+<!ENTITY  sidebar.friendmessage.label       "message">
+<!ENTITY  sidebar.friendpoke.label          "poke">
+<!ENTITY  sidebar.friendpost.label          "publication sur le mur">
+
+<!ENTITY  toolbar.search.user.label                      "Personnes">
+<!ENTITY  toolbar.search.page.label                      "Pages">
+<!ENTITY  toolbar.search.event.label                     "Évènements">
+<!ENTITY  toolbar.search.group.label                     "Groupes">
+<!ENTITY  toolbar.search.place.label                     "Lieux">
+<!ENTITY  toolbar.search.other.label                     "Autres résultats">
+

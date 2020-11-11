@@ -1,0 +1,16 @@
+darray(2) {
+  [0]=>
+  int(10)
+  ["test"]=>
+  varray(1) {
+    int(0)
+  }
+}
+darray(2) {
+  [0]=>
+  int(10)
+  ["test"]=>
+  varray(1) {
+    int(0)
+  }
+}

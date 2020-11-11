@@ -1,0 +1,25 @@
+To build pfff you will need several development packages usually
+not shipped in a default install.
+
+Install gtk2-devel, atk-devel, pango-devel, and cairo-devel,
+swi-prolog, ncurses-devel, and binutils-gold.
+
+For instance:
+for RedHat: sudo yum install gtk2-devel
+for Gentoo: sudo emerge gtk2
+for Arch: I don't remember
+
+For Ubuntu/Debian, packages are named differently, usually with a 'lib'
+prefix, so you will want to install:
+libgtk2.0-dev, libcairo2-dev, libpango1.0-dev and finally
+the binutils-gold package.
+
+On Fedora you may need to install the camlp4 packages too: 
+ ocaml-camlp4 ocaml-camlp4-devel
+You'll also need to install perl-pod-usage to be able to run configure itself.
+
+Then:
+  $ ./configure
+  $ make depend
+  $ make
+  $ make opt

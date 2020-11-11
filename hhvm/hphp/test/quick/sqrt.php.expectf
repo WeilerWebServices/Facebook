@@ -1,0 +1,14 @@
+float(0)
+float(-0)
+float(2.2360679774998)
+float(1.5811388300842)
+float(NAN)
+float(1.4973266176756)
+string(%d) "sqrt() expects parameter 1 to be double, boolean given"
+string(%d) "sqrt() expects parameter 1 to be double, boolean given"
+string(%d) "sqrt() expects parameter 1 to be double, null given"
+string(%d) "sqrt() expects parameter 1 to be double, string given"
+string(%d) "sqrt() expects parameter 1 to be double, string given"
+string(%d) "sqrt() expects parameter 1 to be double, object given"
+string(%d) "sqrt() expects parameter 1 to be double, %rv?%rarray given"
+string(%d) "sqrt() expects parameter 1 to be double, %rv?%rarray given"

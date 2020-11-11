@@ -1,0 +1,6 @@
+darray(2) {
+  ["a"]=>
+  int(10)
+  [2]=>
+  string(4) "test"
+}

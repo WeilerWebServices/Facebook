@@ -1,0 +1,359 @@
+varray(3) {
+  string(4) "exit"
+  string(13) "fb_setprofile"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(15) "pure_function_2"
+  darray(1) {
+    ["args"]=>
+    varray(2) {
+      int(3)
+      int(4)
+    }
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(13) "pure_function"
+  darray(1) {
+    ["args"]=>
+    varray(1) {
+      int(3)
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(13) "pure_function"
+  darray(1) {
+    ["return"]=>
+    int(7)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(13) "pure_function"
+  darray(1) {
+    ["args"]=>
+    varray(1) {
+      int(4)
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(13) "pure_function"
+  darray(1) {
+    ["return"]=>
+    int(7)
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(15) "pure_function_2"
+  darray(1) {
+    ["return"]=>
+    int(14)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(5) "srand"
+  darray(1) {
+    ["args"]=>
+    varray(1) {
+      int(3735928559)
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(5) "srand"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(14) "test_exception"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(22) "Exception::__construct"
+  darray(1) {
+    ["args"]=>
+    varray(1) {
+      string(4) "test"
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(22) "Exception::__construct"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(14) "test_exception"
+  darray(1) {
+    ["exception"]=>
+    object(Exception) (8) {
+      ["message":protected]=>
+      string(4) "test"
+      ["string":"Exception":private]=>
+      string(0) ""
+      ["code":protected]=>
+      int(0)
+      ["file":protected]=>
+      string(%d) "%s"
+      ["line":protected]=>
+      int(16)
+      ["trace":"Exception":private]=>
+      varray(3) {
+        darray(4) {
+          ["file"]=>
+          string(%d) "%s"
+          ["line"]=>
+          int(37)
+          ["function"]=>
+          string(14) "test_exception"
+          ["args"]=>
+          varray(0) {
+          }
+        }
+        darray(4) {
+          ["file"]=>
+          string(%d) "%s"
+          ["line"]=>
+          int(47)
+          ["function"]=>
+          string(4) "main"
+          ["args"]=>
+          varray(0) {
+          }
+        }
+        darray(2) {
+          ["function"]=>
+          string(21) "entrypoint_Setprofile"
+          ["args"]=>
+          varray(0) {
+          }
+        }
+      }
+      ["previous":"Exception":private]=>
+      NULL
+      ["userMetadata":protected]=>
+      NULL
+    }
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(3) "gen"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(3) "gen"
+  NULL
+}
+varray(3) {
+  string(5) "enter"
+  string(17) "Generator::rewind"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(3) "gen"
+  darray(0) {
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(3) "gen"
+  NULL
+}
+varray(3) {
+  string(4) "exit"
+  string(17) "Generator::rewind"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(16) "Generator::valid"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(16) "Generator::valid"
+  darray(1) {
+    ["return"]=>
+    bool(true)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(18) "Generator::current"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(18) "Generator::current"
+  darray(1) {
+    ["return"]=>
+    int(1)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(15) "Generator::next"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(3) "gen"
+  darray(0) {
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(3) "gen"
+  NULL
+}
+varray(3) {
+  string(4) "exit"
+  string(15) "Generator::next"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(16) "Generator::valid"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(16) "Generator::valid"
+  darray(1) {
+    ["return"]=>
+    bool(true)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(18) "Generator::current"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(18) "Generator::current"
+  darray(1) {
+    ["return"]=>
+    int(2)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(15) "Generator::next"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(3) "gen"
+  darray(0) {
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(3) "gen"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(15) "Generator::next"
+  darray(1) {
+    ["return"]=>
+    NULL
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(16) "Generator::valid"
+  darray(1) {
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(3) {
+  string(4) "exit"
+  string(16) "Generator::valid"
+  darray(1) {
+    ["return"]=>
+    bool(false)
+  }
+}
+varray(3) {
+  string(5) "enter"
+  string(13) "fb_setprofile"
+  darray(1) {
+    ["args"]=>
+    varray(1) {
+      NULL
+    }
+  }
+}

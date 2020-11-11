@@ -1,0 +1,274 @@
+<?hh // strict
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * This file was moved from fbsource to www. View old history in diffusion:
+ * https://fburl.com/g65qsd2v
+ */
+namespace Facebook\ShipIt;
+
+final class FBRepoInitPhase extends ShipItPhase {
+  private bool $allowNuke = false;
+
+  public function __construct(
+    private ShipItRepoSide $side,
+    private string $name,
+  ) {
+    $this->assertIsSourceSide();
+  }
+
+  private function assertIsSourceSide(): void {
+    invariant(
+      $this->side === ShipItRepoSide::SOURCE,
+      'writing to Facebook repositories is not supported',
+    );
+  }
+
+  <<__Override>>
+  public function getReadableName(): string {
+    return 'Initialize '.$this->side.' '.$this->name.' repository';
+  }
+
+  <<__Override>>
+  public function getCLIArguments(): vec<ShipItCLIArgument> {
+    return vec[
+      shape(
+        'long_name' => 'skip-'.$this->side.'-init',
+        'description' => "Don't initialize the repository",
+        'write' => $_ ==> $this->skip(),
+      ),
+      shape( // Removed; specified in code instead.
+        'long_name' => $this->side.'-repo::',
+      ),
+      shape( // Removed; specified in code instead.
+        'long_name' => 'src-repo::',
+      ),
+    ];
+  }
+
+  <<__Override>>
+  public function runImpl(ShipItManifest $manifest): void {
+    $local_path = $this->side === ShipItRepoSide::SOURCE
+      ? $manifest->getSourcePath()
+      : $manifest->getDestinationPath();
+
+    /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+    /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+    if (\is_dir($local_path)) {
+      return;
+    }
+
+    // In case the src repo dir was specified by hand
+    /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+    /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+    if (\basename($local_path) !== $this->name) {
+      ShipItLogger::err(
+        'Facebook clone scripts require directory names to match repo names: '.
+        "got '%s', expected '%s'\n",
+        /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+        /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+        \basename($local_path),
+        $this->name,
+      );
+      throw new ShipItExitException(1);
+    }
+
+    $command = self::getCloneCommand($this->name);
+    /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+    /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+    $local_parent_path = \dirname($local_path);
+    /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+    /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+    if (!\is_dir($local_parent_path)) {
+      /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+      /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+      \mkdir($local_parent_path, 0755, /* recursive = */ true);
+    }
+    // Make sure that "remove stale temp file" jobs don't clean this up
+    /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+    /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+    \touch($local_parent_path);
+
+    (new ShipItShellCommand($local_parent_path, ...$command))
+      ->setRetries(2)
+      ->setFailureHandler(
+        $_ ==> (
+          new ShipItShellCommand(
+            $local_parent_path,
+            'rm',
+            '-rf',
+            '--preserve-root',
+            $local_path,
+          )
+        )->runSynchronously(),
+      )
+      ->runSynchronously();
+  }
+
+  public static function getCloneCommand(string $name): vec<string> {
+    switch ($name) {
+      case 'fbsource':
+        return vec[
+          '/usr/local/bin/hg-clone-fbsource',
+          '--no-working-dir',
+          '--simple',
+          '--no-cloud-rejoin',
+          '--sparse',
+          'tools/scm/sparse/base/base',
+        ];
+      case 'www':
+        return vec[
+          '/usr/local/bin/hg-clone-www',
+          '--no-working-dir',
+          '--simple',
+          '--no-cloud-rejoin',
+        ];
+      case 'pse-demos':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/pse-demos',
+          'pse-demos',
+        ];
+      case 'opsfiles':
+        return vec[
+          '/usr/local/bin/hg-clone-opsfiles',
+          '--no-working-dir',
+          '--simple',
+          '--no-cloud-rejoin',
+        ];
+      case 'connectivity-lab':
+        return vec[
+          '/usr/local/bin/hg-clone-connectivity-lab',
+          '--no-working-dir',
+          '--simple',
+        ];
+      case 'infer-fb':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/infer',
+          'infer-fb',
+        ];
+      case 'buck_internal':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://projects.git.vip.facebook.com/data/gitrepos/buck.git',
+          'buck_internal',
+        ];
+      case 'llvm-bolt':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          '-b',
+          'facebook/bolt',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/llvm/llvm.git',
+          'llvm-bolt',
+        ];
+      case 'meta-openbmc':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          '-b',
+          'fido',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/yocto/meta-openbmc.git',
+          'meta-openbmc',
+        ];
+      case 'meta-terragraph':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/yocto/meta-terragraph.git',
+          'meta-terragraph',
+        ];
+      case 'mysql-fb':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          '-b',
+          'fb-mysql-5.6.35',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/mysql-5.6.git',
+          'mysql-fb',
+        ];
+      case 'si_sigma':
+        return vec[
+          '/usr/local/bin/hg-clone-si_sigma',
+          '--no-working-dir',
+          '--simple',
+          '--no-cloud-rejoin',
+        ];
+      case 'phabtest1_git':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/phabtest1_git.git',
+          'phabtest1_git',
+        ];
+      case 'phabtest1_hg':
+        return vec[
+          '/usr/bin/hg',
+          'clone',
+          'ssh://hg.vip.facebook.com/data/scm/phabtest1_hg',
+          'phabtest1_hg',
+        ];
+      case 'business-sdk':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://git.vip.facebook.com/data/gitrepos/business-sdk.git',
+          'business-sdk',
+        ];
+      case 'facebook-spaces':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://projects.git-ro.vip.facebook.com/data/gitrepos/spaces.git',
+          'facebook-spaces',
+        ];
+      case 'fbwin-gameroom':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://git.vip.facebook.com/data/gitrepos/fbwin-gameroom.git',
+          'fbwin-gameroom',
+        ];
+      case 'fb-vscode':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://git-ro.vip.facebook.com/data/gitrepos/fb-vscode.git',
+          'fb-vscode',
+        ];
+      case 'WABIZ':
+        return vec[
+          '/usr/bin/git',
+          'clone',
+          'ssh://git.vip.facebook.com/data/gitrepos/whatsapp/biz.git',
+          'WABIZ',
+        ];
+      /* added due to nonexhaustive switch */
+      default:
+        break;
+    }
+    $config = FBRepoCloneCommand::get($name);
+    if ($config !== null) {
+      return $config;
+    }
+    invariant_violation(
+      "Unsupported repository '%s' - add support in %s::%s()",
+      $name,
+      __CLASS__,
+      __FUNCTION__,
+    );
+  }
+
+  public static function isMonorepo(string $name): bool {
+    return C\contains(keyset['fbsource', 'www', 'ovrsource'], $name);
+  }
+}

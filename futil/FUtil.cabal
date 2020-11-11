@@ -1,0 +1,22 @@
+name:            FUtil
+version:         0.1
+synopsis:        generic utility library and scripts useful for many projects
+license:         BSD3
+license-file:    LICENSE
+author:          futil@lists.facebook.com
+build-type:      Simple
+build-depends:
+    array
+  , base
+  , bytestring
+  , containers
+  , HSH
+  , MonadRandom
+  , mtl
+  , old-locale
+  , process
+  , random
+  , time
+
+exposed-modules: FUtil
+hs-source-dirs:  src

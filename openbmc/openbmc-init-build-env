@@ -1,0 +1,126 @@
+#!/bin/bash
+
+if [ -n "$DISTRO_OVERRIDE" ]; then
+  echo "WARNING: distro is set to ${DISTRO_OVERRIDE} based on DISTRO_OVERRIDE env variable"
+elif [ -z "$DISTRO_DEFAULT" ]; then
+  DISTRO_DEFAULT=zeus
+else
+  echo "WARNING: default distro is set to ${DISTRO_DEFAULT} based on DISTRO_DEFAULT env variable"
+fi
+
+declare -a PLAT_DISTRO_OVERRIDES
+# Add overrides here on a per-platform basis.
+PLAT_DISTRO_OVERRIDES=(
+# Latest platforms
+  meta-qemux86:zeus
+  meta-fbal:zeus
+  meta-fbep:zeus
+  meta-clearcreek:zeus
+  meta-fbsp:zeus
+  meta-fby3:zeus
+  meta-grandcanyon:zeus
+  meta-cmm:zeus
+# Pending upgrade
+  meta-cloudripper:warrior
+  meta-wedge400:warrior
+  meta-fuji:warrior
+  meta-elbert:warrior
+# Legacy platforms pending kernel upgrade
+  meta-fby2-nd:rocko
+  meta-fby2-gpv2:rocko
+  meta-fby2:rocko
+  meta-yosemite:rocko
+  meta-fbtp:rocko
+  meta-fbttn:rocko
+  meta-wedge:rocko
+  meta-minilaketb:rocko
+  meta-yamp:rocko
+  meta-lightning:rocko
+  meta-wedge100:rocko
+  meta-minipack:rocko
+  meta-galaxy100:rocko
+)
+
+platform="$1"
+if [ -z "$DISTRO_OVERRIDE" ]; then
+  _distro="${DISTRO_DEFAULT}"
+else
+  _distro="${DISTRO_OVERRIDE}"
+fi
+
+if [ -n "$BASH_SOURCE" ]; then
+    THIS_SCRIPT=$BASH_SOURCE
+elif [ -n "$ZSH_NAME" ]; then
+    THIS_SCRIPT=$0
+else
+    THIS_SCRIPT="$(pwd)/openbmc-init-build-env"
+fi
+
+if [ -z "$ZSH_NAME" ] && [ "$0" = "$THIS_SCRIPT" ]; then
+    echo "Error: This script needs to be sourced. Please run as '. $THIS_SCRIPT $*'"
+    exit 1
+fi
+unset THIS_SCRIPT
+
+# This script relies on bash-like word splitting, so enable it in zsh.
+if [ -n "$ZSH_NAME" ]; then
+    setopt sh_word_split
+fi
+
+# Make sure specific BSP is set
+if [ -z "$TEMPLATECONF" ]; then
+    if [ -z "$1" ]; then
+        echo "A specific BSP must be provided:"
+        echo "e.g.:"
+        echo "    . openbmc-init-build-env meta-facebook/meta-wedge"
+        return 1
+    fi
+    if [ -d "$(pwd)/$1" ]; then
+        TEMPLATECONF="$(pwd)/$1/conf"
+    elif [ -d "$(pwd)/meta-$1" ]; then
+        TEMPLATECONF="$(pwd)/meta-$1/conf"
+    else
+        machines=$(find . -maxdepth 6 -wholename "*/machine/*" -type f)
+        for md in ${machines}; do
+            machine=$(basename "$md" | sed 's/\.conf//')
+            meta=$(dirname "$(dirname "$md")")
+            meta=$(echo "$meta" | sed 's/\.\///')
+            if [ "x$machine" = "x$platform" ]; then
+                TEMPLATECONF="$(pwd)/$meta"
+                platform=$(basename "$(dirname "$meta")")
+                break
+            fi
+        done
+        if [ -z "$TEMPLATECONF" ]; then
+            echo "Neither $(pwd)/$1 nor $(pwd)/meta-$1 exists"
+            return 1
+        fi
+    fi
+    export TEMPLATECONF
+    shift 1
+fi
+
+# If user is not overriding the distro, then see
+# if there are platform overrides.
+if [ -z "$DISTRO_OVERRIDE" ]; then
+    for override in ${PLAT_DISTRO_OVERRIDES[*]}; do
+        override_plat=${override%%:*}
+        override_distro=${override##*:}
+        if [[ "${platform/${override_plat}/}" != "${platform}" ]]; then
+            # override happens
+            _distro="${override_distro}"
+        fi
+    done
+fi
+unset DISTRO_DEFAULT PLAT_DISTRO_OVERRIDES DISTRO_OVERRIDE
+unset override override_plat override_distro
+
+echo "Init build environment for platform '${platform}' with distro ${_distro}..."
+unset platform
+# shellcheck disable=SC1090
+# distro can vary, so we can't use a shellcheck directive to point to next
+. "yocto/${_distro}/poky/oe-init-build-env" "$@"
+
+if [ -d "../facebook" ]; then
+  ../facebook/facebookify.sh "$(pwd)"
+fi

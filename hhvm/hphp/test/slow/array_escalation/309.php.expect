@@ -1,0 +1,6 @@
+varray(2) {
+  varray(1) {
+    int(0)
+  }
+  string(4) "test"
+}

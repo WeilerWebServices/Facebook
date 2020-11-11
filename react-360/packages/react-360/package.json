@@ -1,0 +1,29 @@
+{
+  "name": "react-360-next",
+  "version": "0.3.0",
+  "description": "Experimental new version of React 360",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/react-360.git"
+  },
+  "bugs": "https://github.com/facebook/react-360/issues",
+  "files": [
+    "dist/",
+    "index.js"
+  ],
+  "dependencies": {
+    "react-360-controls": "~0.3.0",
+    "react-360-surfaces": "~0.3.0",
+    "react-webgl": "~0.3.0",
+    "react-webgl-video-manager": "~0.3.0",
+    "vr-audio": "~0.3.0",
+    "vr-input-source": "~0.3.0",
+    "vr-state": "~0.3.0",
+    "webgl-lite": "~0.3.0",
+    "webgl-ui": "~0.3.0"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist --ignore \"src/**/__tests__/*.js\" --presets=@babel/preset-react --plugins=@babel/plugin-transform-flow-strip-types,@babel/plugin-proposal-class-properties"
+  }
+}

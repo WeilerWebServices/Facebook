@@ -1,0 +1,48 @@
+<!ENTITY  toolbar.facebook.label                    "Facebook">
+
+<!ENTITY  toolbar.facebook.name                     "Barre d'outils Facebook">
+
+<!ENTITY  toolbar.button.sidebar.tooltip            "Barre latérale Amis Facebook">
+<!ENTITY  toolbar.search.label                      "Recherche sur Facebook">
+<!ENTITY  toolbar.button.home.tooltip               "Page d'accueil Facebook">
+<!ENTITY  toolbar.button.share.label                "Partager">
+<!ENTITY  toolbar.button.like.label                 "J'aime">
+<!ENTITY  toolbar.button.share.tooltip              "Partager la page actuelle sur Facebook">
+<!ENTITY  toolbar.button.upload.tooltip             "Télécharger des photos sur Facebook">
+
+<!ENTITY  toolbar.button.pokes.tooltip              "Nouveaux pokes">
+<!ENTITY  toolbar.button.friends.tooltip            "Nouvelles demandes d'ajout à une liste d'amis">
+<!ENTITY  toolbar.button.groups.tooltip             "Nouvelles invitations à un groupe">
+<!ENTITY  toolbar.button.events.tooltip             "Nouvelles invitations à un événement">
+<!ENTITY  toolbar.button.messages.tooltip           "Nouveaux messages">
+
+<!ENTITY  toolbar.button.links.label                "Raccourcis">
+<!ENTITY  toolbar.links.profile.label               "Profil">
+<!ENTITY  toolbar.links.friends.label               "Amis">
+<!ENTITY  toolbar.links.inbox.label                 "Messages">
+<!ENTITY  toolbar.links.photos.label                "Photos / Vidéos">
+<!ENTITY  toolbar.links.notes.label                 "Articles">
+<!ENTITY  toolbar.links.groups.label                "Groupes">
+<!ENTITY  toolbar.links.events.label                "Évènements">
+<!ENTITY  toolbar.links.linkies.label               "Liens">
+<!ENTITY  toolbar.links.videos.label                "Vidéos">
+<!ENTITY  toolbar.settings.account.label            "Paramètres du compte">
+<!ENTITY  toolbar.settings.privacy.label            "Paramètres de confidentialité">
+<!ENTITY  toolbar.settings.application.label        "Paramètres des applications">
+<!ENTITY  toolbar.settings.toolbar.label            "Paramètres de la barre d'outils">
+<!ENTITY  toolbar.about.toolbar.label               "À propos">
+
+<!ENTITY  toolbar.status.emptytext.label            "actualisez votre statut...">
+<!ENTITY  toolbar.status.emptytext.tooltip          "Changez votre statut Facebook">
+
+<!ENTITY  toolbar.login.label                       "Connexion à Facebook">
+
+<!ENTITY  toolbar.sidebar.label                     "Barre latérale Facebook">
+
+<!ENTITY  toolbar.search.user.label                      "Personnes">
+<!ENTITY  toolbar.search.page.label                      "Pages">
+<!ENTITY  toolbar.search.event.label                     "Évènements">
+<!ENTITY  toolbar.search.group.label                     "Groupes">
+<!ENTITY  toolbar.search.place.label                     "Lieux">
+<!ENTITY  toolbar.search.other.label                     "Autres résultats">
+

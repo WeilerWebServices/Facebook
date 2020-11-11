@@ -1,0 +1,2 @@
+go src/module0.thrift
+go src/module1.thrift

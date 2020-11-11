@@ -1,0 +1,9 @@
+darray(2) {
+  ["x"]=>
+  bool(false)
+  [0]=>
+  darray(1) {
+    ["x"]=>
+    bool(false)
+  }
+}

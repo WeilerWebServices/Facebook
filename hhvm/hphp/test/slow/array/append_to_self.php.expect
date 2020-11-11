@@ -1,0 +1,66 @@
+---- profiling ----
+varray(4) {
+  varray(0) {
+  }
+  varray(1) {
+    varray(0) {
+    }
+  }
+  varray(2) {
+    varray(0) {
+    }
+    varray(1) {
+      varray(0) {
+      }
+    }
+  }
+  varray(3) {
+    varray(0) {
+    }
+    varray(1) {
+      varray(0) {
+      }
+    }
+    varray(2) {
+      varray(0) {
+      }
+      varray(1) {
+        varray(0) {
+        }
+      }
+    }
+  }
+}
+---- pgo ----
+varray(4) {
+  varray(0) {
+  }
+  varray(1) {
+    varray(0) {
+    }
+  }
+  varray(2) {
+    varray(0) {
+    }
+    varray(1) {
+      varray(0) {
+      }
+    }
+  }
+  varray(3) {
+    varray(0) {
+    }
+    varray(1) {
+      varray(0) {
+      }
+    }
+    varray(2) {
+      varray(0) {
+      }
+      varray(1) {
+        varray(0) {
+        }
+      }
+    }
+  }
+}

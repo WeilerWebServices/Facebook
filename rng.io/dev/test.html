@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Ringmark Test Development</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.5">
+  <link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen">
+  <script>
+  var Visual = {
+    fixture: ""
+  };
+  </script>
+  <script src="jquery.min.js"></script>
+  <script src="suite.min.js"></script>
+</head>
+<body>
+  <form>
+    <select></select>
+    <input type="text" id="spec" value=""><input type="submit" value="Run">
+  </form>
+  <h1 id="qunit-header"></h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture" >test markup</div>
+  <style>
+  #qunit-fixture {
+    width: 500px !important;
+    height: 300px !important;
+    position: relative !important;
+    top: 100px  !important;
+    left: 10px  !important;
+  }
+  </style>
+  <script src="load.min.js"></script>
+</body>
+</html>

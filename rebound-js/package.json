@@ -1,0 +1,69 @@
+{
+  "name": "rebound",
+  "version": "0.1.0",
+  "description": "A simple library for modeling spring dynamics",
+  "main": "dist/rebound.js",
+  "types": "rebound.d.ts",
+  "author": "Facebook",
+  "license": "BSD",
+  "dependencies": {
+    "symbol-observable": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:facebook/rebound-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/facebook/rebound-js/issues"
+  },
+  "keywords": [
+    "facebook",
+    "animation"
+  ],
+  "scripts": {
+    "build": "rollup -c ./rollup.config.js",
+    "build-examples": "rollup -c ./examples.rollup.config.js",
+    "dist": "yarn build && NODE_ENV=production yarn build",
+    "flow": "flow",
+    "lint": "eslint src/**/*.js examples/src/**/*.js",
+    "prettier": "prettier --write {src,spec}/**/*.js package.json rollup.config.js",
+    "jest": "jest",
+    "watch": "yarn build -- --watch",
+    "bundlesize": "NODE_ENV=production yarn build && bundlesize",
+    "test": "yarn lint && yarn flow && yarn jest && yarn bundlesize"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.0",
+    "babel-jest": "^22.2.2",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "bundlesize": "^0.16.0",
+    "eslint": "^4.13.1",
+    "eslint-config-fbjs-opensource": "^1.0.0",
+    "eslint-plugin-prettier": "^2.4.0",
+    "flow-bin": "0.68.0",
+    "jest": "^22.2.2",
+    "prettier": "^1.9.2",
+    "rollup": "^0.56.3",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-node-resolve": "^3.0.3",
+    "rollup-plugin-strip-banner": "^0.2.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "rxjs": "^5.5.6"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "proseWrap": "always",
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/rebound.min.js",
+      "maxSize": "4 kB"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+Fatal error: Class undefined: Z in %s on line 4
+varray(6) {
+  int(16777217)
+  string(18) "Class undefined: Z"
+  string(%d) "%s"
+  int(4)
+  darray(0) {
+  }
+  varray(3) {
+    darray(2) {
+      ["file"]=>
+      string(%d) "%s"
+      ["line"]=>
+      int(4)
+    }
+    darray(4) {
+      ["file"]=>
+      string(%d) "%s"
+      ["line"]=>
+      int(12)
+      ["function"]=>
+      string(4) "test"
+      ["args"]=>
+      varray(0) {
+      }
+    }
+    darray(2) {
+      ["function"]=>
+      string(23) "entrypoint_fail_86sinit"
+      ["args"]=>
+      varray(0) {
+      }
+    }
+  }
+}

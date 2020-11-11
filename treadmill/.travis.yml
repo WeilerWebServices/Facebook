@@ -1,0 +1,19 @@
+sudo: required
+dist: trusty
+
+language: cpp
+
+matrix:
+  include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+
+script: ./scripts/install_ubuntu_14.04.sh "$(pwd)"/treadmill-install -j2
+
+notifications:
+  email: false

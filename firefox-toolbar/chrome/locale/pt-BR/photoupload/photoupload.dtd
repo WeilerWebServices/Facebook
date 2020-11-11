@@ -1,0 +1,42 @@
+﻿<!ENTITY  window.title                      "Envio de fotos do Facebook">
+
+<!ENTITY  upload.destination.label          "Carregar novas fotos para:">
+<!ENTITY  upload.album.label                "Álbum existente">
+<!ENTITY  upload.newalbum.label             "Novo álbum">
+<!ENTITY  upload.loadingalbums.label        "Carregando álbuns...">
+
+<!ENTITY  upload.album.name.label           "Nome:">
+<!ENTITY  upload.album.location.label       "Localização:">
+<!ENTITY  upload.album.description.label    "Descrição:">
+
+<!ENTITY  upload.privacy.label              "Quem pode ver isso?">
+<!ENTITY  upload.privacy.everyone.label     "Todos">
+<!ENTITY  upload.privacy.fof.label          "Amigos de amigos">
+<!ENTITY  upload.privacy.friends.label      "Apenas amigos">
+<!ENTITY  upload.privacy.networks.label     "Redes">
+
+<!ENTITY  upload.photo.detail.label         "Detalhes da foto:">
+<!ENTITY  upload.photo.name.label           "Nome do arquivo:">
+<!ENTITY  upload.photo.size.label           "Tamanho:">
+<!ENTITY  upload.photo.caption.label        "Legenda:">
+
+<!ENTITY  upload.tag.start.label            "Nesta foto:">
+<!ENTITY  upload.tag.click.label            "Clique nas pessoas para marcá-las na foto.">
+<!ENTITY  upload.tag.remove.label           "Remover marcações selecionadas">
+
+<!ENTITY  upload.photos.add.label           "Adicionar fotos...">
+<!ENTITY  upload.photos.remove.label        "Remover tudo">
+
+<!ENTITY  upload.cancel.label               "Cancelar carregamento">
+<!ENTITY  upload.all.label                  "Carregar tudo">
+
+<!ENTITY  upload.addtoalbum.label           "Adicionar ao álbum:">
+<!ENTITY  upload.createnewalbum.label       "Criar novo álbum…">
+<!ENTITY  upload.albumname.label            "Nome do álbum:">
+<!ENTITY  upload.visibleto.label            "Visível para:">
+<!ENTITY  upload.clickonphoto.label         "Clique na foto para marcar um amigo:">
+<!ENTITY  upload.createnewalbumdialogok.label       "Criar novo álbum">
+<!ENTITY  upload.cancel2.label              "Cancelar">
+<!ENTITY  upload.dragtoaddphotos.label      "Clique ou arraste para cá para adicionar fotos">
+<!ENTITY  upload.tagandcaption.label        "Adicionar marcas e uma legenda para a foto">
+

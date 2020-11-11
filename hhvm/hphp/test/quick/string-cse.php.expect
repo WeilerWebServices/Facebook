@@ -1,0 +1,10 @@
+Calling main
+darray(1) {
+  ["0"]=>
+  string(5) "hello"
+}
+darray(1) {
+  ["0"]=>
+  string(5) "hello"
+}
+Done

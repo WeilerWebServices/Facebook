@@ -1,0 +1,19 @@
+﻿<!ENTITY  sidebar.title                     "Facebook-Seitenleiste">
+
+<!ENTITY  sidebar.settings.label            "Einstellungen">
+<!ENTITY  sidebar.sortlast.label            "Letzte Aktualisierung">
+<!ENTITY  sidebar.sortstatus.label          "Letzte Statusmeldung">
+<!ENTITY  sidebar.sortprofile.label         "Letzte Profilaktualisierung">
+<!ENTITY  sidebar.sortname.label            "Name">
+
+<!ENTITY  sidebar.friendmessage.label       "Nachricht">
+<!ENTITY  sidebar.friendpoke.label          "anstupsen">
+<!ENTITY  sidebar.friendpost.label          "Pinnwandeintrag">
+
+<!ENTITY  toolbar.search.user.label                      "Personen">
+<!ENTITY  toolbar.search.page.label                      "Seiten">
+<!ENTITY  toolbar.search.event.label                     "Veranstaltungen">
+<!ENTITY  toolbar.search.group.label                     "Gruppen">
+<!ENTITY  toolbar.search.place.label                     "Orte">
+<!ENTITY  toolbar.search.other.label                     "Sonstige Ergebnisse">
+

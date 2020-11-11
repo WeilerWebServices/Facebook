@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://facebook/locale/toolbar.dtd">
+
+<window id="facebook-toolbar-firstrun"
+        windowtype="facebooktoolbar:firstrun"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="&toolbar.facebook.name;"
+        style="padding: 0"
+        width="500"
+        height="350">
+
+    <script type="application/x-javascript">
+        <![CDATA[
+            var Cc = Components.classes;
+            var Ci = Components.interfaces;
+
+            var fbFirstrun = {
+              fbFirstrunListener: function(evt) {
+                var like = evt.target.getAttribute("like");
+                var enableLike = (like == "true") ? true : false;
+                var prefSvc = Cc['@mozilla.org/preferences-service;1'].getService(Ci.nsIPrefBranch);
+                prefSvc.setBoolPref('extensions.facebook.like.enabled', enableLike);
+                window.close();
+              },
+              fbLoadListener : function(evt) {
+                // Resize the window based on the height of the content
+                setTimeout ( function() {
+                    var f = document.getElementById("facebook-firstrun-iframe");
+                    var h = f.contentWindow.document.body.scrollHeight;
+                    var d = document.getElementById("facebook-toolbar-firstrun");
+                    window.resizeTo("500", h+40);
+                }, 100
+                );
+              }
+            }
+            document.addEventListener("fbFirstrunEvent", function(e) { fbFirstrun.fbFirstrunListener(e); }, false, true);
+            document.addEventListener("fbLoadEvent", function(e) { fbFirstrun.fbLoadListener(e); }, false, true);
+        ]]>
+    </script>
+
+    <iframe id="facebook-firstrun-iframe"
+            src="chrome://facebook/locale/like.htm"
+            type="content"
+            flex="1"/>
+
+</window>

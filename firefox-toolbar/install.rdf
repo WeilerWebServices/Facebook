@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>firefox@facebook.com</em:id>
+    <em:version>1.8.2</em:version>
+    <em:type>2</em:type>
+
+    <!-- Front End MetaData -->
+    <em:name>Facebook Toolbar</em:name>
+    <em:description>Integrate your Facebook life into your browser</em:description>
+    <em:creator>Facebook Team</em:creator>
+    <em:contributor>Briks Software (http://briks.si)</em:contributor>
+    <em:developer>Eugene Letuchy</em:developer>
+    <em:developer>Ari Steinberg</em:developer>
+    <em:developer>Julie Zhuo</em:developer>
+    <em:developer>Sylvain Pasche</em:developer>
+    <em:developer>Brian King</em:developer>
+    <em:developer>David McNamara</em:developer>
+    <em:iconURL>chrome://facebook/skin/images/fb32.png</em:iconURL>
+    <em:optionsURL>chrome://facebook/content/settings.xul</em:optionsURL>
+    <em:homepageURL>http://developers.facebook.com/toolbar/</em:homepageURL>
+
+    <!-- Target Application this extension can install into,
+         with minimum and maximum supported versions. -->
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>4.0</em:minVersion>
+        <em:maxVersion>16.0a1</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+  </Description>
+</RDF>

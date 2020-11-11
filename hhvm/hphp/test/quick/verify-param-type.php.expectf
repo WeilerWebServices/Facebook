@@ -1,0 +1,62 @@
+varray(6) {
+  int(2)
+  string(59) "Argument 1 to test_soft() must be of type @int, float given"
+  string(%d) "%s"
+  int(13)
+  darray(0) {
+  }
+  varray(3) {
+    darray(2) {
+      ["file"]=>
+      string(%d) "%s"
+      ["line"]=>
+      int(13)
+    }
+    darray(4) {
+      ["file"]=>
+      string(%d) "%s"
+      ["line"]=>
+      int(22)
+      ["function"]=>
+      string(9) "test_soft"
+      ["args"]=>
+      varray(1) {
+        float(0)
+      }
+    }
+    darray(2) {
+      ["function"]=>
+      string(4) "main"
+      ["args"]=>
+      varray(0) {
+      }
+    }
+  }
+}
+in test_soft
+bool(false)
+varray(6) {
+  int(4096)
+  string(72) "Argument 1 passed to test_hard() must be an instance of int, float given"
+  string(%d) "%s"
+  int(23)
+  darray(0) {
+  }
+  varray(2) {
+    darray(2) {
+      ["file"]=>
+      string(%d) "%s"
+      ["line"]=>
+      int(23)
+    }
+    darray(2) {
+      ["function"]=>
+      string(4) "main"
+      ["args"]=>
+      varray(0) {
+      }
+    }
+  }
+}
+
+Fatal error: Error handler tried to recover from typehint violation in %s on line 17

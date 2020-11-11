@@ -1,0 +1,42 @@
+<!ENTITY  window.title                      "Facebookに写真をアップロード">
+
+<!ENTITY  upload.destination.label          "写真のアップロード先:">
+<!ENTITY  upload.album.label                "すでにあるアルバム">
+<!ENTITY  upload.newalbum.label             "新しいアルバム">
+<!ENTITY  upload.loadingalbums.label        "アルバムを読み込んでいます…">
+
+<!ENTITY  upload.album.name.label           "名前:">
+<!ENTITY  upload.album.location.label       "場所:">
+<!ENTITY  upload.album.description.label    "説明:">
+
+<!ENTITY  upload.privacy.label              "公開範囲:">
+<!ENTITY  upload.privacy.everyone.label     "すべてのユーザー">
+<!ENTITY  upload.privacy.fof.label          "友達の友達">
+<!ENTITY  upload.privacy.friends.label      "友達のみ">
+<!ENTITY  upload.privacy.networks.label     "ネットワーク">
+
+<!ENTITY  upload.photo.detail.label         "写真の詳細:">
+<!ENTITY  upload.photo.name.label           "ファイル名:">
+<!ENTITY  upload.photo.size.label           "サイズ:">
+<!ENTITY  upload.photo.caption.label        "キャプション:">
+
+<!ENTITY  upload.tag.start.label            "写っている人:">
+<!ENTITY  upload.tag.click.label            "写真に写っている人をクリックするとタグ付けできます。">
+<!ENTITY  upload.tag.remove.label           "選択したタグを削除">
+
+<!ENTITY  upload.photos.add.label           "写真を追加…">
+<!ENTITY  upload.photos.remove.label        "すべて削除">
+
+<!ENTITY  upload.cancel.label               "アップロードをキャンセル">
+<!ENTITY  upload.all.label                  "すべてアップロード">
+
+<!ENTITY  upload.addtoalbum.label           "アルバムに追加:">
+<!ENTITY  upload.createnewalbum.label       "新しいアルバムを作成…">
+<!ENTITY  upload.albumname.label            "アルバム名:">
+<!ENTITY  upload.visibleto.label            "公開範囲:">
+<!ENTITY  upload.clickonphoto.label         "写真をクリックして友達をタグ付け:">
+<!ENTITY  upload.createnewalbumdialogok.label       "新しいアルバムを作成">
+<!ENTITY  upload.cancel2.label              "キャンセル">
+<!ENTITY  upload.dragtoaddphotos.label      "写真アイコンをクリックして写真を選択するか、こちらにドラッグ">
+<!ENTITY  upload.tagandcaption.label        "写真にタグやキャプションを追加">
+

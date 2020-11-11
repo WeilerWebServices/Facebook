@@ -1,0 +1,37 @@
+[(Fun
+    { f_span = [2:1-6:2]; f_annotation = (); f_mode = Mstrict;
+      f_ret =
+      (((function(int): void)),
+       (Some ([4:18-45],
+              (Hfun
+                 { hf_reactive_kind = FReactive;
+                   hf_param_tys = [([4:32-35], (Hprim Tint))];
+                   hf_param_kinds = [None]; hf_param_mutability = [None];
+                   hf_variadic_ty = None; hf_cap = None;
+                   hf_return_ty = ([4:39-43], (Hprim Tvoid));
+                   hf_is_mutable_return = false }))));
+      f_name = ([4:10-13], "\\foo"); f_tparams = [];
+      f_where_constraints = []; f_variadic = FVnonVariadic; f_params = [];
+      f_cap = ((nothing), None); f_unsafe_cap = ((mixed), None);
+      f_body =
+      { fb_ast =
+        [([5:3-25],
+          (Throw
+             (([5:9-24], Exception),
+              (New (
+                 (([5:13-22], Exception), (CI ([5:13-22], "\\Exception"))),
+                 [], [], None,
+                 ([5:13-22], (function(string $message=_, int $code=_, ?Exception $previous=_): void))
+                 )))))
+          ];
+        fb_annotation = () };
+      f_fun_kind = FSync;
+      f_user_attributes = [{ ua_name = ([2:3-7], "__Rx"); ua_params = [] }];
+      f_file_attributes = []; f_external = false;
+      f_namespace =
+      { Namespace_env.ns_ns_uses = <opaque>; ns_class_uses = <opaque>;
+        ns_record_def_uses = <opaque>; ns_fun_uses = <opaque>;
+        ns_const_uses = <opaque>; ns_name = None; ns_auto_ns_map = [];
+        ns_is_codegen = false; ns_disable_xhp_element_mangling = false };
+      f_doc_comment = None; f_static = false })
+  ]

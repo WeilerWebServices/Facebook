@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="cassandra">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+
+    <property name="basedir" value="."/>
+    <property name="build.src" value="${basedir}/src"/>
+    <property name="build.lib" value="${basedir}/lib"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.test.dir" value="${build.dir}/test"/>
+    <property name="build.classes" value="${build.dir}/classes"/>
+    <property name="javadoc.dir" value="${build.dir}/javadoc"/>
+    <property name="test.dir" value="${basedir}/test"/>
+    <property name="test.classes" value="${build.dir}/test/classes"/>
+    <property name="test.conf" value="${test.dir}/conf"/>
+    <property name="final.name" value="cassandra"/>
+
+    <!-- http://cobertura.sourceforge.net/ -->
+    <property name="cobertura.build.dir" value="${build.dir}/cobertura"/>
+    <!-- can't include due to licensing, specify jar via command line -->
+    <property name="cobertura.dir" value="/tmp"/>
+    <property name="cobertura.report.dir" value="${cobertura.build.dir}/report"/>
+    <property name="cobertura.classes.dir" value="${cobertura.build.dir}/classes"/>
+    <property name="cobertura.datafile" value="${cobertura.build.dir}/cobertura.ser"/>
+	
+    <!-- 
+	 Add all the dependencies.
+    -->
+    <path id="cassandra.classpath">
+        <pathelement location="${cobertura.classes.dir}"/>
+        <pathelement location="${build.classes}"/>
+        <fileset dir="${build.lib}">
+          <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <!--
+	Setup the output directories.
+    -->
+    <target name="init">
+        <mkdir dir="${build.classes}"/>
+        <mkdir dir="${test.classes}"/>
+    </target>
+    <target name="clean">
+        <delete dir="${build.dir}" />
+        <delete file="${build.src}/org/apache/cassandra/cli/Cli__.g" />
+        <delete file="${build.src}/org/apache/cassandra/cli/CliLexer.java" />
+        <delete file="${build.src}/org/apache/cassandra/cli/CliParser.java" />
+        <delete file="${build.src}/org/apache/cassandra/cli/Cli.tokens" />
+        <delete file="${build.src}/org/apache/cassandra/cql/compiler/parse/Cql__.g" />
+        <delete file="${build.src}/org/apache/cassandra/cql/compiler/parse/CqlLexer.java" />
+        <delete file="${build.src}/org/apache/cassandra/cql/compiler/parse/CqlParser.java" />
+        <delete file="${build.src}/org/apache/cassandra/cql/compiler/parse/Cql.tokens" />
+    </target>
+    <target depends="clean" name="cleanall"/>
+
+
+
+    <!--
+       This generates the CLI grammar files from Cli.g
+    -->
+    <target name="check-gen-cli-grammar">
+        <uptodate property="cliUpToDate" 
+                srcfile="${build.src}/org/apache/cassandra/cli/Cli.g" 
+                targetfile="${build.src}/org/apache/cassandra/cli/Cli.tokens"/>
+    </target>
+ 
+    <target name="gen-cli-grammar" depends="check-gen-cli-grammar" unless="cliUpToDate">
+      <echo>Building Grammar ${build.src}/org/apache/cassandra/cli/Cli.g  ....</echo>
+      <java classname="org.antlr.Tool"
+            classpath="${build.lib}/antlr-3.1.3.jar"
+            fork="true">
+         <arg value="${build.src}/org/apache/cassandra/cli/Cli.g" />
+         <arg value="-o" />
+         <arg value="${build.src}/org/apache/cassandra/cli/" />
+      </java> 
+    </target>
+
+    <!--
+       This generates the CQL grammar files from Cql.g
+    -->
+    <target name="check-gen-cql-grammar">
+        <uptodate property="cqlUpToDate" 
+                srcfile="${build.src}/org/apache/cassandra/cql/compiler/parse/Cql.g" 
+                targetfile="${build.src}/org/apache/cassandra/cql/compiler/parse/Cql.tokens"/>
+    </target>
+ 
+    <target name="gen-cql-grammar" depends="check-gen-cql-grammar" unless="cqlUpToDate">
+      <echo>Building Grammar ${build.src}/org/apache/cassandra/cql/compiler/parse/Cql.g  ....</echo>
+      <java classname="org.antlr.Tool"
+            classpath="${build.lib}/antlr-3.1.3.jar"
+            fork="true">
+         <arg value="${build.src}/org/apache/cassandra/cql/compiler/parse/Cql.g" />
+         <arg value="-o" />
+         <arg value="${build.src}/org/apache/cassandra/cql/compiler/parse/" />
+      </java> 
+    </target>
+
+    <!--
+	The build target builds all the .class files
+    -->
+    <target name="build" depends="build-subprojects,build-project"/>
+    <target name="build-subprojects"/>
+    <target name="codecoverage" depends="cobertura-instrument,test,cobertura-report"/>
+    	
+    <target depends="init,gen-cli-grammar,gen-cql-grammar" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${build.classes}">
+            <src path="${build.src}"/>
+            <classpath refid="cassandra.classpath"/>
+        </javac>
+    </target>
+
+    <!--
+	The jar target makes cassandra.jar output.
+    -->
+    <target name="jar" depends="build">
+    <jar jarfile="${build.dir}/${final.name}.jar"
+         basedir="${build.classes}">
+      <manifest>
+        <!-- <section name="org/apache/cassandra/infrastructure"> -->
+          <attribute name="Implementation-Title" value="Cassandra"/>
+          <attribute name="Implementation-Version" value="1.1"/>
+          <attribute name="Implementation-Vendor" value="Facebook"/>
+	        <attribute name="Premain-Class" value="org.apache.cassandra.infrastructure.continuations.CAgent"/>
+        <!-- </section> -->
+      </manifest>
+    </jar>
+  </target>
+
+
+  <target name="build-test" depends="build" description="Build the Cassandra classes">
+    <javac
+     debug="true"
+     debuglevel="${debuglevel}"
+     destdir="${test.classes}"
+    >
+      <classpath refid="cassandra.classpath"/>
+      <src path="${test.dir}"/>
+    </javac>
+  </target>
+
+  <taskdef resource="testngtasks" classpath="lib/testng-5.8-jdk15.jar"/>
+  <target name="test" depends="build-test">
+    <echo message="running tests"/>
+    <mkdir dir="${build.test.dir}/cassandra"/>
+    <testng outputDir="${build.dir}/test/output"
+            haltOnFailure="true"
+            verbose="2">
+      <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
+      <jvmarg value="-Dstorage-config=${test.conf}"/>
+      <classpath>
+        <pathelement location="${cobertura.classes.dir}"/>
+        <path refid="cassandra.classpath" />
+        <pathelement location="${test.classes}"/>
+        <pathelement location="${cobertura.dir}/cobertura.jar"/>
+        <pathelement location="${test.conf}"/>
+      </classpath>
+      <classfileset dir="${test.classes}" includes="**/*.class" />
+    </testng>
+  </target>
+	
+  <!-- instruments the classes to later create code coverage reports -->
+  <target name="cobertura-instrument" depends="build,build-test">
+    <taskdef resource="tasks.properties">
+      <classpath>
+        <fileset dir="${cobertura.dir}">
+            <include name="cobertura.jar" />
+            <include name="lib/**/*.jar" />
+        </fileset>
+      </classpath>
+    </taskdef>
+    
+    <delete file="${cobertura.datafile}"/>
+    
+    <cobertura-instrument todir="${cobertura.classes.dir}" datafile="${cobertura.datafile}">
+      <ignore regex="org.apache.log4j.*"/>
+      
+      <fileset dir="${build.classes}">
+        <include name="**/*.class"/>
+        <exclude name="**/*Test.class"/>
+        <exclude name="**/*TestCase.class"/>
+        <exclude name="**/test/*.class"/>
+        <exclude name="${cobertura.excludes}"/>
+      </fileset>
+     
+    </cobertura-instrument>
+  </target>	
+
+  <!-- create both html and xml code coverage reports -->
+  <target name="cobertura-report">
+    <cobertura-report format="html" destdir="${cobertura.report.dir}" srcdir="${build.src}"
+      datafile="${cobertura.datafile}"/>
+    <cobertura-report format="xml" destdir="${cobertura.report.dir}" srcdir="${build.src}"
+      datafile="${cobertura.datafile}"/>
+  </target>	
+	
+  <target name="javadoc" depends="init">
+    <tstamp>
+      <format property="YEAR" pattern="yyyy"/>
+    </tstamp>
+    <javadoc destdir="${javadoc.dir}" author="true" version="true" use="true"
+      windowtitle="${ant.project.name} API" classpathref="cassandra.classpath"
+      bottom="Copyright &amp;copy; ${YEAR} The Apache Software Foundation">
+
+      <fileset dir="${build.src}" defaultexcludes="yes">
+        <include name="org/apache/**/*.java"/>
+      </fileset>
+    </javadoc>
+   </target>
+
+</project>

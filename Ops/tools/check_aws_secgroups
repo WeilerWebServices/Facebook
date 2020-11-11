@@ -1,0 +1,283 @@
+#!/usr/bin/python
+
+# Copyright Parse, Inc. 2013
+# This code is made available under the Apache License
+# For more info, please see http://www.apache.org/licenses/LICENSE-2.0.html
+
+from boto.ec2 import get_region
+from boto.ec2.connection import EC2Connection
+from boto.exception import BotoServerError
+from sys import exit
+import yaml
+import json
+import argparse
+
+def get_ec2_rules(security_groups):
+    groupset = {}
+    for secgroup in security_groups:
+        # create a unique identifier of the name, id, and vpc_id
+        secgroup_id = "%s:%s:%s" % (secgroup.name, secgroup.id, secgroup.vpc_id)
+        groupset[secgroup_id] = {}
+        for rulesetname in ["rules", "rules_egress"]:
+            for rule in secgroup.__dict__[rulesetname]:
+                ruleset = {}
+                for key in ["from_port", "ip_protocol", "to_port"]:
+                    ruleset[key] = rule.__dict__[key] if rule.__dict__[key] else "_None"
+                rule_id = rulesetname + ":" + "-".join(sorted(ruleset.values()))
+                #print "generated rule id %s" % rule_id
+                ruleset["grants"] = []
+                for grant in rule.grants:
+                    # cidr_ip will exist (ip rule) or be None (group rule)
+                    if grant.cidr_ip:
+                        ruleset["grants"].append(grant.cidr_ip)
+                    else:
+                        #it's a security group instead of a cidr; store a string of name:id (names for readability, ids for uniqueness)
+                        ruleset["grants"].append("%s:%s" % (grant.name, grant.groupId))
+                # if we're appending to an existing rule_id (it's not an empty hash), do so here.
+                try:
+                    groupset[secgroup_id][rule_id]["grants"] += ruleset["grants"]
+                except KeyError:
+                    groupset[secgroup_id][rule_id] = ruleset
+                groupset[secgroup_id][rule_id]["grants"].sort()  # list comes back unruly
+    return groupset
+
+def get_local_rules(git_rules_file):
+    fh = open(git_rules_file)
+    comments_removed = ""
+    for line in fh:
+        if line.strip().startswith("#"):
+            continue
+        comments_removed += line
+    groupset = json.loads(comments_removed)
+    fh.close()
+    # strip json-formatted comment fields
+    for secgroup in groupset:
+        for (rule_id, rule) in groupset[secgroup].iteritems():
+            rule.pop('comment', None)
+            rule["grants"].sort()  # list is unordered
+    return groupset
+
+# give detail about where the rulesets differ
+def compare_rulesets(ec2_security_groups, local_security_groups):
+    diffdetails = ""
+    diffhash = {}
+    # are there the same number of security groups?
+    ec2groups = set(ec2_security_groups.keys())
+    localgroups = set(local_security_groups.keys())
+    groupdiff = ec2groups.symmetric_difference(localgroups)
+    if groupdiff:
+        for eachdiff in groupdiff:
+            if eachdiff not in ec2groups:
+                diffdetails += "security group %s is missing from ec2\n" % eachdiff
+                diffhash[eachdiff] = local_security_groups[eachdiff]
+            if eachdiff not in localgroups:
+                diffdetails += "security group %s is missing from git\n" % eachdiff
+                diffhash[eachdiff] = ec2_security_groups[eachdiff]
+    #ok, the for each of the groups that are the same, compare the rules
+    for group in ec2groups.intersection(localgroups):
+        ec2rules = ec2_security_groups[group].keys()
+        ec2rules.sort()
+        localrules = local_security_groups[group].keys()
+        localrules.sort()
+        # go through the ec2 rules looking for differences and extra rules
+        for ec2rulekey in ec2rules:
+            ec2rule = ec2_security_groups[group].get(ec2rulekey, {})
+            localrule = local_security_groups[group].get(ec2rulekey, {})
+            if ec2rule == localrule:
+                #print "testing %s/%s passed" % (group, ec2rulekey)
+                continue
+            # ok, we have a rule that's different; let's try to refine the difference
+            try:
+                ec2ports = set([ec2rule['to_port'], ec2rule['from_port'], ec2rule['ip_protocol']])
+            except KeyError:
+                ec2ports = None
+            try:
+                localports = set([localrule['to_port'], localrule['from_port'], localrule['ip_protocol']])
+            except KeyError:
+                localports = None
+            if ec2ports == localports:
+                # grants mismatch
+                ec2grants = set(ec2rule['grants'])
+                localgrants = set(localrule['grants'])
+                grantdiff = ec2grants.symmetric_difference(localgrants)
+                if not grantdiff:
+                    diffdetails += "The order of grants for the %s security group, %s/%s-%s rule are different." % (
+                            group, localrule['ip_protocol'], localrule['from_port'], localrule['to_port'])
+                for eachgrant in grantdiff:
+                    if eachgrant not in ec2grants:
+                        diffdetails += "git has a rule that for the %s security group, %s can reach %s/%s-%s.  This is missing from ec2.\n" % (
+                                group, eachgrant, localrule['ip_protocol'], localrule['from_port'], localrule['to_port'])
+                        grouphash = diffhash.get(group, {})
+                        rulehash = grouphash.get("%s-%s-%s" % (localrule['from_port'], localrule['to_port'], localrule['ip_protocol']), {})
+                        rulehash['from_port'] = localrule['from_port']
+                        rulehash['to_port'] = localrule['to_port']
+                        rulehash['ip_protocol'] = localrule['ip_protocol']
+                        grants = rulehash.get('grants', [])
+                        grants.append(eachgrant)
+                        rulehash['grants'] = grants
+                        grouphash["%s-%s-%s" % (localrule['from_port'], localrule['to_port'], localrule['ip_protocol'])] = rulehash
+                        diffhash[group] = grouphash
+
+                    if eachgrant not in localgrants:
+                        diffdetails += "ec2 has a rule that for the %s security group, %s can reach %s/%s-%s.  This is missing from git.\n" % (
+                                group, eachgrant, ec2rule['ip_protocol'], ec2rule['from_port'], ec2rule['to_port'])
+                        grouphash = diffhash.get(group, {})
+                        rulehash = grouphash.get("%s-%s-%s" % (ec2rule['from_port'], ec2rule['to_port'], ec2rule['ip_protocol']), {})
+                        rulehash['from_port'] = ec2rule['from_port']
+                        rulehash['to_port'] = ec2rule['to_port']
+                        rulehash['ip_protocol'] = ec2rule['ip_protocol']
+                        grants = rulehash.get('grants', [])
+                        grants.append(eachgrant)
+                        rulehash['grants'] = grants
+                        rulehash['grants'] = grants
+                        grouphash["%s-%s-%s" % (ec2rule['from_port'], ec2rule['to_port'], ec2rule['ip_protocol'])] = rulehash
+                        diffhash[group] = grouphash
+            else:
+                # the ports didn't match.  Identify the entire rule as missing.
+                diffdetails += "ec2 has an extra rule in the %s security group: %s/%s-%s is allowed from %s\n" % (
+                        group, ec2rule['ip_protocol'], ec2rule['from_port'], ec2rule['to_port'], ec2rule['grants'])
+                grouphash = diffhash.get(group, {})
+                grouphash["%s-%s-%s" % (ec2rule['from_port'], ec2rule['to_port'], ec2rule['ip_protocol'])] = ec2rule
+                diffhash[group] = grouphash
+        # go through the local rules looking for extra rules (we've already found differences)
+        for localrulekey in localrules:
+            ec2rule = ec2_security_groups[group].get(localrulekey, {})
+            localrule = local_security_groups[group].get(localrulekey, {})
+            if localrule == ec2rule:
+                continue
+            try:
+                ec2ports = set([ec2rule['to_port'], ec2rule['from_port'], ec2rule['ip_protocol']])
+            except KeyError:
+                ec2ports = None
+            try:
+                localports = set([localrule['to_port'], localrule['from_port'], localrule['ip_protocol']])
+            except KeyError:
+                localports = None
+            if ec2ports == localports:
+                # grants mismatch, but we've already printed this out, so skip it
+                continue
+            else:
+                # the ports didn't match.  Identify the entire rule as missing.
+                diffdetails += "ec2 is missing a rule in the %s security group that is present in git: %s/%s-%s is allowed from %s\n" % (
+                        group, localrule['ip_protocol'], localrule['from_port'], localrule['to_port'], localrule['grants'])
+                grouphash = diffhash.get(group, {})
+                grouphash["%s-%s-%s" % (localrule['from_port'], localrule['to_port'], localrule['ip_protocol'])] = localrule
+                diffhash[group] = grouphash
+            #diffdetails += "rule exists in git but not in ec2:"
+    return (diffdetails, diffhash)
+
+def print_ruleset(rules_hash):
+    '''
+    Prints out the ruleset in a friendly way.
+    This replaces json.dumps() so as to enforce printing according to the style guide
+    '''
+    spaces=4
+    indent=0
+    print "{\n"
+    secgroups = []
+    for secgroup in sorted(rules_hash.keys()):
+        secgroups.append(generate_secgroup_string(secgroup, rules_hash[secgroup]))
+    print ",\n".join(secgroups)
+    print "}\n"
+
+
+def generate_secgroup_string(secgroup, secgroup_hash):
+    indent=1
+    spaces=4
+    secgroup_str = ""
+    secgroup_str += '%s"%s": {\n' % ((" "*indent*spaces), secgroup)
+    rules = []
+    for rule in sorted(secgroup_hash.keys()):
+        rules.append(generate_rule_string(rule, secgroup_hash[rule]))
+    sep = ",\n"
+    secgroup_str += sep.join(rules) + "\n"
+    secgroup_str += "%s}" % (" "*indent*spaces)
+    return secgroup_str
+
+def generate_rule_string(rule, rule_hash):
+    indent=2
+    spaces=4
+    rule_str = ""
+    rule_str += '%s"%s": {\n' % ((" "*indent*spaces), rule)
+    indent=3
+    rule_str += '%s"from_port": "%s", "to_port": "%s", "ip_protocol": "%s",\n' % (
+        (" "*indent*spaces),
+        rule_hash['from_port'],
+        rule_hash['to_port'],
+        rule_hash['ip_protocol'])
+    grants = rule_hash['grants']
+    if len(grants) == 1:
+        rule_str += '%s"grants": [ "%s" ]\n' % ((" "*indent*spaces), grants[0])
+    else:
+        rule_str += '%s"grants": [\n%s' % ((" "*indent*spaces), (" "*(indent+1)*spaces))
+        indent=4
+        sep=',\n%s' % (" "*indent*spaces)
+        rule_str += sep.join(sorted(map(lambda x: '"%s"'%x, grants))) + "\n"
+        rule_str += '%s]\n' % (" "*(indent-1)*spaces)
+    indent=2
+    rule_str += '%s}' % (" "*indent*spaces)
+    return rule_str
+
+
+def main():
+    parser = argparse.ArgumentParser(description = "Check our ec2 security groups against the copy stored in the chef-repo in git" )
+    parser.add_argument('--dump-ec2', dest='dump_ec2', action="store_true", default=False, help="Rather than performing the check, dump the JSON representation of our security groups")
+    parser.add_argument('--dump-local', dest='dump_local', action="store_true", default=False, help="Rather than performing the check, dump the JSON representation of what's in git")
+    parser.add_argument('--json-diff', dest='json_diff', action="store_true", default=False, help="Print the changed rules as JSON instead of English")
+    parser.add_argument('-g', '--git-checkout-path', dest='git_checkout_path', action="store", default='/var/lib/git_checkout', help="Path to the git checkout")
+    parser.add_argument('-r', '--repo-name', dest='repo_name', action="store", default='chef-repo', help="Set the name of the git repo to use")
+    parser.add_argument('-f', '--git-file', dest='git_file', action="store", default='ec2_security_groups/serialized_rules.json', help="Path and filename to store rules within the git repo")
+    parser.add_argument('-a', '--aws-conf', dest='aws_conf', action="store", default='/etc/nagios3/conf.d/aws.yml', help="Path to the AWS config file")
+    parser.add_argument('--region', dest='region', action="store", default='us-east-1', help="AWS region to query")
+    args = parser.parse_args()
+
+    git_rules_file = "%s/%s/%s" % (args.git_checkout_path, args.repo_name, args.git_file)
+
+    try:
+        conf = yaml.load(open(args.aws_conf))
+    except IOError, e:
+        print "CRITICAL: %s" % e
+        exit(2)
+    try:
+        selected_region = get_region(args.region, aws_access_key_id=conf[':access_key_id'], aws_secret_access_key=conf[':secret_access_key'])
+        conn = EC2Connection(aws_access_key_id=conf[':access_key_id'], aws_secret_access_key=conf[':secret_access_key'], region=selected_region)
+        security_groups = conn.get_all_security_groups()
+    except BotoServerError, e:
+        print "CRITICAL: %s" % e
+        exit(2)
+    try:
+        ec2set = get_ec2_rules(security_groups)
+        if(args.dump_ec2):
+            print_ruleset(ec2set)
+            exit(0)
+    except BotoServerError, e:
+        print "CRITICAL: %s" % e
+        exit(2)
+    try:
+        localset = get_local_rules(git_rules_file)
+        if(args.dump_local):
+            print_ruleset(localset)
+            exit(0)
+    except IOError, e:
+        print "CRITICAL: %s" % e
+        exit(2)
+    except ValueError, e:
+        print "CRITICAL: %s" % e
+        print "Check your JSON for wayward commas and things. The line number printed ignores comments (so is too low)."
+        exit(2)
+
+    if (ec2set != localset):
+        print "CRITICAL: ec2 running security groups are different from git"
+        (diffstring, diffhash) = compare_rulesets(ec2set, localset)
+        if len(diffstring) == 0:
+            print "The rulesets are not the same but I can't find the difference.  This might be a false positive.  Dump the rulesets and compare by hand."
+        print diffstring
+        if(args.json_diff):
+            print "This output is the union of all differences; missing and added rules from either location are all present here."
+            print_ruleset(diffhash)
+        exit(2)
+    else:
+        print "OK - security groups match what's in git."
+        exit(0)
+
+main()

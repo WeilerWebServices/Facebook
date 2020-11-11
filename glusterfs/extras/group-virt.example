@@ -1,0 +1,6 @@
+quick-read=off
+read-ahead=off
+io-cache=off
+stat-prefetch=off
+eager-lock=enable
+remote-dio=enable

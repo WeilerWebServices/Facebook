@@ -1,0 +1,64 @@
+{{!
+
+  Copyright (c) Facebook, Inc. and its affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+
+    {{#program:services}}
+    pub mod {{service:snake}} {
+
+        {{#service:rustFunctions}}{{^function:returns_streams?}}
+        {{#function:exceptions?}}
+        #[derive(Debug, ::thiserror::Error)]
+        pub enum {{function:upcamel}}Error {
+            {{#function:exceptions}}
+            #[error("{{service:name}}::{{function:name}} failed with {0:?}")]
+            {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),
+            {{/function:exceptions}}
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        {{#function:uniqueExceptions}}
+        impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Error {
+            fn from(e: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
+                {{function:upcamel}}Error::{{field:rust_name}}(e)
+            }
+        }
+
+        {{/function:uniqueExceptions}}
+        impl ::std::convert::From<::anyhow::Error> for {{function:upcamel}}Error {
+            fn from(err: ::anyhow::Error) -> Self {
+                {{function:upcamel}}Error::ThriftError(err)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}Error {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                {{function:upcamel}}Error::ApplicationException(ae)
+            }
+        }
+        {{/function:exceptions?}}
+        {{^function:exceptions?}}
+        pub type {{function:upcamel}}Error = ::fbthrift::NonthrowingFunctionError;
+        {{/function:exceptions?}}
+
+        {{/function:returns_streams?}}{{/service:rustFunctions}}
+    }
+
+    {{/program:services}}
+{{!newline}}

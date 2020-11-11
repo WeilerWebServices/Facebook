@@ -1,0 +1,27 @@
+class A
+Array
+(
+    [0] => bar
+    [1] => dump
+)
+
+class B
+Array
+(
+    [0] => bar
+    [1] => dump
+)
+
+class A::dump()
+varray(3) {
+  string(3) "bar"
+  string(4) "dump"
+  string(3) "foo"
+}
+
+class B::dump()
+varray(3) {
+  string(3) "bar"
+  string(4) "dump"
+  string(3) "foo"
+}

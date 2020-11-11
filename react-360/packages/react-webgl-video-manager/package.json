@@ -1,0 +1,22 @@
+{
+  "name": "react-webgl-video-manager",
+  "version": "0.3.0",
+  "description": "Centralized video playback controls for applications built on top of React WebGL",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/react-360.git"
+  },
+  "bugs": "https://github.com/facebook/react-360/issues",
+  "files": [
+    "dist/",
+    "index.js",
+    "LICENSE",
+    "PATENTS",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "babel src --out-dir dist --ignore \"src/**/__tests__/*.js\" --plugins=@babel/plugin-transform-flow-strip-types,@babel/plugin-proposal-class-properties"
+  }
+}

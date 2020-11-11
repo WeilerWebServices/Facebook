@@ -1,0 +1,12 @@
+darray(1) {
+  [1]=>
+  string(3) "bar"
+}
+darray(2) {
+  [1]=>
+  int(42)
+  ["1"]=>
+  string(3) "bar"
+}
+int(42)
+string(3) "bar"

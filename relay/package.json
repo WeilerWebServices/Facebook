@@ -1,0 +1,115 @@
+{
+  "name": "relay",
+  "description": "A framework for building data-driven React applications.",
+  "version": "10.0.1",
+  "license": "MIT",
+  "homepage": "https://relay.dev",
+  "bugs": "https://github.com/facebook/relay/issues",
+  "repository": "facebook/relay",
+  "scripts": {
+    "build": "gulp dist",
+    "build:clean": "gulp cleanbuild",
+    "build:watch": "gulp watch",
+    "jest": "cross-env NODE_ENV=test jest \"$@\"",
+    "lint": "eslint --max-warnings 0 .",
+    "postinstall": "npm run build",
+    "prepublishOnly": "npm run build:clean",
+    "prettier": "find . -name node_modules -prune -or -name dist -prune -or -name '*.js' -print | xargs prettier --write",
+    "test": "f() { EXIT=0; npm run typecheck || EXIT=$?; npm run test-dependencies || EXIT=$?; npm run jest \"$@\" || EXIT=$?; exit $EXIT; }; f",
+    "test-dependencies": "node ./scripts/testDependencies.js",
+    "typecheck": "flow check"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/generator": "^7.5.0",
+    "@babel/parser": "^7.0.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+    "@babel/plugin-proposal-optional-catch-binding": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-transform-async-to-generator": "^7.0.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "@babel/traverse": "^7.0.0",
+    "@babel/types": "^7.0.0",
+    "@jest/create-cache-key-function": "^26.5.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-macros": "^2.0.0",
+    "babel-plugin-tester": "^6.0.1",
+    "babel-preset-fbjs": "^3.3.0",
+    "chalk": "^4.0.0",
+    "cosmiconfig": "^5.0.5",
+    "cross-env": "^5.2.0",
+    "del": "3.0.0",
+    "eslint": "5.4.0",
+    "eslint-config-fbjs": "2.1.0",
+    "eslint-plugin-babel": "5.1.0",
+    "eslint-plugin-flowtype": "2.50.0",
+    "eslint-plugin-jsx-a11y": "6.1.1",
+    "eslint-plugin-react": "7.11.1",
+    "eslint-plugin-relay": "1.7.1",
+    "fb-watchman": "^2.0.0",
+    "fbjs": "^3.0.0",
+    "flow-bin": "^0.135.0",
+    "glob": "^7.1.1",
+    "graphql": "^15.0.0",
+    "gulp": "4.0.0",
+    "gulp-babel": "8.0.0",
+    "gulp-chmod": "2.0.0",
+    "gulp-header": "2.0.7",
+    "gulp-once": "2.0.3",
+    "gulp-rename": "^2.0.0",
+    "gulp-util": "3.0.8",
+    "immutable": "~3.7.6",
+    "jest": "^24.8.0",
+    "nullthrows": "^1.1.1",
+    "prettier": "1.19.1",
+    "promise-polyfill": "6.1.0",
+    "react": "16.13.1",
+    "react-refresh": "^0.4.0",
+    "react-test-renderer": "16.13.1",
+    "signedsource": "^1.0.0",
+    "webpack": "^4.30.0",
+    "webpack-stream": "^5.1.1",
+    "yargs": "^15.3.1"
+  },
+  "private": true,
+  "devEngines": {
+    "node": ">=4.x",
+    "npm": ">=2.x"
+  },
+  "prettier": {
+    "requirePragma": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "jsxBracketSameLine": true,
+    "parser": "flow"
+  },
+  "jest": {
+    "testRegex": "/__tests__/.*-test\\.js$",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/",
+      "<rootDir>/node_modules/(?!(fbjs/lib/|react/lib/))"
+    ],
+    "rootDir": "",
+    "roots": [
+      "<rootDir>/node_modules/fbjs/lib/",
+      "<rootDir>/packages/"
+    ],
+    "setupFiles": [
+      "<rootDir>/scripts/jest/environment.js"
+    ],
+    "timers": "fake",
+    "transform": {
+      ".*": "<rootDir>/scripts/jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "testEnvironment": "node"
+  },
+  "devDependencies": {}
+}

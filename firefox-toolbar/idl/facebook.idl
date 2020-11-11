@@ -1,0 +1,100 @@
+/**
+ *
+ * The source code included in this file is licensed to you by Facebook under
+ * the Apache License, Version 2.0.  Accordingly, the following notice
+ * applies to the source code included in this file:
+ *
+ * Copyright © 2012 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+#include "nsISupports.idl"
+#include "nsIRDFDataSource.idl"
+
+[scriptable, uuid(46449e1d-69f3-4474-90a1-2aabaddf8447)]
+interface fbIFacebookUser : nsISupports
+{
+    attribute AString id;
+    attribute AString name;
+    attribute AString pic;
+    attribute AString pic_sq;
+    attribute AString status;
+    attribute long    ptime;
+    attribute long    stime;
+    attribute long    notes;
+    attribute long    wall;
+};
+
+[scriptable, uuid(19baf81b-d1bd-4a99-9010-dd6f478bfd22)]
+interface fbIFacebookService : nsISupports
+{
+    readonly attribute AString apiKey;
+    readonly attribute AString secret;
+    readonly attribute AString accessToken;
+
+    // Aside from the facebook.auth methods,
+    // all other Facebook API calls should be done inside this service.
+    void sessionStartOAuth(in AString accessToken);
+    void sessionStart(in AString sessionKey, in AString sessionSecret, in AString uid);
+    void savedSessionStart(); // attempt to start a saved session
+    void sessionEnd();
+
+    void setStatus(in AString status);
+    void clearCanSetStatus();
+
+    // Use this function to help the service figure out how frequently it
+    // should poll facebook.  If we go a while without loading any pages, it
+    // will back off to only 1 check per 10 minutes.  If we are loading a
+    // bunch of facebook pages, be more aggressive and go every minute.
+    void hintPageLoad(in boolean facebookPage);
+
+    // All other interaction comes by windows listing themselves as observers
+    // and notifications that get triggered by the polling process.
+    // Notifications that we fire:
+    //   Topic                              Subject                      Data
+    //   facebook-session-start             your fbIFacebookUser         your id
+    //       (the session has started)
+    //   facebook-session-end               null                         null
+    //
+    //   facebook-new-req                   requester's fbIFacebookUser  requester's id
+    //       (you have a new friend request)
+    //   facebook-reqs-updated              null                         new req count
+    //       (the count of new friend requests has been updated)
+    //   facebook-msgs-updated              null                         new msg count
+    //       (the count of new messages has been updated)
+    //   facebook-pokes-updated             null                         new poke count
+    //       (the count of pokes has been updated)
+    //   facebook-event-invs-updated        null                         new event invite count
+    //       (the count of your wall posts has been updated)
+    //   facebook-group-invs-updated        null                         new group invite count
+    //       (the count of your wall posts has been updated)
+    //
+    //   facebook-new-friend                friend's fbIFacebookUser     friend's id
+    //       (you have a new friend)
+    //   facebook-friend-updated            updater's fbIFacebookUser    field updated
+    //       (something updated about a friend - status msg, wall count, or notes count)
+    //   facebook-friends-updated           null                         null
+    //       (the collection of friends has been modified in some way)
+    //
+    // Windows can also query the most recent status of these things via the
+    // readonly attributes below:
+    readonly attribute boolean         loggedIn;
+    readonly attribute boolean         canSetStatus;
+    readonly attribute fbIFacebookUser loggedInUser;
+    readonly attribute long            numMsgs;
+    readonly attribute long            numPokes;
+    readonly attribute long            numReqs;
+    readonly attribute long            numEventInvs;
+    readonly attribute long            numGroupInvs;
+    void getFriends(out PRUint32 count, [retval,array,size_is(count)] out fbIFacebookUser users);
+};

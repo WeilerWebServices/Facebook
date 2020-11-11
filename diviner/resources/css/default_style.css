@@ -1,0 +1,426 @@
+html {
+  overflow-y: scroll;
+}
+
+body, div, dl, dt, dd, ul, ol, li,
+h1, h2, h3, h4, h5, h6,
+pre, form, fieldset,
+p, blockquote, th, td, button {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+}
+
+html {
+  padding-bottom: 16em;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+fieldset, img {
+  border: 0;
+}
+
+address, caption, cite, code, dfn, th, var {
+  font-style: normal;
+  font-weight: normal;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+caption, th {
+  text-align: left;
+}
+
+td, th {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+body {
+  font: 13px/1.231 'lucida grande', tahoma, verdana, arial, sans-serif;
+  background:   #ACACAC;
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: embed;
+  *font-size: small;
+}
+
+select, input, button, textarea, button {
+  font: 99% 'lucida grande', tahoma, verdana, arial, clean, sans-serif;
+}
+
+table {
+  font-size: inherit;
+  font: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  font-weight: bold;
+  padding-top: .5em;
+  padding-bottom: .25em;
+  margin-bottom: .25em;
+  line-height:    1.6em;
+  clear: right;
+}
+
+h1 {
+  font-size: 32px;
+  border-bottom: 1px solid #bbbbbb;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #dddddd;
+  background: #f3f3f3;
+  padding: 0 .25em;
+  margin-top: 1em;
+}
+
+h3 {
+  font-size: 18px;
+  border-bottom: 1px solid #dddddd;
+  margin-top: 1em;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+.atom-task-list {
+  padding: 0em 1em;
+}
+
+.atom-task-list ul {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+a {
+  -moz-outline-style: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:visited {
+  color: #3b5998;
+}
+
+a:link {
+  color: #3b5998;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  display: block;
+}
+
+select {
+  border: 1px solid #bdc7d8;
+}
+
+
+.docs-head {
+  background: #3B5998;
+  font-size:  15px;
+  padding:    8px 12px 12px;
+  color:      #99AACC;
+}
+
+.docs-head a {
+  color:      #FFFFFF;
+}
+
+.docs-body {
+  background:       #ffffff;
+  border-bottom:    1px solid #888888;
+}
+
+div.doc {
+  position:       relative;
+  font-size:      13px;
+  line-height:    1.6em;
+  padding:        0.5em 2em 4em 4em;
+  color:          #111111;
+}
+
+div.atom-doc {
+  width: 60em;
+}
+
+
+.atom-index ul {
+  margin-left: 2em;
+}
+
+ul.atom-index {
+  margin-bottom: 2em;
+}
+
+.atom-excerpt {
+  color: #666666;
+}
+
+a.atom-symbol {
+  font-weight: bold;
+}
+
+.doc-markup p {
+  margin: 1em 0;
+}
+
+.doc-markup ul {
+  list-style: disc;
+  margin: 1em 0 1em 3em;
+}
+
+.doc-markup ol {
+  list-style: decimal;
+  margin: 1em 0 1em 3em;
+}
+
+.doc-markup ul ol,
+.doc-markup ul ul,
+.doc-markup ol ol,
+.doc-markup ol ul {
+  margin: .25em 0 .25em 2em;
+}
+
+.doc-markup tt {
+  color: #333333;
+  background: #ebebeb;
+  padding: 0 .25em;
+}
+
+.doc-markup .remarkup-note {
+  margin: 1em 1.5em;
+  padding: 0.5em 1em;
+  border: 1px solid #ddddff;
+  background: #f3f3ff;
+}
+
+.doc-markup blockquote {
+  border-left: 1px solid #AAAAAA;
+  color:       #333333;
+  font-style:  italic;
+  margin:      .5em 0em;
+  padding:     .25em 1em;
+}
+
+.atom-type {
+  float: right;
+  color: #888888;
+  font-weight: normal;
+}
+
+.atom-attributes {
+  color: #888888;
+  font-weight: normal;
+}
+
+.atom-return-type {
+  color: #888888;
+  font-weight: normal;
+}
+
+.atom-parameters {
+  color: #444444;
+  font-weight: normal;
+}
+
+
+table.atom-info {
+  border: 1px solid #aaaaaa;
+  background: #efefef;
+  margin: .5em 0 1em;
+  width: 100%;
+}
+
+table.atom-info th {
+  background: #dfdfdf;
+  padding: 4px 12px 4px 8px;
+  text-align: right;
+  font-weight: bold;
+  width: 25%;
+  white-space: nowrap;
+}
+
+table.atom-info td {
+  padding: 4px 8px;
+  color: #666666;
+}
+
+.atom-undocumented {
+  padding: .5em 1em;
+  font-style: italic;
+  color: #cc6666;
+}
+
+.docs-diviner-mark {
+  float: right;
+}
+
+.atom-param-table {
+  margin: .75em 0 1em;
+  width: 100%;
+  background: #f6fff3;
+  border: 1px solid #88aa66;
+}
+
+.atom-param-table .atom-param-table-return {
+  background: #e0ffd0;
+}
+
+.atom-param-table td {
+  padding: 2px 4px;
+}
+
+.atom-param-table .atom-param-table-group {
+  text-align: right;
+  font-weight: bold;
+  white-space: nowrap;
+  width: 15%;
+  color: #7cab4f;
+}
+
+.atom-param-table .atom-param-type {
+  white-space: nowrap;
+  width: 12%;
+  text-align: right;
+}
+
+.atom-param-table .atom-param-name {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.atom-group-contents h3 {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.atom-group-contents ul {
+  margin-left: 1em;
+}
+
+.atom-group-listing {
+  background: #f3f3f3;
+  margin: 1em 0 2em 0;
+  padding: .5em 2em;
+  border: solid #555555;
+  border-width: 1px 0px 0px;
+}
+
+.atom-group-listing h1 {
+  margin: 0 0 .25em 0;
+  padding: 0;
+}
+
+.atom-attribute-stable {
+  padding: 1em;
+  border: 1px solid #aaffaa;
+  background: #efffef;
+}
+
+.atom-toc ul {
+  margin: 1em 2em 4em;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+
+.doc-markup .remarkup-code-block {
+  margin: 1em 2em;
+  white-space: pre;
+  font-family: "Monaco", monospace;
+  font-size: 10px;
+}
+
+.doc-markup .remarkup-code-header {
+  padding: .25em 1em;
+  background: #edead7;
+  color: #444444;
+}
+
+.doc-markup .remarkup-code-block pre {
+  background: #fdfae7;
+  border: 1px solid #f5e178;
+  display: block;
+  color: #000000;
+  overflow: auto;
+  padding: .5em 1em;
+  font-family: "Monaco", monospace;
+}
+
+.doc-markup pre.remarkup-counterexample {
+  border: 1px solid #aa0000;
+  background-color: #ffaaaa;
+}
+
+.doc-markup-toc {
+  float: right;
+  border: 1px solid #999999;
+  background: #f9f9f9;
+  padding: 4px 12px;
+  width: 320px;
+  font-size: 11px;
+  line-height: 1.4em;
+  white-space: nowrap;
+  margin-bottom: 1em;
+}
+
+.doc-markup-toc-header {
+  color: #444444;
+  border-bottom: 1px solid #bbbbbb;
+  margin-bottom: 4px;
+}
+
+.doc-markup-toc ul {
+  padding: 0 0 0 0.25em;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.doc-markup-toc ul ul {
+  margin-left: 1.25em;
+}
+
+.doc-markup-toc ul li {
+  padding: 0;
+  margin: 0;
+}
+
+table.remarkup-table {
+  border-collapse:  separate;
+  border-spacing:   1px;
+  background:       #d3d3d3;
+  margin:           1em;
+}
+
+table.remarkup-table th {
+  font-weight: bold;
+  padding: 3px 6px;
+  background: #e3e3e3;
+}
+
+table.remarkup-table td {
+  background: #ffffff;
+  padding: 3px 6px;
+}

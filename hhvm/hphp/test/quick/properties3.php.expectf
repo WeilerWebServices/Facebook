@@ -1,0 +1,21 @@
+
+Notice: Undefined property: D::$y in %s/test/quick/properties3.php on line %d
+NULL
+object(D) (2) {
+  ["x":"D":private]=>
+  int(1)
+  ["y"]=>
+  int(2)
+}
+object(D) (2) {
+  ["x":"D":private]=>
+  int(1)
+  ["y"]=>
+  int(2)
+}
+object(D) (2) {
+  ["x":"D":private]=>
+  int(1)
+  ["y"]=>
+  int(1)
+}

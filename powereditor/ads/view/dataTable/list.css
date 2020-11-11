@@ -1,0 +1,116 @@
+/**
+* Copyright 2011 Facebook, Inc.
+*
+* You are hereby granted a non-exclusive, worldwide, royalty-free license to
+* use, copy, modify, and distribute this software in source code or binary
+* form for use in connection with the web services and APIs provided by
+* Facebook.
+*
+* As with any software that integrates with the Facebook platform, your use
+* of this software is subject to the Facebook Developer Principles and
+* Policies [http://developers.facebook.com/policy/]. This copyright notice
+* shall be included in all copies or substantial portions of the software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+* THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+* DEALINGS IN THE SOFTWARE.
+*
+*
+*/
+
+.ads-dataTable-changed {
+  font-weight: bold;
+}
+
+.ads-dataTable .ufb-dataTable-cell::-moz-selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.ads-dataTable .ufb-dataTable-cell::-webkit-selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.ads-dataTable .ufb-dataTable-cell::selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.ads-dataTable-selectionDummy {
+  position: absolute;
+  left: 0;
+  top: -9em;
+}
+
+.ufb-dataList_blured .ufb-dataList-row_odd.ufb-dataTable-row_selected .ufb-dataTable-cell,
+.ufb-dataList_blured .ufb-dataTable-row_selected .ufb-dataTable-cell {
+  background-color: #d4d4d4;
+  color: #000;
+}
+
+.ufb-dataList-row_odd.ufb-dataTable-row_selected .ads-dataTable-col_contract,
+.ufb-dataTable-row_selected .ads-dataTable-col_contract,
+.ufb-dataList-row_odd.ufb-dataTable-row_selected .ads-dataTable-col_topline,
+.ufb-dataTable-row_selected .ads-dataTable-col_topline,
+.ufb-dataList-row_odd.ufb-dataTable-row_selected .ads-dataTable-col_campaign,
+.ufb-dataTable-row_selected .ads-dataTable-col_campaign,
+.ufb-dataList-row_odd.ufb-dataTable-row_selected .ads-dataTable-col_ad,
+.ufb-dataTable-row_selected .ads-dataTable-col_ad,
+.ufb-dataList-row_odd.ufb-dataTable-row_selected .ads-dataTable-col_stat,
+.ufb-dataTable-row_selected .ads-dataTable-col_stat
+{
+  background-color: #555;
+  color: #FFF;
+}
+
+.ads-dataTable-col_contract {
+  /* light purple */
+  background: #E0CCE0;
+}
+
+.ufb-dataList-row_odd .ads-dataTable-col_contract {
+  /* lighter purple */
+  background: #F0E6F0;
+}
+
+.ads-dataTable-col_topline {
+  /* light blue */
+  background: #CCD6E0;
+}
+
+.ufb-dataList-row_odd .ads-dataTable-col_topline {
+  /* lighter blue */
+  background: #E6EBF0;
+}
+
+.ads-dataTable-col_campaign {
+  /* light green */
+  background: #CCD6CC;
+}
+
+.ufb-dataList-row_odd .ads-dataTable-col_campaign {
+  /* lighter green */
+  background: #E6EBE6;
+}
+
+.ads-dataTable-col_ad {
+  /* light red */
+  background: #EBD6D6;
+}
+
+.ufb-dataList-row_odd .ads-dataTable-col_ad {
+  /* lighter red */
+  background: #F5EBEB;
+}
+
+.ads-dataTable-col_stat {
+  /* light brown */
+  background: #E0D6CC;
+}
+
+.ufb-dataList-row_odd .ads-dataTable-col_stat {
+  /* lighter brown */
+  background: #F0EBE6;
+}

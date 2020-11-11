@@ -1,0 +1,50 @@
+---- profiling ----
+varray(3) {
+  varray(6) {
+    int(1)
+    int(2)
+    int(3)
+    int(4)
+    int(5)
+    int(6)
+  }
+  varray(6) {
+    int(1)
+    int(2)
+    int(3)
+    int(4)
+    int(7)
+    int(8)
+  }
+  varray(4) {
+    int(1)
+    int(2)
+    int(3)
+    int(4)
+  }
+}
+---- pgo ----
+varray(3) {
+  varray(6) {
+    int(1)
+    int(2)
+    int(3)
+    int(4)
+    int(5)
+    int(6)
+  }
+  varray(6) {
+    int(1)
+    int(2)
+    int(3)
+    int(4)
+    int(7)
+    int(8)
+  }
+  varray(4) {
+    int(1)
+    int(2)
+    int(3)
+    int(4)
+  }
+}

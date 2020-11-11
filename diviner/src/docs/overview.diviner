@@ -1,0 +1,26 @@
+@title Diviner Overview
+
+Diviner is a documentation generation system which "supports" multiple
+languages.
+
+= Configuration =
+
+Valid configuration directives in `.divinerconfig`:
+
+- `name`
+- `src_link` - `%f` stands for file, `%l` for line, `%%` for %
+- `groups`
+- `engines`
+- `phutil_libraries`
+
+= header =
+
+== h3 ==
+
+=== h4 ===
+
+==== h5 ====
+
+**a** //b// ##c##
+
+http://lol.com/lol

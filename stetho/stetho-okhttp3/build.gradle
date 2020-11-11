@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        // This seems to be firing due to okio referencing java.nio.File
+        // which is harmless for us. Not sure how to disable this in
+        // more targeted fashion...
+        warning 'InvalidPackage'
+    }
+}
+
+dependencies {
+    implementation project(':stetho')
+    implementation 'com.google.code.findbugs:jsr305:2.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.2'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation('org.robolectric:robolectric:2.4') {
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+    }
+    testImplementation 'org.powermock:powermock-api-mockito:1.6.1'
+    testImplementation 'org.powermock:powermock-module-junit4:1.6.1'
+
+    // Needed for Robolectric and PowerMock to be combined in a single test.
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.1'
+    testImplementation 'org.powermock:powermock-classloading-xstream:1.6.1'
+
+    testImplementation 'com.squareup.okhttp3:mockwebserver:3.4.2'
+}
+
+apply from: rootProject.file('release.gradle')

@@ -1,0 +1,344 @@
+create user user_super@localhost identified by 'su';
+grant all on *.* to user_super@localhost with grant option;
+Case 1: Default values for sql_stats_control, max_sql_stats_count and max_sql_stats_size.
+select @@sql_stats_control;
+@@sql_stats_control
+OFF_HARD
+select @@max_sql_stats_count;
+@@max_sql_stats_count
+100000
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+104857600
+select 42;
+42
+42
+select sql_id, plan_id, table_schema, user_name, execution_count
+from information_schema.sql_statistics;
+sql_id	plan_id	table_schema	user_name	execution_count
+Case 2: sql_stats_control=ON, default max_sql_stats_count and max_sql_stats_size.
+set @@GLOBAL.sql_stats_control="ON";
+select @@sql_stats_control;
+@@sql_stats_control
+ON
+select @@max_sql_stats_count;
+@@max_sql_stats_count
+100000
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+104857600
+select 1;
+1
+1
+select 2;
+2
+2
+select 100;
+100
+100
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+750977b7a6eceacf8969c0cdcc4e825e	SELECT	30	SELECT @@`max_sql_stats_size` 
+9dd9319bcbb927b8c3d7c16fa8f43fe2	SELECT	31	SELECT @@`max_sql_stats_count` 
+db1589f429c8f6fbba750f47fbc7c130	SELECT	9	SELECT ? 
+e774a92c71899fc36599c5b7c754d556	SELECT	29	SELECT @@`sql_stats_control` 
+Case 3: sql_stats_control=ON, max_sql_stats_count=10, default max_sql_stats_size. Stats within limits.
+set @@GLOBAL.max_sql_stats_count=10;
+set @@GLOBAL.max_sql_stats_size=104857600;
+select @@sql_stats_control;
+@@sql_stats_control
+ON
+select @@max_sql_stats_count;
+@@max_sql_stats_count
+10
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+104857600
+select 1 union select 2;
+1
+1
+2
+select 1 union select 2 union select 3;
+1
+1
+2
+3
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+3b8f12027fe44fbb56fce4185d500359	SELECT	39	SELECT ? UNION SELECT ? UNION SELECT ? 
+5ce58011ffe0a7f218e8fcdb43056d6b	SET	40	SET @@GLOBAL . `max_sql_stats_size` = ? 
+750977b7a6eceacf8969c0cdcc4e825e	SELECT	30	SELECT @@`max_sql_stats_size` 
+9dd9319bcbb927b8c3d7c16fa8f43fe2	SELECT	31	SELECT @@`max_sql_stats_count` 
+bedb4d0b3c2609737b8f12814eb7873c	SELECT	24	SELECT ? UNION SELECT ? 
+ca12411c40f605420b0c3a08ab13abea	SET	41	SET @@GLOBAL . `max_sql_stats_count` = ? 
+e774a92c71899fc36599c5b7c754d556	SELECT	29	SELECT @@`sql_stats_control` 
+Case 4: sql_stats_control=ON, max_sql_stats_count=5, default max_sql_stats_size. Stats hit the count limit.
+set @@GLOBAL.max_sql_stats_count=4;
+set @@GLOBAL.max_sql_stats_size=104857600;
+select @@sql_stats_control;
+@@sql_stats_control
+ON
+select @@max_sql_stats_count;
+@@max_sql_stats_count
+4
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+104857600
+select 1 union select 2;
+1
+1
+2
+select 1 union select 2 union select 3;
+1
+1
+2
+3
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+5ce58011ffe0a7f218e8fcdb43056d6b	SET	40	SET @@GLOBAL . `max_sql_stats_size` = ? 
+9dd9319bcbb927b8c3d7c16fa8f43fe2	SELECT	31	SELECT @@`max_sql_stats_count` 
+ca12411c40f605420b0c3a08ab13abea	SET	41	SET @@GLOBAL . `max_sql_stats_count` = ? 
+e774a92c71899fc36599c5b7c754d556	SELECT	29	SELECT @@`sql_stats_control` 
+Case 5: sql_stats_control=ON, default max_sql_stats_count, max_sql_stats_size=8KB. Stats within limits.
+set @@GLOBAL.max_sql_stats_count=100000;
+set @@GLOBAL.max_sql_stats_size=8192;
+select @@sql_stats_control;
+@@sql_stats_control
+ON
+select @@max_sql_stats_count;
+@@max_sql_stats_count
+100000
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+8192
+select 1 union select 2;
+1
+1
+2
+select 1 union select 2 union select 3;
+1
+1
+2
+3
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+3b8f12027fe44fbb56fce4185d500359	SELECT	39	SELECT ? UNION SELECT ? UNION SELECT ? 
+5ce58011ffe0a7f218e8fcdb43056d6b	SET	40	SET @@GLOBAL . `max_sql_stats_size` = ? 
+750977b7a6eceacf8969c0cdcc4e825e	SELECT	30	SELECT @@`max_sql_stats_size` 
+9dd9319bcbb927b8c3d7c16fa8f43fe2	SELECT	31	SELECT @@`max_sql_stats_count` 
+bedb4d0b3c2609737b8f12814eb7873c	SELECT	24	SELECT ? UNION SELECT ? 
+e774a92c71899fc36599c5b7c754d556	SELECT	29	SELECT @@`sql_stats_control` 
+Case 6: sql_stats_control=ON, default max_sql_stats_count, max_sql_stats_size=1.2KB. Stats hit the size limit.
+set @@GLOBAL.max_sql_stats_count=100000;
+set @@GLOBAL.max_sql_stats_size=1280;
+select @@sql_stats_control;
+@@sql_stats_control
+ON
+select @@max_sql_stats_count;
+@@max_sql_stats_count
+100000
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+1280
+select 1;
+1
+1
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+5ce58011ffe0a7f218e8fcdb43056d6b	SET	40	SET @@GLOBAL . `max_sql_stats_size` = ? 
+750977b7a6eceacf8969c0cdcc4e825e	SELECT	30	SELECT @@`max_sql_stats_size` 
+9dd9319bcbb927b8c3d7c16fa8f43fe2	SELECT	31	SELECT @@`max_sql_stats_count` 
+db1589f429c8f6fbba750f47fbc7c130	SELECT	9	SELECT ? 
+e774a92c71899fc36599c5b7c754d556	SELECT	29	SELECT @@`sql_stats_control` 
+select 1 union select 2;
+1
+1
+2
+select 1 union select 2 union select 3;
+1
+1
+2
+3
+select 1 union select 2 union select 3 union select 4;
+1
+1
+2
+3
+4
+select 1 union select 2 union select 3 union select 4 union select 5;
+1
+1
+2
+3
+4
+5
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+5ce58011ffe0a7f218e8fcdb43056d6b	SET	40	SET @@GLOBAL . `max_sql_stats_size` = ? 
+750977b7a6eceacf8969c0cdcc4e825e	SELECT	30	SELECT @@`max_sql_stats_size` 
+9dd9319bcbb927b8c3d7c16fa8f43fe2	SELECT	31	SELECT @@`max_sql_stats_count` 
+db1589f429c8f6fbba750f47fbc7c130	SELECT	9	SELECT ? 
+e774a92c71899fc36599c5b7c754d556	SELECT	29	SELECT @@`sql_stats_control` 
+Case 7: sql_stats_control=ON, updating max_sql_stats_size should reset the memory and restart the collection
+set @@GLOBAL.max_sql_stats_size=512;
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+512
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+5ce58011ffe0a7f218e8fcdb43056d6b	SET	40	SET @@GLOBAL . `max_sql_stats_size` = ? 
+750977b7a6eceacf8969c0cdcc4e825e	SELECT	30	SELECT @@`max_sql_stats_size` 
+Case 8: sql_stats_control=OFF_SOFT, updating max_sql_stats_size should reset the memory
+set @@GLOBAL.sql_stats_control="OFF_SOFT";
+set @@GLOBAL.max_sql_stats_size=500;
+select @@max_sql_stats_size;
+@@max_sql_stats_size
+500
+select 1;
+1
+1
+select * from information_schema.sql_text
+order by sql_id;
+SQL_ID	SQL_TYPE	SQL_TEXT_LENGTH	SQL_TEXT
+Case 9: sql_stats_snapshot is included in count accounting
+set @@GLOBAL.sql_stats_control=ON;
+set @@GLOBAL.max_sql_stats_count=4;
+set @@GLOBAL.max_sql_stats_size=default;
+## Snapshot has 2 entries
+set sql_stats_snapshot=ON;
+show status like 'sql_stats_snapshot';
+Variable_name	Value
+sql_stats_snapshot	ON
+## 2 more entries are in live stats now and limit is reached. Next queries will not be recorded.
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+1	SET @@GLOBAL . `max_sql_stats_count` = ? 
+1	SET @@GLOBAL . `max_sql_stats_size` = DEFAULT 
+set sql_stats_snapshot=OFF;
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+1	SET @@GLOBAL . `max_sql_stats_count` = ? 
+1	SET @@GLOBAL . `max_sql_stats_size` = DEFAULT 
+1	SET `sql_stats_snapshot` = ON 
+1	SHOW STATUS LIKE ? 
+## Snapshot and live stats had distinct entries so after snapshot merge the limit is still reached.
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+1	SET @@GLOBAL . `max_sql_stats_count` = ? 
+1	SET @@GLOBAL . `max_sql_stats_size` = DEFAULT 
+1	SET `sql_stats_snapshot` = ON 
+1	SHOW STATUS LIKE ? 
+Case 10: sql_stats_snapshot merge avoids double accounting of identical entries
+flush sql_statistics;
+select 1;
+1
+1
+## Snapshot has 2 entries
+set sql_stats_snapshot=ON;
+select 1;
+1
+1
+## 2 more entries are in live stats now and limit is reached. Next queries will not be recorded.
+## However snapshot merged on the fly from another connection will show 3 entries.
+select @@sql_stats_snapshot;
+@@sql_stats_snapshot
+0
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+2	SELECT ? 
+1	FLUSH SQL_STATISTICS 
+1	SET `sql_stats_snapshot` = ON 
+## Turn off snapshot merges it with live stats which drops count to 3 entries. 1 more query will be recorded.
+set sql_stats_snapshot=OFF;
+select 1 union select 2;
+1
+1
+2
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+2	SELECT ? 
+1	FLUSH SQL_STATISTICS 
+1	SET `sql_stats_snapshot` = ON 
+1	SET `sql_stats_snapshot` = `OFF` 
+Case 11: sql_stats_snapshot flush removes snapshot entries from accounting
+flush sql_statistics;
+select 1;
+1
+1
+## Snapshot has 2 entries
+set sql_stats_snapshot=ON;
+show status like 'sql_stats_snapshot';
+Variable_name	Value
+sql_stats_snapshot	ON
+## 2 more entries are in live stats now and limit is reached. Next queries will not be recorded.
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+1	FLUSH SQL_STATISTICS 
+1	SELECT ? 
+## Flush snapshot drops entry count back to 2 so next 2 queries will be recorded but not the rest.
+flush sql_statistics;
+set sql_stats_snapshot=OFF;
+select 1 union select 2;
+1
+1
+2
+select s.execution_count, left(t.sql_text, 50) text
+from
+(select * from information_schema.sql_text) t,
+(select * from information_schema.sql_statistics) s,
+(select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+execution_count	text
+1	FLUSH SQL_STATISTICS 
+1	SET `sql_stats_snapshot` = ON 
+1	SET `sql_stats_snapshot` = `OFF` 
+1	SHOW STATUS LIKE ? 
+Cleanup
+set @@GLOBAL.sql_stats_control="OFF_HARD";
+set @@GLOBAL.max_sql_stats_count=100000;
+set @@GLOBAL.max_sql_stats_size=104857600;
+drop user user_super@localhost;

@@ -1,0 +1,203 @@
+--source include/no_perfschema.inc
+
+--source include/count_sessions.inc
+
+create user user_super@localhost identified by 'su';
+grant all on *.* to user_super@localhost with grant option;
+
+let $sql_stats_query = select s.execution_count, left(t.sql_text, 50) text
+from
+  (select * from information_schema.sql_text) t,
+  (select * from information_schema.sql_statistics) s,
+  (select * from information_schema.client_attributes) a
+where a.client_id=s.client_id and s.sql_id=t.sql_id
+order by 1 desc, 2;
+
+connect (con13, localhost, user_super,su,test);
+
+####################################################
+### Case 1: Default values for sql_stats_control, max_sql_stats_count and max_sql_stats_size.
+###         No data will be stored in sql_statistics.
+####################################################
+--echo Case 1: Default values for sql_stats_control, max_sql_stats_count and max_sql_stats_size.
+select @@sql_stats_control;
+select @@max_sql_stats_count;
+select @@max_sql_stats_size;
+select 42;
+select sql_id, plan_id, table_schema, user_name, execution_count
+from information_schema.sql_statistics;
+
+####################################################
+### Case 2: sql_stats_control=ON, default max_sql_stats_count and max_sql_stats_size.
+###         Normal happy case.
+####################################################
+--echo Case 2: sql_stats_control=ON, default max_sql_stats_count and max_sql_stats_size.
+set @@GLOBAL.sql_stats_control="ON";
+select @@sql_stats_control;
+select @@max_sql_stats_count;
+select @@max_sql_stats_size;
+select 1;
+select 2;
+select 100;
+
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 3: sql_stats_control=ON, max_sql_stats_count=10, default max_sql_stats_size. 
+###         Custom max_sql_stats_count limit, but stats within limits.
+####################################################
+--echo Case 3: sql_stats_control=ON, max_sql_stats_count=10, default max_sql_stats_size. Stats within limits.
+set @@GLOBAL.max_sql_stats_count=10;
+set @@GLOBAL.max_sql_stats_size=104857600;
+select @@sql_stats_control;
+select @@max_sql_stats_count;
+select @@max_sql_stats_size;
+select 1 union select 2;
+select 1 union select 2 union select 3;
+
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 4: sql_stats_control=ON, max_sql_stats_count=5, default max_sql_stats_size.
+###         Stats hit the count limit.
+####################################################
+--echo Case 4: sql_stats_control=ON, max_sql_stats_count=5, default max_sql_stats_size. Stats hit the count limit.
+set @@GLOBAL.max_sql_stats_count=4;
+set @@GLOBAL.max_sql_stats_size=104857600;
+select @@sql_stats_control;
+select @@max_sql_stats_count;
+select @@max_sql_stats_size;
+select 1 union select 2;
+select 1 union select 2 union select 3;
+
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 5: sql_stats_control=ON, default max_sql_stats_count, max_sql_stats_size=8KB.
+###         Custom max_sql_stats_size, but stats within limits.
+####################################################
+--echo Case 5: sql_stats_control=ON, default max_sql_stats_count, max_sql_stats_size=8KB. Stats within limits.
+set @@GLOBAL.max_sql_stats_count=100000;
+set @@GLOBAL.max_sql_stats_size=8192;
+select @@sql_stats_control;
+select @@max_sql_stats_count;
+select @@max_sql_stats_size;
+select 1 union select 2;
+select 1 union select 2 union select 3;
+
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 6: sql_stats_control=ON, default max_sql_stats_count, max_sql_stats_size=1.2KB.
+###         Stats hit the size limit.
+####################################################
+--echo Case 6: sql_stats_control=ON, default max_sql_stats_count, max_sql_stats_size=1.2KB. Stats hit the size limit.
+set @@GLOBAL.max_sql_stats_count=100000;
+set @@GLOBAL.max_sql_stats_size=1280;
+select @@sql_stats_control;
+select @@max_sql_stats_count;
+select @@max_sql_stats_size;
+select 1;
+
+# None of the below queries should be stored, as we hit the memory limit
+
+select * from information_schema.sql_text
+order by sql_id;
+
+select 1 union select 2;
+select 1 union select 2 union select 3;
+select 1 union select 2 union select 3 union select 4;
+select 1 union select 2 union select 3 union select 4 union select 5;
+
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 7: sql_stats_control=ON, updating max_sql_stats_size should reset the memory and restart the collection.
+####################################################
+--echo Case 7: sql_stats_control=ON, updating max_sql_stats_size should reset the memory and restart the collection
+set @@GLOBAL.max_sql_stats_size=512;
+select @@max_sql_stats_size;
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 8: sql_stats_control=OFF_SOFT, updating max_sql_stats_size should reset the memory.
+####################################################
+--echo Case 8: sql_stats_control=OFF_SOFT, updating max_sql_stats_size should reset the memory
+set @@GLOBAL.sql_stats_control="OFF_SOFT";
+set @@GLOBAL.max_sql_stats_size=500;
+select @@max_sql_stats_size;
+select 1;
+select * from information_schema.sql_text
+order by sql_id;
+
+####################################################
+### Case 9: sql_stats_snapshot is included in count accounting
+####################################################
+--echo Case 9: sql_stats_snapshot is included in count accounting
+set @@GLOBAL.sql_stats_control=ON;
+set @@GLOBAL.max_sql_stats_count=4;
+set @@GLOBAL.max_sql_stats_size=default;
+--echo ## Snapshot has 2 entries
+set sql_stats_snapshot=ON;
+show status like 'sql_stats_snapshot';
+--echo ## 2 more entries are in live stats now and limit is reached. Next queries will not be recorded.
+eval $sql_stats_query;
+set sql_stats_snapshot=OFF;
+eval $sql_stats_query;
+--echo ## Snapshot and live stats had distinct entries so after snapshot merge the limit is still reached.
+eval $sql_stats_query;
+
+####################################################
+### Case 10: sql_stats_snapshot merge avoids double accounting of identical entries
+####################################################
+--echo Case 10: sql_stats_snapshot merge avoids double accounting of identical entries
+flush sql_statistics;
+select 1;
+--echo ## Snapshot has 2 entries
+set sql_stats_snapshot=ON;
+select 1;
+--echo ## 2 more entries are in live stats now and limit is reached. Next queries will not be recorded.
+--echo ## However snapshot merged on the fly from another connection will show 3 entries.
+connection default;
+select @@sql_stats_snapshot;
+eval $sql_stats_query;
+--echo ## Turn off snapshot merges it with live stats which drops count to 3 entries. 1 more query will be recorded.
+connection con13;
+set sql_stats_snapshot=OFF;
+select 1 union select 2;
+eval $sql_stats_query;
+
+####################################################
+### Case 11: sql_stats_snapshot flush removes snapshot entries from accounting
+####################################################
+--echo Case 11: sql_stats_snapshot flush removes snapshot entries from accounting
+flush sql_statistics;
+select 1;
+--echo ## Snapshot has 2 entries
+set sql_stats_snapshot=ON;
+show status like 'sql_stats_snapshot';
+--echo ## 2 more entries are in live stats now and limit is reached. Next queries will not be recorded.
+eval $sql_stats_query;
+--echo ## Flush snapshot drops entry count back to 2 so next 2 queries will be recorded but not the rest.
+flush sql_statistics;
+set sql_stats_snapshot=OFF;
+select 1 union select 2;
+eval $sql_stats_query;
+
+###########
+### Cleanup
+###########
+--echo Cleanup
+connection default;
+set @@GLOBAL.sql_stats_control="OFF_HARD";
+set @@GLOBAL.max_sql_stats_count=100000;
+set @@GLOBAL.max_sql_stats_size=104857600;
+drop user user_super@localhost;
+disconnect con13;
+--source include/wait_until_count_sessions.inc

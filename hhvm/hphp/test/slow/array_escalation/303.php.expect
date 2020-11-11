@@ -1,0 +1,12 @@
+darray(2) {
+  [0]=>
+  string(4) "test"
+  [2]=>
+  string(4) "test"
+}
+darray(2) {
+  [0]=>
+  string(4) "test"
+  [2]=>
+  string(4) "test"
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=GlusterFS an clustered file-system server
+After=network.target rpcbind.service
+
+[Service]
+Type=forking
+PIDFile=/run/glusterd.pid
+LimitNOFILE=65536
+ExecStart=@prefix@/sbin/glusterd -p /run/glusterd.pid
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

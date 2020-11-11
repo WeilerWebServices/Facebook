@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE bindings [
+ <!ENTITY % sidebarDTD SYSTEM "chrome://facebook/locale/sidebar.dtd">
+ %sidebarDTD;
+ <!ENTITY % toolbarDTD SYSTEM "chrome://facebook/locale/toolbar.dtd">
+ %toolbarDTD;
+]>
+
+<bindings id="textboxBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <binding id="facebook-search-hbox">
+    <content align="center">
+      <xul:image />
+      <children />
+    </content>
+  </binding>
+
+  <binding id="friendBox" extends="chrome://global/content/bindings/richlistbox.xml#richlistitem">
+    <content>
+      <xul:hbox flex="5" style="/*background-color:blue;*/">
+        <xul:vbox flex="0" style="width: 56px !important; /*background-color: cyan;*/" pack="center">
+          <xul:image xbl:inherits="src=pic,onclick=oncommand" class="facebook-link friend-image"
+                       style="border: 1px solid black;" onload="fbLib._maxSizePopupFacebookFriendsList();"/>
+        </xul:vbox>
+        <xul:vbox flex="1" style="padding: 0px; /*background-color: red;*/" pack="start" align="start">
+          <xul:label xbl:inherits="onclick=oncommand" class="facebook-link user_name" value="John Doe" />
+          <xul:label xbl:inherits="onclick=viewUpdCmd" class="facebook-link ptime" value="overwritten" />
+          <xul:label class="status">
+            <children />
+          </xul:label>
+          <xul:label xbl:inherits="value=stime" class="stime" />
+          <xul:hbox pack="start" align="center" class="facebook-friendlinks" >
+            <xul:label value="&toolbar.links.profile.label;" xbl:inherits="onclick=profileCmd"
+                       class="facebook-link mini-link" />
+            <xul:label value="-" style="color:#808080; font-size:9px;" />
+            <xul:label value="&sidebar.friendmessage.label;" xbl:inherits="onclick=msgCmd"
+                       class="facebook-link mini-link" />
+          </xul:hbox>
+        </xul:vbox>
+      </xul:hbox>
+    </content>
+    <implementation>
+      <constructor>
+        var text_box_elt  = document.getAnonymousNodes(this)[0].childNodes[1]; // second child of hbox
+        var name_elt  = text_box_elt.childNodes[0];
+        var ptime_elt = text_box_elt.childNodes[1];
+        /* var stime_elt = hbox_elt.childNodes[1].childNodes[3]; */
+        name_elt.removeAttribute( "value" );
+        var name = this.getAttribute( "friendname" );
+        name_elt.appendChild(document.createTextNode(name));
+
+        ptime_elt.removeAttribute( "value" );
+        var ptime = this.getAttribute( "ptime" );
+        if (ptime) {
+          ptime_elt.appendChild(document.createTextNode(ptime));
+        }
+        else // collapse ...
+          ptime_elt.parentNode.removeChild( ptime_elt );
+      </constructor>
+    </implementation>
+  </binding>
+
+  <binding id="searchResultBox" extends="chrome://global/content/bindings/richlistbox.xml#richlistitem">
+    <content>
+      <xul:hbox flex="5" style="/*background-color:blue;*/">
+        <xul:vbox flex="0" pack="center">
+          <xul:image anonid="pic" xbl:inherits="src=pic,onclick=oncommand" class="facebook-link"
+                       style="border: 1px solid black;" onload="fbLib._maxSizePopupFacebookFriendsList();"/>
+        </xul:vbox>
+        <xul:vbox flex="1" style="padding: 0px; /*background-color: red;*/" pack="start" align="start">
+          <xul:label xbl:inherits="onclick=oncommand,value=name" class="facebook-link user_name" />
+          <xul:label class="status"><children /></xul:label>
+          <xul:label value=" "/>
+        </xul:vbox>
+      </xul:hbox>
+    </content>
+    <implementation>
+        <method name="nopic">
+        <body>
+          document.getAnonymousElementByAttribute(this, "anonid", "pic").collapsed = true;
+        </body>
+        </method>
+    </implementation>
+  </binding>
+
+
+  <binding id="popupMessager" extends="chrome://global/content/bindings/richlistbox.xml#richlistitem">
+    <content>
+      <xul:toolbarbutton class="facebook-icon-msgs facebook-link" />
+      <xul:label xbl:inherits="value" class="facebook-link" />
+    </content>
+  </binding>
+
+  <binding id="popupPoster" extends="chrome://global/content/bindings/richlistbox.xml#richlistitem">
+    <content>
+      <xul:toolbarbutton class="facebook-icon-wall facebook-link" />
+      <xul:label xbl:inherits="value" class="facebook-link" />
+    </content>
+  </binding>
+
+</bindings>

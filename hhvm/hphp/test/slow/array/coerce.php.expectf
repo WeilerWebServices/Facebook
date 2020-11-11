@@ -1,0 +1,3 @@
+Warning:%slookup() expects parameter 1 to be %rv?%rarray, object given in %s
+
+Warning:%slookup() expects parameter 1 to be %rv?%rarray, resource given in %s

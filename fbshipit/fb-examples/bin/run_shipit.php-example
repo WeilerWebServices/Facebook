@@ -1,0 +1,19 @@
+<?hh
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * This file was moved from fbsource to www. View old history in diffusion:
+ * https://fburl.com/931uorpb
+ */
+
+<<__EntryPoint>>
+async function run_shipit_entrypoint(): Awaitable<void> {
+  await Facebook\ShipIt\FBShipItScripts::shimScriptControllerAsync(
+    RunShipItScript::class,
+  );
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>  <!-- manifest="chess/chess.manifest" -->
+  <head>
+
+  <script type="text/javascript">
+
+    var log_str = '';
+    var g_base_time = (new Date).getTime();
+    var dump_count = 3;
+    function logtime(str) {
+       log_str += ((new Date).getTime() - g_base_time) + ' ' + str + '\n';
+    }
+
+    function dumplog(mask) {
+      dump_count &= ~mask;
+      if (dump_count) {
+        return;
+      }
+      return;
+      console.log(log_str);
+      mypostrequest = new XMLHttpRequest();
+      mypostrequest.open("POST", "/results", true);
+      mypostrequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      mypostrequest.send("log_str="+log_str);
+    }
+
+     logtime('index.html');
+  </script>
+
+
+    <script type="text/javascript"> logtime('css load') </script>
+    <link rel="stylesheet" type="text/css" href="/chess/style.css" />
+    <script type="text/javascript"> logtime('jssdk lib load') </script>
+    #include '/engine/include/fb_jssdk.include'
+    <script type="text/javascript"> logtime('jssdk lib load-done') </script>
+    #include '/engine/include/portrait.include'
+    #include 'app_id'
+    #include '/engine/include/min.include'
+    <script type="text/javascript"> logtime('jsgamebench lib load-done') </script>
+    <script type="text/javascript" src="/chess/constants.js"></script>
+    <script type="text/javascript" src="/chess/board.js"></script>
+    <script type="text/javascript" src="/chess/pieces.js"></script>
+    <script type="text/javascript" src="/chess/publish.js"></script>
+    <script type="text/javascript" src="/chess/chess.js"></script>
+    <script type="text/javascript"> logtime('game js load-done') </script>
+  </head>
+
+  <body
+    onresize="Init.winresize();"
+    onload="Init.init();"
+    onorientationchange="Init.winresize();"
+    onunload="Init.quit()">
+    <div id="fb-root"></div>
+    <div id="gameui"></div>
+    <div id="gamebody"></div>
+  </body>
+</html>

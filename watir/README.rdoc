@@ -1,0 +1,105 @@
+= Archived Repo
+
+This is an archived fork and is no longer supported or updated by Facebook. Please do not file issues or pull-requests against this repo. The primary on-going source of the project may now be found at https://github.com/watir/watir-classic
+
+= Watir
+
+Watir, pronounced water, is an open-source (BSD) family of Ruby libraries for automating web browsers. It supports your app no matter what technology it is developed in. They support Internet Explorer on Windows, Firefox and Chrome on Windows, Mac and Linux and Safari on Mac.
+
+Project Home:: http://watir.com
+Source Code:: http://github.com/bret/watir
+Support:: http://watir.com/support
+Gem:: https://rubygems.org/gems/watir
+Gem:: https://rubygems.org/gems/firewatir
+Gem:: https://rubygems.org/gems/commonwatir
+Gem:: https://rubygems.org/gems/safariwatir
+Gem:: https://rubygems.org/gems/watir-webdriver
+Gem:: https://rubygems.org/gems/celerity
+
+== Install
+
+You have to install Ruby and RubyGems first. To be able to drive Firefox you have to install Firefox add-on. Detailed installation instructions are at http://watir.com/installation
+
+=== Windows
+
+To install Internet Explorer and Firefox driver:
+
+  gem update --system
+  gem install watir
+
+=== Mac
+
+To install Firefox driver:
+
+  sudo gem update --system
+  sudo gem install firewatir
+
+To install Safari driver, you have to install Xcode first and then:
+
+  sudo gem install rb-appscript
+  sudo gem install safariwatir
+
+=== Linux
+
+To install Firefox driver:
+
+  sudo gem update --system
+  sudo gem install firewatir
+
+== Examples
+
+Some examples from http://watir.com/examples
+
+Loading Watir gem to drive Internet Explorer on Windows
+
+  require 'watir'
+
+Loading FireWatir gem to drive Firefox on Windows/Mac/Linux
+
+  require 'firewatir'
+
+Starting a new browser & and going to our site
+
+  browser = Watir::Browser.new
+  browser.goto("http://bit.ly/watir-example")
+
+Setting a text field
+
+  browser.text_field(:name => "entry.0.single").set "Watir"
+
+Setting a multi-line text box
+
+  browser.text_field(:name => "entry.1.single").set "I come here from Australia. \n The weather is great here."
+
+Setting and clearing a radio button
+
+  browser.radio(:value => "Watir").set
+  browser.radio(:value => "Watir").clear
+
+Setting and clearing check boxes
+
+  browser.checkbox(:value => "Ruby").set
+  browser.checkbox(:value => "Python").set
+  browser.checkbox(:value => "Python").clear
+
+Clicking a button
+
+  browser.button(:name => "logon").click
+
+Clearing, getting and selecting selection list values
+
+  browser.select_list(:name => "entry.6.single").clear
+  puts browser.select_list(:name => "entry.6.single").options
+  browser.select_list(:name => "entry.6.single").select "Chrome"
+
+Clicking a button
+
+  browser.button(:name => "submit").click
+
+Checking for text in a page
+
+  puts browser.text.include?("Your response has been recorded.")
+
+Checking the title of a page
+
+  puts browser.title == "Thanks!"

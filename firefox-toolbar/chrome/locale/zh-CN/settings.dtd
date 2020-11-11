@@ -1,0 +1,41 @@
+﻿<!ENTITY  settings.window.title                           "Facebook 工具条配置管理">
+
+<!ENTITY  settings.panel.title                            "Facebook 工具条通知设置">
+
+<!ENTITY  settings.notificationmes.enable.label           "允许弹出式窗口通知">
+
+<!-- Notifications about me section -->
+<!ENTITY  settings.notificationme.header.label            "何种情况下会出现 Facebook 通知？">
+<!ENTITY  settings.notificationme.about.label             "与我有关的通知">
+<!ENTITY  settings.notificationme.friendreq.label         "有新的朋友请求">
+<!ENTITY  settings.notificationme.message.label           "有新的站内信">
+<!ENTITY  settings.notificationme.poke.label              "有人向我打招呼">
+<!ENTITY  settings.notificationme.friend.label            "新增的朋友">
+<!ENTITY  settings.notificationme.event.label             "新的活动邀请">
+<!ENTITY  settings.notificationme.group.label             "新的圈子加入邀请">
+<!ENTITY  settings.notificationme.share.label             "新的分享">
+<!ENTITY  settings.notificationme.other.label             "所有其他类别的通知（如墙上留言、评论、赞等等）">
+
+<!-- Notifications about my friends section -->
+<!ENTITY  settings.notificationfriend.about.label         "与我朋友有关的通知">
+<!ENTITY  settings.notificationfriend.profile.label       "有朋友更新了个人主页">
+<!ENTITY  settings.notificationfriend.status.label        "有朋友更新了他的状态">
+<!ENTITY  settings.notificationfriend.albums.label        "有朋友更新了他的相册">
+<!ENTITY  settings.notificationfriend.wall.label          "有人在朋友的墙上写了东西">
+<!ENTITY  settings.notificationfriend.note.label          "有朋友发布了新文章">
+
+<!-- Other -->
+<!ENTITY  settings.notificationother.about.label          "其他通知">
+<!ENTITY  settings.notificationother.upload.label         "上传完成">
+
+<!-- Appearance -->
+<!ENTITY  settings.notification.type.label                "选择通知的样板？">
+<!ENTITY  settings.notification.native.label              "使用 Facebook 工具条通知窗口模板">
+<!ENTITY  settings.notification.firefox.label             "使用Firefox 内置的通知 (在Mac OS X 上使用 Growl)模板">
+
+<!-- Like -->
+<!ENTITY  settings.like.enable.label                      "「讚」鈕">
+<!ENTITY  settings.like.more.label                        "‎更改设置">
+
+<!-- Location Bar Search -->
+<!ENTITY  settings.awesomesearch.enable.label             "启动 Firefox 地点横条中的搜寻功能">

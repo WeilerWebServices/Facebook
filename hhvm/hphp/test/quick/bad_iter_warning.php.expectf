@@ -1,0 +1,4 @@
+start iter loop
+
+Warning: Invalid argument supplied for foreach() in %s on line 6
+end iter loop

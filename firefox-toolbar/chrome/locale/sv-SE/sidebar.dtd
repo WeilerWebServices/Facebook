@@ -1,0 +1,22 @@
+<!ENTITY  sidebar.title                     "Facebook-sidofält">
+
+<!ENTITY  sidebar.settings.label            "Inställningar">
+<!ENTITY  sidebar.sortlast.label            "Senaste 
+uppdateringen">
+<!ENTITY  sidebar.sortstatus.label          "Senaste 
+statusuppdateringen">
+<!ENTITY  sidebar.sortprofile.label         "Senaste 
+profiluppdateringen">
+<!ENTITY  sidebar.sortname.label            "Namn">
+
+<!ENTITY  sidebar.friendmessage.label       "meddelande">
+<!ENTITY  sidebar.friendpoke.label          "puffa">
+<!ENTITY  sidebar.friendpost.label          "logginlägg">
+
+<!ENTITY  toolbar.search.user.label                      "Personer">
+<!ENTITY  toolbar.search.page.label                      "Sidor">
+<!ENTITY  toolbar.search.event.label                     "Evenemang">
+<!ENTITY  toolbar.search.group.label                     "Grupper">
+<!ENTITY  toolbar.search.place.label                     "Platser">
+<!ENTITY  toolbar.search.other.label                     "Andra sökresultat">
+

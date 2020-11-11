@@ -1,0 +1,69 @@
+<Storage>
+   <ClusterName>Test Cluster</ClusterName>
+   <!-- any IPartitioner may be used, including your own
+        as long as it is on the classpath.  Out of the box,
+        Cassandra provides
+        org.apache.cassandra.dht.RandomPartitioner and
+        org.apache.cassandra.dht.OrderPreservingPartitioner.
+        Range queries require using OrderPreservingPartitioner or a subclass. -->
+   <Partitioner>org.apache.cassandra.dht.RandomPartitioner</Partitioner>
+   <RackAware>false</RackAware>
+   <MulticastChannel>230.0.0.1</MulticastChannel>
+   <ReplicationFactor>1</ReplicationFactor>
+   <ZookeeperAddress>127.0.0.1</ZookeeperAddress>
+   <RpcTimeoutInMillis>5000</RpcTimeoutInMillis>
+   <JobTrackerHost>tdsearch001.sf2p.facebook.com</JobTrackerHost>
+   <JobJarFileLocation>C:\Engagements\Cassandra-Nexus</JobJarFileLocation>
+   <ListenAddress>localhost</ListenAddress>
+   <StoragePort>7000</StoragePort>
+   <ControlPort>7001</ControlPort>
+   <ThriftPort>9160</ThriftPort>
+   <ColumnIndexSizeInKB>256</ColumnIndexSizeInKB>
+   <HttpPort>7002</HttpPort>
+   <MetadataDirectory>/var/cassandra/system</MetadataDirectory>
+   <CommitLogDirectory>/var/cassandra/commitlog</CommitLogDirectory>
+   <CommitLogRotationThresholdInMB>128</CommitLogRotationThresholdInMB>
+   <!-- 
+     The maximum amount of data to store in a memtable before flushing it to
+     disk. Note: There is one memtable per column family, and this threshold
+     is based solely on the amount of data stored, not actual heap memory
+     usage (there is some overhead in indexing the columns).
+   -->
+   <MemtableSizeInMB>64</MemtableSizeInMB>
+   <!--
+     The maximum number of columns in millions. Like MemtableSizeInMB above,
+     this is used to impose a limit on how large a memtable can grow before 
+     it is flushed to disk.
+   -->
+   <MemtableObjectCountInMillions>1</MemtableObjectCountInMillions>
+   <GangliaServers>
+     <GangliaServer>127.0.0.1:12000</GangliaServer>
+   </GangliaServers>
+   <DataFileDirectories>
+     <DataFileDirectory>/var/cassandra/data</DataFileDirectory>
+   </DataFileDirectories>
+   <CalloutLocation>/var/cassandra/callouts</CalloutLocation>
+   <BootstrapFileDirectory>/var/cassandra/bootstrap</BootstrapFileDirectory>
+   <StagingFileDirectory>/var/cassandra/staging</StagingFileDirectory>
+   <CommitLogFastSync>false</CommitLogFastSync>
+   <!-- Time to wait before garbage-collection deletion markers.
+        Set this to a large enough value that you are confident
+        that the deletion marker will be propagated to all replicas
+        by the time this many seconds has elapsed, even in the
+        face of hardware failures.  The default value is ten days. -->
+   <GCGraceSeconds>864000</GCGraceSeconds>
+   <Tables>
+     <Table Name = "Table1">
+       <ColumnFamily ColumnSort="Name" Name="Standard1"/>
+       <ColumnFamily ColumnSort="Name" Name="Standard2"/>
+       <ColumnFamily ColumnSort="Time" Name="StandardByTime1"/>
+       <ColumnFamily ColumnSort="Time" Name="StandardByTime2"/>
+       <ColumnFamily ColumnType="Super" ColumnSort="Name" Name="Super1"/>
+       <ColumnFamily ColumnType="Super" ColumnSort="Name" Name="Super2"/>
+     </Table>
+   </Tables>
+   <Seeds>
+     <!-- Add names of hosts that are deemed contact points -->
+     <Seed>127.0.0.1</Seed>
+   </Seeds>
+</Storage>

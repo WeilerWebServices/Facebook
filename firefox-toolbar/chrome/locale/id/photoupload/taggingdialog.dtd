@@ -1,0 +1,8 @@
+﻿<!ENTITY  window.title              "Beri Tanda">
+
+<!ENTITY  tag.label                 "Tandai">
+<!ENTITY  cancel.label              "Batalkan">
+<!ENTITY  tagText.label             "Ketik nama atau tandai:">
+<!ENTITY  choosePerson.label        "atau pilih orang:">
+
+

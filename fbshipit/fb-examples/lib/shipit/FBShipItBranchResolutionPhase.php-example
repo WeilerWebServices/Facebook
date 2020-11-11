@@ -1,0 +1,154 @@
+<?hh // strict
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * This file was moved from fbsource to www. View old history in diffusion:
+ * https://fburl.com/y50573nt
+ */
+namespace Facebook\ShipIt;
+
+
+use type Facebook\ShipIt\Config\RepoArcanistProject;
+
+class FBShipItBranchResolutionPhase extends ShipItPhase {
+
+  const type TRepoMetadata = shape(
+    'land_branch' => ?string,
+    'branches' => vec<string>,
+    'internal_repo' => string,
+    'arcanist_project' => ?string,
+  );
+
+  public function __construct(
+    private FBShipItConfig $configObject,
+    protected ?string $externalBranch = null,
+    private ?string $repoMetadataFile = null,
+    private ?IShipItArgumentParser $argumentParser = null,
+  ) {}
+
+  <<__Override>>
+  public function getReadableName(): string {
+    return 'Determine branch configs';
+  }
+
+  <<__Override>>
+  public function getCLIArguments(): vec<ShipItCLIArgument> {
+    return vec[
+      shape(
+        'long_name' => 'external-branch::',
+        'description' => 'Only run the config for one external branch',
+        'write' => $x ==> {
+          $this->externalBranch = $x;
+          return $this->externalBranch;
+        },
+      ),
+      shape(
+        'long_name' => 'save-repo-metadata-to::',
+        'description' => "List metadata for the repository, and exit.",
+        'write' => $x ==> {
+          $this->repoMetadataFile = $x;
+          return $this->repoMetadataFile;
+        },
+      ),
+    ];
+  }
+
+  public function getConfigObject(): FBShipItConfig {
+    return $this->configObject;
+  }
+
+  public static function getRunner(
+    FBShipItConfig $config_object,
+    FBSourceBranchConfig $branch_config,
+    ?IShipItArgumentParser $argument_parser = null,
+  ): ShipItPhaseRunner {
+    return new ShipItPhaseRunner(
+      $config_object->getManifest($branch_config),
+      $config_object->getPhases($branch_config),
+      $argument_parser,
+    );
+  }
+
+  public function getBranchConfigs(): vec<FBSourceBranchConfig> {
+    $config_object = $this->configObject;
+    $branch_configs = $config_object->getBranchConfigs();
+    if ($this->externalBranch !== null) {
+      $branch_configs = Vec\filter(
+        $branch_configs,
+        $branch_config ==>
+          $branch_config->getExternalBranch() === $this->externalBranch,
+      );
+      invariant(
+        !C\is_empty($branch_configs),
+        'No ShipIt configuration found for external branch: %s',
+        $this->externalBranch,
+      );
+      invariant(
+        C\count($branch_configs) === 1,
+        'Multiple internal configs found for external branch: %s',
+        $this->externalBranch,
+      );
+    }
+    return $branch_configs;
+  }
+
+  public function getRepoMetadata(): self::TRepoMetadata {
+    $config_object = $this->configObject;
+    $branch_configs = $this->getBranchConfigs();
+    $internal_repo = $config_object->getStaticConfig()['internalRepo'];
+    if (
+      C\contains(
+        RepoArcanistProject::getNotInArcanistExceptions(),
+        $internal_repo,
+      )
+    ) {
+      $arcanist_project = null;
+    } else {
+      $arcanist_project = RepoArcanistProject::getArcanistProject(
+        $internal_repo,
+      );
+    }
+    return shape(
+      'land_branch' => $config_object->getLandBranch(),
+      'branches' => Vec\map(
+        $branch_configs,
+        $branch_config ==> $branch_config->getExternalBranch(),
+      ),
+      'internal_repo' => $internal_repo,
+      'arcanist_project' => $arcanist_project,
+    );
+  }
+
+  <<__Override>>
+  public function runImpl(ShipItManifest $_manifest): void {
+    $config_object = $this->configObject;
+    $branch_configs = $this->getBranchConfigs();
+    if ($this->repoMetadataFile !== null) {
+      /* HH_IGNORE_ERROR[2049] __PHPStdLib */
+      /* HH_IGNORE_ERROR[4107] __PHPStdLib */
+      \file_put_contents(
+        $this->repoMetadataFile,
+        \json_encode($this->getRepoMetadata()),
+      );
+      throw new ShipItExitException(0);
+    }
+    foreach ($branch_configs as $branch_config) {
+      ShipItLogger::out(
+        "--- Running for branch: (%s, %s)\n",
+        $branch_config->getInternalBranch(),
+        $branch_config->getExternalBranch(),
+      );
+      $runner = static::getRunner(
+        $config_object,
+        $branch_config,
+        $this->argumentParser,
+      );
+      $runner->run();
+    }
+  }
+}

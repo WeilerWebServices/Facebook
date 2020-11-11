@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+  @font-face { font-family: font; src: url(https:); }
+  </style>
+</head>
+<body>
+<script>
+  var rules, style, styles;
+
+  styles = document.styleSheets;
+  style = styles[ styles.length -1 ];
+  rules = style && (style.cssRules[ 0 ] || (style.rules && style.rules[ 0 ])) || { cssText: "" };
+
+
+  top.postMessage(JSON.stringify({
+    which: "fontface",
+    results: [
+      {
+        desc: "font-face supported",
+        result: /^@font-face /i.test( rules.cssText )
+      }
+    ]
+  }), "*");
+</script>
+</body>
+</html>

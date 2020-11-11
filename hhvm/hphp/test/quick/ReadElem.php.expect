@@ -1,0 +1,11 @@
+10
+20
+30
+Out of bounds varray access: invalid index 3
+Invalid varray key: expected a key of type int, string given
+Invalid varray key: expected a key of type int, string given
+a
+b
+c
+a
+a

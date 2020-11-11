@@ -1,0 +1,12 @@
+[run]
+branch = True
+omit =
+  tests/*
+  sparts/gen/*
+
+[report]
+exclude_lines =
+  # Have to re-enable the standard pragma
+  pragma: no cover
+
+  raise NotImplementedError

@@ -1,0 +1,63 @@
+=== IFC analysis results for vec.php
+Analyzing \empty:
+* pc: pc
+* This: None
+* Return: vec<<key> => <ret>; |len|>
+* Exception: \Exception<exn, exn_lump>
+* Params:
+  {}
+* Final environment:
+  Deps: {}
+  Constraints:
+    [4:3-16] key'1 < key, Vec < ret, len'1 < len
+  Locals:
+    {}
+
+Analyzing \collection:
+* pc: pc
+* This: None
+* Return: vec<<key> => <ret>; |len|>
+* Exception: \Exception<exn, exn_lump>
+* Params:
+  {}
+* Final environment:
+  Deps: {}
+  Constraints:
+    [8:3-29] lit < Vec, lit'1 < Vec, key'1 < key, Vec < ret, len'1 < len
+  Locals:
+    {}
+
+Analyzing \add:
+* pc: pc
+* This: None
+* Return: <ret>
+* Exception: \Exception<exn, exn_lump>
+* Params:
+  { $vec -> vec<<key> => <$vec>; |len|> }
+* Final environment:
+  Deps: {}
+  Constraints:
+    [12:3-14]
+      key < weak, $vec < weak'1, len < weak'2, lit < weak'1, weak < key'1,
+      weak'1 < $vec'1, weak'2 < len'1
+  Locals:
+    { $vec -> vec<<key'1> => <$vec'1>; |len'1|> }
+
+Analyzing \retElem:
+* pc: pc
+* This: None
+* Return: <ret>
+* Exception: \Exception<exn, exn_lump>
+* Params:
+  { $vec -> vec<<key> => <$vec>; |len|> }
+* Final environment:
+  Deps: {}
+  Constraints:
+    [16:3-18]
+      lit < key, OutOfBoundsException_lump = exn_lump,
+      OutOfBoundsException < exn, len < exn, lit < exn, $vec < ret,
+      len < ret, lit < ret
+  Locals:
+    { $vec -> vec<<key> => <$vec>; |len|> }
+    pc: len, lit
+

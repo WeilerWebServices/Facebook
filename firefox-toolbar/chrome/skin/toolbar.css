@@ -1,0 +1,447 @@
+#facebook-toolbar-toggle
+{
+    -moz-image-region: rect(0 16px 16px 0);
+    list-style-image: url("chrome://facebook/skin/images/fbfavicon.png");
+}
+
+toolbar[iconsize="small"] #facebook-toolbar-toggle
+{
+    -moz-image-region: rect(0 16px 16px 0);
+    list-style-image: url("chrome://facebook/skin/images/fbfavicon.png");
+}
+
+/* Toolbar buttons */
+#facebook-toolbar[mode="icons"] .toolbarbutton-text {
+  /* don't let the customize toolbar settings blow away our labels */
+  display: -moz-box;
+}
+
+#facebook-toolbar[mode="text"] .toolbarbutton-icon {
+  /* don't let the customize toolbar settings blow away our icons */
+  display: -moz-box;
+}
+
+.button {
+  padding-right: 4px !important;
+}
+
+.button:hover label {
+  color: #3b5998;
+}
+
+.button[disabled=true]:hover label {
+  color: inherit;
+}
+
+.button:active label {
+  color: #2f4778;
+}
+
+/* Disabled state for all buttons */
+toolbarbutton.facebook-toolbar-button[disabled=true] {
+  list-style-image: url('chrome://facebook/skin/images/toolbar-disabled.png');
+}
+
+.facebook-icon-share ,
+.facebook-notification,
+#facebook-searchbox,
+.facebook-sidebar-icon image {
+  list-style-image: url('chrome://facebook/skin/images/toolbar.png');
+  padding: 0px;
+}
+
+.facebook-sidebar-icon[disabled=true] image {
+  list-style-image: url('chrome://facebook/skin/images/toolbar-disabled.png');
+}
+
+#facebook-login-status[status="waiting"],
+#facebook-like-loading {
+  list-style-image: url('chrome://facebook/skin/images/throbber.gif');
+}
+
+#facebook-like-noload {
+  list-style-image: url('chrome://facebook/skin/images/t_small.jpg');
+}
+
+.facebook-friendlinks {
+  padding-left: 6px;
+}
+
+.facebook-friendlinks toolbarbutton {
+  border: 0px;
+  list-style-image: url('chrome://facebook/skin/images/toolbar.png');
+  margin: 0px;
+  padding: 0px;
+}
+
+.facebook-sidebar-icon {
+  -moz-image-region: rect(0px 287px 16px 268px);
+  margin-left: 5px;
+}
+
+.facebook-sidebar-icon .toolbarbutton-text {
+  margin: 0;
+  padding: 0;
+}
+
+#facebook-toolbar-status {
+  max-width: 400px;
+  min-width: 100px;
+  border: none !important;
+}
+
+#facebook-toolbar-status .textbox-input-box {
+  padding: 0px;
+}
+
+#facebook-toolbar-status .textbox-input {
+  border: none !important;
+}
+
+/* Doesn't appear to be working OR the border is somewhere else, e.g. item nested in textbox binding 
+textbox[focused="true"] #facebook-toolbar-status {
+  border: none !important;
+}
+*/
+
+#facebook-search {
+  color: #808080;
+}
+
+#facebook-search .textbox-input-box {
+  -moz-binding: url('chrome://facebook/content/bindings.xml#facebook-search-hbox');
+  padding: 0px;
+}
+
+#facebook-search image {
+  -moz-image-region: rect(0px 64px 15px 48px);
+  height: 15px;
+  margin: 1px 0;
+  width: 16px;
+}
+
+#facebook-search .textbox-input {
+  border: none !important;
+  padding-left: 3px!important;
+}
+
+#facebook-toolbar .typeahead_placeholder {
+  color: #777;
+}
+
+#facebook-link-menu > .toolbarbutton-menu-dropmarker {
+  padding: 0 5px 0 5px;
+}
+
+.facebook-notification {
+  padding: 0px 5px;
+  margin: 0px;
+}
+
+.facebook-notification > .toolbarbutton-icon {
+  padding: 0px 5px 0px 0px;
+  margin: 0px;
+}
+
+.facebook-notification > .toolbarbutton-text {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* -- Pokes -- */
+.facebook-icon-poke:hover {
+  -moz-image-region: rect(0px 188px 14px 172px);
+}
+
+.facebook-icon-poke:active {
+  -moz-image-region: rect(0px 236px 14px 220px);
+}
+
+.facebook-icon-poke, .facebook-icon-poke[label="0"], .facebook-icon-poke[label="?"] {
+  -moz-image-region: rect(0px 16px 14px 0px);
+}
+
+.facebook-icon-like {
+  -moz-image-region: rect(0px 489px 14px 473px);
+}
+
+/* -- Friend Reqs -- */
+.facebook-icon-reqs:hover {
+  -moz-image-region: rect(0px 204px 14px 188px);
+}
+
+.facebook-icon-reqs:active {
+  -moz-image-region: rect(0px 252px 14px 236px);
+}
+
+.facebook-icon-reqs {
+  margin: 0px;
+  -moz-image-region: rect(0px 32px 14px 16px);
+}
+
+/* -- Messages -- */
+.facebook-icon-msgs:hover {
+  -moz-image-region: rect(0px 220px 14px 204px);
+}
+
+.facebook-icon-msgs:active {
+  -moz-image-region: rect(0px 268px 14px 252px);
+}
+
+.facebook-icon-msgs {
+  margin: 0px;
+  -moz-image-region: rect(0px 48px 14px 32px);
+}
+
+/* -- Events -- */
+.facebook-icon-evts:hover,
+.facebook-icon-evts:active {
+  -moz-image-region: rect(0px 347px 16px 332px);
+}
+
+.facebook-icon-evts {
+  margin: 0px;
+  -moz-image-region: rect(0px 332px 16px 317px);
+}
+
+/* -- Groups -- */
+.facebook-icon-grps:hover,
+.facebook-icon-grps:active {
+  -moz-image-region: rect(0px 379px 16px 363px);
+}
+
+.facebook-icon-grps {
+  margin: 0px;
+  -moz-image-region: rect(0px 363px 16px 347px);
+}
+
+/* -- Home -- */
+.facebook-icon-home {
+  list-style-image: url('chrome://facebook/skin/images/toolbar.png');
+  padding-left: 4px;
+  border: 0;
+  -moz-image-region: rect(0px 424px 16px 409px);
+}
+
+.facebook-icon-home:active,
+.facebook-icon-home:hover
+{
+  -moz-image-region: rect(0px 440px 16px 425px);
+}
+
+.facebook-icon-home .toolbarbutton-text,
+.facebook-icon-home label
+{
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
+/* somewhat annoying because these guys could be used as quick links */
+.facebook-notification[label="0"]{
+  display: none;
+}
+
+toolbarpaletteitem[place="toolbar"] .facebook-notification[label="0"] {
+  display: -moz-box;
+}
+
+.facebook-notification[label="?"] label {
+  color: #000!important;
+}
+
+.facebook-icon-share {
+  padding-left: 4px;
+  margin-left: 2px;
+  -moz-image-region: rect(0px 109px 14px 97px);
+}
+
+.facebook-icon-share:hover {
+  -moz-image-region: rect(0px 154px 14px 142px);
+}
+
+/* Upload */
+.facebook-icon-photoupload {
+  list-style-image: url('chrome://facebook/skin/images/toolbar.png');
+  padding: 0px 5px;
+  border: 0;
+  margin: 0;
+  -moz-image-region: rect(0 456px 16px 440px);
+}
+
+.facebook-icon-photoupload:hover {
+  -moz-image-region: rect(0 473px 16px 457px);
+}
+
+.facebook-icon-wall {
+  -moz-image-region: rect(0px 302px 16px 287px);
+}
+
+.facebook-icon-wall:hover {
+  -moz-image-region: rect(0px 317px 16px 302px);
+}
+
+.facebook-login-button .toolbarbutton-text {
+  padding-right: 5px;
+}
+
+#facebook-name-info {
+  padding-right: 6px;
+  margin-right: 0px;
+}
+
+#facebook-login-status {
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 0px;
+  margin-right: 4px;
+}
+
+.facebook-link {
+  cursor: pointer;
+  color: #3B5998;
+}
+
+.facebook-link:hover {
+  text-decoration: underline;
+}
+
+.emptyBox {
+  -moz-binding: url('chrome://facebook/content/bindings.xml#emptyBox');
+  padding: 5px;
+}
+
+.facebook-search-result {
+  -moz-binding: url('chrome://facebook/content/bindings.xml#searchResultBox');
+  padding: 6px;
+  margin: 0px;
+  -moz-box-align: start;
+  -moz-box-pack: start;
+}
+
+.popupFriendBox, .friendBox {
+  -moz-binding: url('chrome://facebook/content/bindings.xml#friendBox');
+  -moz-box-align: start;
+  -moz-box-pack: start;
+  padding: 6px;
+  margin: 0px;
+  /* background-color: magenta; TEST */
+}
+.popupFriendBox .facebook-friendlinks {
+  display: none;
+}
+
+#PopupMessager {
+  -moz-binding: url('chrome://facebook/content/bindings.xml#popupMessager');
+  padding: 5px;
+  margin: 0px;
+}
+#PopupPoster {
+  -moz-binding: url('chrome://facebook/content/bindings.xml#popupPoster');
+  padding: 5px;
+  margin: 0px;
+}
+
+.status {
+   color: #333333;
+   font-size: 11px;
+/* background-color: #999; TEST */
+}
+
+.stime {
+   color: #999999;
+   font-size: 10px;
+   margin-bottom: 3px;
+/* background-color: #333; TEST */
+}
+
+.ptime {
+   font-size: 10px;
+   margin-bottom: 3px;
+/* background-color: yellow; TEST */
+}
+
+.user_name {
+   margin-bottom: 5px;
+   font-weight: bold;
+}
+
+.friend-image {
+   min-width: 50px;
+}
+
+.mini-link {
+   font-size: 9px;
+   padding: 0px;
+   margin: 0px;
+}
+
+#FacebookHint, #FacebookSearchAll {
+  overflow:hidden;
+  color: #808080;
+  padding: 5px;
+}
+
+/* Add separators between each friend box */
+#PopupFacebookFriends richlistitem,
+#SidebarFriendsList richlistitem {
+  padding: 3px;
+  margin: 0px;
+  border-bottom: 1px solid #b1bdd6;
+}
+#PopupFacebookFriends richlistitem:last-child,
+#SidebarFriendsList richlistitem:last-child {
+  border-bottom: none;
+}
+
+#PopupFacebookFriends richlistitem[selected=true],
+#PopupFacebookFriends richlistitem[selected=true] .facebook-link,
+#PopupFacebookFriends richlistitem[selected=true] .stime,
+#PopupFacebookFriends richlistitem[selected=true] .status,
+#SidebarFriendsList richlistitem[selected=true],
+#SidebarFriendsList richlistitem[selected=true] .facebook-link,
+#SidebarFriendsList richlistitem[selected=true] .stime,
+#SidebarFriendsList richlistitem[selected=true] .status,
+#FacebookHint[selected=true],
+#FacebookSearchAll[selected=true] {
+    background-color: Highlight;
+    color: HighlightText;
+}
+
+#PopupFacebookFriendsList,
+#PopupFacebookFriends
+{
+    overflow: hidden;
+}
+
+.facebook-search-result-label
+{
+    max-width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.facebook-listheader
+{
+    background-color: #CCCCCC;
+}
+
+/* Custom popup alerts */
+.notifier-image {
+  margin: 2px 5px 0px 5px;
+}
+
+.notifier-title {
+   color: #3B5998;
+   font-weight: bold;
+   border-bottom: solid 1px #D8DFEA;
+   padding-bottom: 4px;
+   margin: 5px 5px 6px 5px;
+}
+
+.notifier-text {
+   color: #333333;
+   width: 140px;
+   margin: 5px 5px 10px 5px;
+}

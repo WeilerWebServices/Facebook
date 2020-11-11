@@ -1,0 +1,3 @@
+SUBDIRS = syncdaemon src
+
+CLEANFILES =

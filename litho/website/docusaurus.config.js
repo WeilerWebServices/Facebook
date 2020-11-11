@@ -1,0 +1,158 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+const {fbContent, fbInternalOnly} = require('internaldocs-fb-helpers');
+
+const repoUrl = 'https://github.com/facebook/litho';
+const siteTitle = fbContent({internal: 'Litho @FB', external: 'Litho'});
+
+module.exports = {
+  onBrokenLinks: 'throw',
+  title: siteTitle,
+  tagline: 'A declarative UI framework for Android',
+  url: fbContent({
+    internal: 'https://litho.thefacebook.com',
+    external: 'https://fblitho.com',
+  }),
+  baseUrl: '/',
+  favicon: 'images/favicon.png',
+  organizationName: 'facebook',
+  projectName: 'litho',
+  themeConfig: {
+    navbar: {
+      title: siteTitle,
+      logo: {
+        alt: 'Litho Logo',
+        src: 'images/logo.svg',
+      },
+      items: [
+        {
+          label: 'Docs',
+          to: 'docs/getting-started',
+          position: 'right',
+        },
+        {
+          label: 'API',
+          to: 'pathname:///javadoc',
+          position: 'right',
+        },
+        {
+          label: 'Tutorial',
+          to: 'docs/tutorial',
+          position: 'right',
+        },
+        {
+          label: 'GitHub',
+          href: repoUrl,
+          position: 'right',
+        },
+      ],
+    },
+    footer: {
+      style: 'dark',
+      logo: {
+        alt: 'Facebook Open Source Logo',
+        src: 'images/oss_logo.png',
+        href: 'https://opensource.facebook.com',
+      },
+      links: [
+        {
+          title: 'Learn',
+          items: [
+            {
+              label: 'Getting Started',
+              to: 'docs/getting-started',
+            },
+            {
+              label: 'API',
+              to: 'pathname:///javadoc',
+            },
+          ],
+        },
+        {
+          title: 'Open Source',
+          items: [
+            {
+              label: 'How To Contribute',
+              to: 'docs/contributing',
+            },
+            {
+              label: 'Open Source Projects',
+              href: 'https://opensource.facebook.com',
+            },
+          ],
+        },
+        {
+          title: 'Legal',
+          items: [
+            {
+              label: 'Privacy',
+              href: 'https://opensource.facebook.com/legal/privacy',
+            },
+            {
+              label: 'Terms',
+              href: 'https://opensource.facebook.com/legal/terms',
+            },
+          ],
+        },
+        {
+          title: 'Social',
+          items: [
+            {
+              label: 'Github',
+              href: repoUrl,
+            },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/fblitho',
+            },
+          ],
+        },
+      ],
+      // Please do not remove the credits, help to publicize Docusaurus :)
+      copyright: `Copyright © ${new Date().getFullYear()} Facebook, Inc.`,
+    },
+    colorMode: {
+      // Current CSS doesn't have high contrast so it needs some work before being enabled.
+      defaultMode: 'light',
+      disableSwitch: true,
+    },
+    algolia: {
+      apiKey: '6502239eccd45af18518695c2b743307',
+      indexName: 'fblitho',
+    },
+    prism: {
+      theme: require('prism-react-renderer/themes/github'),
+      darkTheme: require('prism-react-renderer/themes/dracula'),
+      additionalLanguages: ['groovy', 'kotlin'],
+    },
+  },
+  plugins: ['docusaurus-plugin-sass', require.resolve('docusaurus-plugin-internaldocs-fb')],
+  presets: [
+    [
+      '@docusaurus/preset-classic',
+      {
+        docs: {
+          sidebarPath: require.resolve('./sidebars.js'),
+          editUrl: 'https://github.com/facebook/litho/edit/master/website/',
+        },
+        theme: {
+          customCss: require.resolve('./src/css/custom.scss'),
+        },
+      },
+    ],
+  ],
+};

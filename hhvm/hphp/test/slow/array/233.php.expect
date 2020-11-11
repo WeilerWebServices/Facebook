@@ -1,0 +1,7 @@
+varray(3) {
+  int(1)
+  int(2)
+  varray(1) {
+    int(2)
+  }
+}

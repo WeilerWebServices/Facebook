@@ -1,0 +1,29 @@
+Archived Repo
+=============
+
+**This is an archived project and is no longer supported or updated by Facebook. Please do not file issues or pull-requests against this repo. If you wish to continue to develop this code yourself, we recommend you fork it.**
+
+**Proceed and be bold!**
+
+Three20
+=======
+
+What now?
+------
+
+If you updated to this revision by accident (e.g. a git pull), you might want to switch back to the
+version you had before (`git checkout cc672132ab`). 
+
+Three20 still compiles and seems to work on iOS6, so there's no immediate need to remove everything now. 
+Still, as the library is not maintained anymore, it might be a good time to replace it.
+
+Lots of Three20's helpers are not needed anymore, as they are now present right in iOS.
+For other parts there are some really good replacement available. 
+If you're searching for a full replacement, [NimbusKit](http://nimbuskit.info) might help, they even provide a [migration guide](http://wiki.nimbuskit.info/Three20-Migration-Guide).
+
+Links
+------
+
+[Three20 Mailing List](http://groups.google.com/group/three20/)
+
+[Three20 Tagged Questions on StackOverflow](http://stackoverflow.com/questions/tagged/three20)

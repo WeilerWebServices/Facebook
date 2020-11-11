@@ -1,0 +1,254 @@
+varray(7) {
+  darray(6) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(9)
+    ["function"]=>
+    string(3) "foo"
+    ["class"]=>
+    string(1) "A"
+    ["type"]=>
+    string(2) "::"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(7) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(15)
+    ["function"]=>
+    string(3) "bar"
+    ["class"]=>
+    string(1) "A"
+    ["object"]=>
+    object(A) (0) {
+    }
+    ["type"]=>
+    string(2) "->"
+    ["args"]=>
+    varray(3) {
+      int(1)
+      string(3) "str"
+      varray(3) {
+        int(1)
+        int(2)
+        int(3)
+      }
+    }
+  }
+  darray(2) {
+    ["function"]=>
+    string(3) "bar"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(20)
+    ["function"]=>
+    string(14) "call_user_func"
+    ["args"]=>
+    varray(1) {
+      string(3) "bar"
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(29)
+    ["function"]=>
+    string(3) "foo"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(35)
+    ["function"]=>
+    string(4) "main"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(2) {
+    ["function"]=>
+    string(26) "entrypoint_debug_backtrace"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(7) {
+  darray(6) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(9)
+    ["function"]=>
+    string(3) "foo"
+    ["class"]=>
+    string(1) "A"
+    ["type"]=>
+    string(2) "::"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(5) {
+    ["function"]=>
+    string(3) "bar"
+    ["class"]=>
+    string(1) "A"
+    ["object"]=>
+    object(A) (0) {
+    }
+    ["type"]=>
+    string(2) "->"
+    ["args"]=>
+    varray(3) {
+      int(1)
+      int(2)
+      NULL
+    }
+  }
+  darray(2) {
+    ["function"]=>
+    string(3) "bar"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(20)
+    ["function"]=>
+    string(14) "call_user_func"
+    ["args"]=>
+    varray(1) {
+      string(3) "bar"
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(29)
+    ["function"]=>
+    string(3) "foo"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(35)
+    ["function"]=>
+    string(4) "main"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(2) {
+    ["function"]=>
+    string(26) "entrypoint_debug_backtrace"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}
+varray(7) {
+  darray(6) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(9)
+    ["function"]=>
+    string(3) "foo"
+    ["class"]=>
+    string(1) "A"
+    ["type"]=>
+    string(2) "::"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(5) {
+    ["function"]=>
+    string(3) "bar"
+    ["class"]=>
+    string(1) "A"
+    ["object"]=>
+    object(A) (0) {
+    }
+    ["type"]=>
+    string(2) "->"
+    ["args"]=>
+    varray(3) {
+      int(1)
+      int(2)
+      NULL
+    }
+  }
+  darray(2) {
+    ["function"]=>
+    string(3) "bar"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(20)
+    ["function"]=>
+    string(14) "call_user_func"
+    ["args"]=>
+    varray(1) {
+      string(3) "bar"
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(29)
+    ["function"]=>
+    string(3) "foo"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(4) {
+    ["file"]=>
+    string(%d) "%s"
+    ["line"]=>
+    int(35)
+    ["function"]=>
+    string(4) "main"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+  darray(2) {
+    ["function"]=>
+    string(26) "entrypoint_debug_backtrace"
+    ["args"]=>
+    varray(0) {
+    }
+  }
+}

@@ -1,0 +1,19 @@
+﻿<!ENTITY  sidebar.title                     "شريط فيس بوك الجانبي">
+
+<!ENTITY  sidebar.settings.label            "الإعدادات">
+<!ENTITY  sidebar.sortlast.label            "وقت التحديث الأخير">
+<!ENTITY  sidebar.sortstatus.label          "وقت تحديث الحالة">
+<!ENTITY  sidebar.sortprofile.label         " وقت تحديث الصفحة الشخصية">
+<!ENTITY  sidebar.sortname.label            "اسم">
+
+<!ENTITY  sidebar.friendmessage.label       "رسالة">
+<!ENTITY  sidebar.friendpoke.label          "نكزة">
+<!ENTITY  sidebar.friendpost.label          "منشور حائط">
+
+<!ENTITY  toolbar.search.user.label                      "الأشخاص">
+<!ENTITY  toolbar.search.page.label                      "الصفحات">
+<!ENTITY  toolbar.search.event.label                     "المناسبات">
+<!ENTITY  toolbar.search.group.label                     "المجموعات">
+<!ENTITY  toolbar.search.place.label                     "الأماكن">
+<!ENTITY  toolbar.search.other.label                     "نتائج أخرى">
+

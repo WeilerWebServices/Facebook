@@ -1,0 +1,9 @@
+/* indent everything inside a top-level groupbox, for visual clue to grouping
+ */
+.indent {
+    margin-left: 10px;
+}
+
+.left-flat {
+    margin-left: -3px;
+}

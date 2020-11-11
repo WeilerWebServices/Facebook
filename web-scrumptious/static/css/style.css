@@ -1,0 +1,95 @@
+@media only screen and (max-width: 480px) {
+  .facebook-name {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+}
+.navbar {
+  min-height: 55px;
+  margin-bottom: 0;
+}
+.navbar-btn {
+  margin-top: 14px;
+  margin-bottom: 15px;
+}
+.meal {
+  line-height: 1.358;
+}
+#meal-listings .meal {
+  min-height: 400px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#meal-listings h2 {
+  padding-top: 10px;
+}
+#meal-listings p {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+#meal-listings p a {
+  color: inherit;
+  cursor: text;
+  text-decoration: none;
+}
+#meal-listings p a.btn {
+  cursor: pointer;
+}
+#meal-listings h2,
+#meal-listings p {
+  overflow: hidden;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  margin-left: 12px;
+  margin-right: 56px;
+}
+#meal-listings h2 a,
+#meal-listings h2 a:visited {
+  color: inherit;
+}
+#meal-listings .caption {
+  min-height: 110px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-font-smoothing: antialiased;
+}
+#composer-message-data:before {
+  content: " - ";
+}
+#composer-message-data .friend:after {
+  content: ", ";
+}
+#composer-message-data .friend:last-child:after {
+  content: "";
+}
+#composer-friends-group-fields .friend {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 0;
+  padding-left: 5px;
+  background-color: #dee7f8;
+  border-color: #a4bdec;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  color: #18559D;
+}
+#composer-friends-group-fields .friend:hover {
+  background-color: #bbcef1;
+}
+#composer-friends-group-fields .friend a,
+#composer-friends-group-fields .friend button {
+  text-decoration: none;
+}
+#composer-friends-group-fields button {
+  color: #627aad;
+  padding: 0 4px;
+  line-height: inherit;
+  padding-bottom: 3px;
+}

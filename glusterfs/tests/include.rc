@@ -1,0 +1,245 @@
+M0=${M0:=/mnt/glusterfs/0};   # 0th mount point for FUSE
+M1=${M1:=/mnt/glusterfs/1};   # 1st mount point for FUSE
+N0=${N0:=/mnt/nfs/0};         # 0th mount point for NFS
+N1=${N1:=/mnt/nfs/1};         # 1st mount point for NFS
+V0=${V0:=patchy};             # volume name to use in tests
+B0=${B0:=/d/backends};        # top level of brick directories
+H0=${H0:=`hostname --fqdn`};  # hostname
+DEBUG=${DEBUG:=0}             # turn on debugging?
+statedumpdir=`gluster --print-statedumpdir`; # Default directory for statedump
+
+CLI="gluster --mode=script";
+
+mkdir -p $B0;
+mkdir -p $M0 $M1;
+mkdir -p $N0 $N1;
+
+testcnt=`egrep '^[[:space:]]*(EXPECT|TEST|EXPECT_WITHIN|EXPECT_KEYWORD)[[:space:]]' $0 | wc -l`
+expect_tests=`egrep '^[[:space:]]*TESTS_EXPECTED_IN_LOOP[[:space:]]*' $0`
+
+x_ifs=$IFS
+IFS=$'\n'
+for line in $expect_tests; do
+	expect_tests=`echo $line | cut -f 2 -d =`
+	testcnt=`expr $testcnt + $expect_tests`
+done
+IFS=$x_ifs
+
+echo 1..$testcnt
+
+t=1
+
+function dbg()
+{
+	[ "x$DEBUG" = "x0" ] || echo "$*" >&2;
+}
+
+
+function test_header()
+{
+	dbg "=========================";
+	dbg "TEST $t (line $TESTLINE): $*";
+}
+
+
+function test_footer()
+{
+	RET=$?
+        local err=$1
+
+	if [ $RET -eq 0 ]; then
+	     	echo "ok $t";
+	else
+                echo "not ok $t $err";
+		if [ "$EXIT_EARLY" = "1" ]; then
+			exit $RET
+		fi
+	fi
+
+	dbg "RESULT $t: $RET";
+
+	t=`expr $t + 1`;
+}
+
+function test_expect_footer()
+{
+        local e=$1
+        local a=$2
+        local err=""
+
+        if [ "x${e}" != "x${a}" ]; then
+                err="Got \"$a\" instead of \"$e\""
+        fi
+        [[ "x${e}" == "x${a}" ]];
+        test_footer "$err";
+}
+
+function _EXPECT()
+{
+	TESTLINE=$1;
+	shift;
+        local a=""
+
+	test_header "$@";
+
+	e="$1";
+	shift;
+	a=$("$@" | tail -1)
+
+	test_expect_footer "$e" "$a";
+}
+
+function _EXPECT_KEYWORD()
+{
+	TESTLINE=$1;
+	shift;
+
+	test_header "$@";
+
+	e="$1";
+	shift;
+	"$@" | tail -1 | grep -q "$e"
+
+	test_footer;
+}
+
+
+function _TEST()
+{
+	TESTLINE=$1;
+	shift;
+        local redirect=""
+
+	test_header "$@";
+
+        if [ "$1" = "!" ]; then
+                redirect="2>&1"
+        fi
+
+	eval "$@" >/dev/null $redirect
+
+	test_footer;
+}
+
+function _EXPECT_WITHIN()
+{
+        TESTLINE=$1
+        shift;
+
+        local timeout=$1
+        shift;
+
+        test_header "$@"
+
+        e=$1;
+        shift;
+
+        local endtime=$(( ${timeout}+`date +%s` ))
+
+        local success=0
+        while [ `date +%s` -lt $endtime ]; do
+                ("$@") | tail -1 | egrep -q "^${e}\$"
+
+                local pipestatus=(${PIPESTATUS[@]})
+
+                ## Check command success
+                if [ ${pipestatus[0]} -ne 0 ]; then
+                        break;
+                fi
+
+                ## Check match success
+                if [ ${pipestatus[2]} -eq 0 ]; then
+                        success=1;
+                        break;
+                fi
+                sleep 1;
+        done
+
+        if [ $success -eq 1 ]; then
+                true;
+        else
+                false;
+        fi
+
+        test_footer;
+}
+
+
+function SKIP_TESTS()
+{
+        dbg "Skipping tests $t-$testcnt";
+        while [ $t -le $testcnt ]; do
+                true ; test_footer;
+        done
+}
+
+
+function _TEST_IN_LOOP()
+{
+	testcnt=`expr $testcnt + 1`;
+	_TEST $@
+}
+
+
+function cleanup()
+{
+	killall -15 glusterfs glusterfsd glusterd 2>/dev/null || true;
+	killall -9 glusterfs glusterfsd glusterd 2>/dev/null || true;
+
+        MOUNTPOINTS=`mount | grep "$B0/" | awk '{print $3}'`
+        for m in $MOUNTPOINTS;
+        do
+                umount $m
+        done
+
+
+        LOOPDEVICES=`losetup -a | grep "$B0/" | awk '{print $1}' | tr -d :`
+        for l in $LOOPDEVICES;
+        do
+                losetup -d $l
+        done
+
+
+	rm -rf /var/lib/glusterd/* $B0/* /etc/glusterd/*;
+
+	umount -l $M0 2>/dev/null || true;
+	umount -l $M1 2>/dev/null || true;
+	umount -l $N0 2>/dev/null || true;
+	umount -l $N1 2>/dev/null || true;
+}
+
+function volinfo_field()
+{
+    local vol=$1;
+    local field=$2;
+
+    $CLI volume info $vol | grep "^$field: " | sed 's/.*: //';
+}
+
+function cleanup_tester ()
+{
+    local exe=$1
+    rm -f $exe
+}
+
+function build_tester ()
+{
+    local cfile=$1
+    local fname=$(basename "$cfile")
+    local ext="${fname##*.}"
+    local execname="${fname%.*}"
+    gcc -g -o $(dirname $cfile)/$execname $cfile
+}
+
+function process_leak_count ()
+{
+    local pid=$1;
+    return $(ls -lh /proc/$pid/fd | grep "(deleted)"| wc -l)
+}
+
+alias EXPECT='_EXPECT $LINENO'
+alias TEST='_TEST $LINENO'
+alias EXPECT_WITHIN='_EXPECT_WITHIN $LINENO'
+alias EXPECT_KEYWORD='_EXPECT_KEYWORD $LINENO'
+alias TEST_IN_LOOP='_TEST_IN_LOOP $LINENO'
+shopt -s expand_aliases

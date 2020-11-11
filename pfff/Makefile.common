@@ -1,0 +1,170 @@
+# -*- makefile -*-
+
+##############################################################################
+# Prelude 
+##############################################################################
+
+# This file assumes the "includer" has set a few variables and then has done a
+# include Makefile.common. Here are those variables:
+#  - TOP
+#  - SRC
+#  - INCLUDEDIRS
+
+# For literate programming, it also assumes a few variables:
+#  - SRCNW
+#  - TEXMAIN
+#  - TEX
+
+# For (un)installation, it assumes:
+#  - LIBNAME
+
+# this can set extra flags like -bin-annot that we want to be everywhere
+-include $(TOP)/Makefile.config
+# this can set extra flags like -warn-error
+-include $(TOP)/Makefile.user
+
+##############################################################################
+# Generic variables
+##############################################################################
+
+INCLUDES?=$(INCLUDEDIRS:%=-I %) $(SYSINCLUDES)
+
+OBJS?=    $(SRC:.ml=.cmo)
+OPTOBJS?= $(SRC:.ml=.cmx)
+
+
+##############################################################################
+# Generic ocaml variables
+##############################################################################
+
+#dont use -custom, it makes the bytecode unportable.
+
+#-4  allow | _ patterns in match
+#-6  allow omit labels
+#-29 alow multiline strings
+#-45 allow shadowing open (TODO: fix them though)
+#-41 allow ambiguous constructor in 2 opned modules (TODO: fix them though)
+#-44 allow shadow module identifier (TODO: fix them)
+#-48 allow eliminating optional arguments, unclear how to fix without wide
+#    changes
+ifeq "$(wildcard $(TOP)/.git)" ""
+WARNING_FLAGS?=-w +A-4-29-6-45-41-44-48
+else
+WARNING_FLAGS?=-w +A-4-29-6-45-41-44-48
+endif
+
+OCAMLCFLAGS=-g -thread -dtypes $(WARNING_FLAGS) $(OCAMLCFLAGS_EXTRA) 
+
+# This flag is also used in subdirectories so don't change its name here
+# the -w y is to silence errors on the visitor_xxx files with the unused
+# variable false positive
+OPTFLAGS?=-thread -g -w y
+
+OCAMLC=ocamlc$(OPTBIN) $(OCAMLCFLAGS) $(PP) $(INCLUDES)
+OCAMLOPT=ocamlopt$(OPTBIN) $(OPTFLAGS) $(PP) $(INCLUDES)
+OCAMLLEX=ocamllex #-ml # -ml for debugging lexer, but slightly slower
+OCAMLYACC=ocamlyacc -v
+OCAMLDEP=ocamldep $(PP) $(INCLUDES)
+OCAMLMKTOP=ocamlmktop -g -custom $(INCLUDES) -thread
+
+# can also be set via 'make static'
+STATIC= #-ccopt -static
+
+# can also be unset via 'make purebytecode'
+BYTECODE_STATIC=-custom
+
+##############################################################################
+# Top rules
+##############################################################################
+all::
+
+##############################################################################
+# Generic Literate programming variables
+##############################################################################
+
+SYNCFLAGS=-md5sum_in_auxfile -less_marks
+
+SYNCWEB=~/github/syncweb/syncweb $(SYNCFLAGS)
+NOWEB=~/github/syncweb/scripts/noweblatex
+OCAMLDOC=ocamldoc $(INCLUDES)
+
+PDFLATEX=pdflatex --shell-escape 
+
+lpclean::
+	rm -f *.aux *.toc *.log *.brf *.out
+
+##############################################################################
+# Developer rules
+##############################################################################
+
+#old: otags -no-mli-tags -r  .  but does not work very well
+# better to use my own tagger :)
+otags:
+	echo "you should use pfff_tags"
+
+ovisual:
+	echo "you should use pfff_visual"
+
+distclean::
+	rm -f TAGS
+
+DOTCOLORS=green,darkgoldenrod2,cyan,red,magenta,yellow,burlywood1,aquamarine,purple,lightpink,salmon,mediumturquoise,black,slategray3
+
+dot:
+	$(OCAMLDOC) -I +threads $(SRC) -dot -dot-reduce \
+	   -dot-colors $(DOTCOLORS)
+	dot -Tps ocamldoc.out > dot.ps
+	mv dot.ps Fig_graph_ml.ps
+	ps2pdf Fig_graph_ml.ps
+	rm -f Fig_graph_ml.ps
+
+doti:
+	$(OCAMLDOC) -I +threads $(SRC:.ml=.mli) -dot
+	dot -Tps ocamldoc.out > dot.ps
+	mv dot.ps Fig_graph_mli.ps
+	ps2pdf Fig_graph_mli.ps
+	rm -f Fig_graph_mli.ps
+
+##############################################################################
+# Install
+##############################################################################
+
+uninstall-findlib::
+	ocamlfind remove $(LIBNAME)
+
+reinstall-findlib:
+	$(MAKE) uninstall-findlib
+	$(MAKE) install-findlib
+
+##############################################################################
+# Generic ocaml rules
+##############################################################################
+
+.SUFFIXES: .ml .mli .cmo .cmi .cmx .cmt
+
+.ml.cmo:
+	$(OCAMLC)  -c $<
+.mli.cmi:
+	$(OCAMLC)  -c $<
+.ml.cmx:
+	$(OCAMLOPT)  -c $<
+
+.ml.mldepend: 
+	$(OCAMLC) -i $<
+
+clean::
+	rm -f *.cm[ioxa] *.cmt* *.o *.a *.cmxa *.annot
+	rm -f *~ .*~ *.exe gmon.out #*#
+
+clean::
+	rm -f *.aux *.toc *.log *.brf *.out
+
+distclean::
+	rm -f .depend
+
+beforedepend::
+
+depend:: beforedepend
+	$(OCAMLDEP) *.mli *.ml > .depend
+
+-include .depend

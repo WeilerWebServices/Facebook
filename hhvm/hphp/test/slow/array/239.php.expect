@@ -1,0 +1,7 @@
+darray(1) {
+  ["bar"]=>
+  darray(1) {
+    ["baz"]=>
+    int(1)
+  }
+}

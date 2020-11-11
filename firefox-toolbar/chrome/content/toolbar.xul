@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://facebook/skin/toolbar.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://facebook/locale/toolbar.dtd">
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         id="facebook">
+
+  <script type="application/x-javascript" src="chrome://browser/content/utilityOverlay.js"/>
+  <script type="application/x-javascript" src="chrome://facebook/content/lib.js"/>
+  <script type="application/x-javascript" src="chrome://facebook/content/toolbar.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="facebook-strings" src="chrome://facebook/locale/facebook.properties"/>
+  </stringbundleset>
+
+  <toolbox id="navigator-toolbox" crop="end">
+    <toolbarpalette id="BrowserToolbarPalette">
+      <toolbarbutton label="&toolbar.facebook.label;"
+            class="chromeclass-toolbar-additional toolbarbutton-1"
+            id="facebook-toolbar-toggle" tooltiptext="&toolbar.facebook.name;" oncommand="fbLib.facebook_toggleToolbar()" />
+      <toolbarbutton id="facebook-sidebar-toggle"
+                     class="facebook-sidebar-icon facebook-toolbar-button"
+                     tooltiptext="&toolbar.button.sidebar.tooltip;"
+                     dir = "reverse"
+                     persist = "checked"
+                     oncommand="this.checked=!this.checked; toggleSidebar('viewFacebookSidebar');"/>
+      <toolbaritem id="facebook-searchbox" align="center">
+        <textbox id="facebook-search"
+                 maxlength="50"
+                 value="&toolbar.search.label;"
+                 onfocus="facebook.searchBoxFocus(this);"
+                 onblur="facebook.searchBoxBlur(this);"
+                 oninput="fbLib.TypeaheadSearch(this.value);"
+                 oncommand="openUILink('http://www.facebook.com/search/?src=fftb&amp;q=' + encodeURIComponent(fbLib.GetFBSearchBox().value), event);"
+                 />
+      </toolbaritem>
+
+      <toolbarbutton id="facebook-home"
+                     class="facebook-icon-home button facebook-toolbar-button"
+                     tooltiptext="&toolbar.button.home.tooltip;"
+                     text="Facebook"
+                     onclick="checkForMiddleClick(this, event);"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/home.php?src=fftb', event) }"
+                     />
+
+      <toolbarbutton id="facebook-share"
+                     class="facebook-icon-share button facebook-toolbar-button"
+                     label="&toolbar.button.share.label;"
+                     tooltiptext="&toolbar.button.share.tooltip;"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { facebook.share() }"/>
+
+      <toolbarbutton id="facebook-photoupload"
+                     class="facebook-icon-photoupload button facebook-toolbar-button"
+                     tooltiptext="&toolbar.button.upload.tooltip;"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { facebook.photoupload(); }"/>
+
+      <toolbarbutton id="facebook-notification-poke"
+                     class="facebook-icon-poke facebook-notification button facebook-toolbar-button"
+                     label="?"
+                     tooltiptext="&toolbar.button.pokes.tooltip;"
+                     onclick="checkForMiddleClick(this, event);"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/pokes?src=fftb', event); }"/>
+      <toolbarbutton id="facebook-notification-reqs"
+                     class="facebook-icon-reqs facebook-notification button facebook-toolbar-button"
+                     label="?"
+                     tooltiptext="&toolbar.button.friends.tooltip;"
+                     onclick="checkForMiddleClick(this, event);"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/reqs.php?src=fftb#friend', event); }"/>
+      <toolbarbutton id="facebook-notification-group-invs"
+                     class="facebook-icon-grps facebook-notification button facebook-toolbar-button"
+                     label="?"
+                     tooltiptext="&toolbar.button.groups.tooltip;"
+                     onclick="checkForMiddleClick(this, event);"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/reqs.php?src=fftb#group', event);}"/>
+      <toolbarbutton id="facebook-notification-event-invs"
+                     class="facebook-icon-evts facebook-notification button facebook-toolbar-button"
+                     label="?"
+                     tooltiptext="&toolbar.button.events.tooltip;"
+                     onclick="checkForMiddleClick(this, event);"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/?sk=events&amp;src=fftb', event); }"/>
+      <toolbarbutton id="facebook-notification-msgs"
+                     class="facebook-icon-msgs facebook-notification button facebook-toolbar-button"
+                     label="?"
+                     tooltiptext="&toolbar.button.messages.tooltip;"
+                     onclick="checkForMiddleClick(this, event);"
+                     oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/inbox/?src=fftb', event); }"/>
+      <toolbaritem id="facebook-notification-separator">
+        <toolbarseparator />
+      </toolbaritem>
+      <toolbarbutton id="facebook-link-menu"
+                     label="&toolbar.button.links.label;"
+                     type="menu">
+        <menupopup id="facebook-link-popup">
+
+          <!-- The Top Nav -->
+          <menuitem label="&toolbar.links.profile.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { fbLib.OpenFBUrl('profile.php', this.getAttribute('userid'), event); }"
+                    id="facebook-menu-my-profile"
+                    />
+          <menuitem label="&toolbar.links.friends.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/friends/?src=fftb', event); }"
+                    id="facebook-menu-my-profile"
+                    />
+          <menuitem label="&toolbar.links.inbox.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/inbox/?src=fftb', event); }"
+                    />
+
+          <menuseparator />
+
+          <!-- The Side Nav -->
+          <menuitem label="&toolbar.links.photos.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/photos.php?src=fftb', event); }"
+                    />
+          <menuitem label="&toolbar.links.notes.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/notes.php?src=fftb', event); }"
+                    />
+          <menuitem label="&toolbar.links.groups.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/bookmarks/groups?src=fftb', event); }"
+                    />
+          <menuitem label="&toolbar.links.events.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/?sk=events&amp;src=fftb', event); }"
+                    />
+          <menuitem label="&toolbar.links.linkies.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/posted.php?src=fftb', event); }"
+                    />
+
+          <menuseparator />
+
+          <!-- Settings Menu -->
+          <menuitem label="&toolbar.settings.account.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/editaccount.php?src=fftb', event); }"
+                    />
+          <menuitem label="&toolbar.settings.privacy.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/privacy.php?src=fftb', event); }"
+                    />
+          <menuitem label="&toolbar.settings.application.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="if (!fbSvc.loggedIn) { fbLib.FacebookLogin(); } else { openUILink('http://www.facebook.com/editapps.php?src=fftb', event); }"
+                    />
+
+          <menuseparator />
+
+          <menuitem label="&toolbar.settings.toolbar.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="openDialog('chrome://facebook/content/settings.xul', '', 'chrome,titlebar,toolbar,centerscreen,dialog=yes');" />
+
+          <menuseparator />
+
+          <menuitem label="&toolbar.about.toolbar.label;"
+                    onclick="checkForMiddleClick(this, event);"
+                    oncommand="facebook.aboutpage();" />
+        </menupopup>
+      </toolbarbutton>
+
+      <toolbaritem id="facebook-login-info" align="center">
+        <toolbarbutton id="facebook-name-info"
+                       class="facebook-login-button button"
+                       onclick="checkForMiddleClick(this, event);"
+                       oncommand="if (this.label!='') fbLib.OpenFBUrl('profile.php', this.getAttribute('userid'), event)"
+                       style="display:none;" />
+        <textbox id="facebook-toolbar-status"
+                 type="timed" timeout="5000" flex="1"
+                 onfocus="facebook.onStatusBoxFocus(this);"
+                 onblur="facebook.onStatusBoxBlur(this);"
+                 oncommand="return fbLib.SetFacebookStatus(this);"
+                 emptytext="&toolbar.status.emptytext.label;"
+                 tooltiptext="&toolbar.status.emptytext.tooltip;"
+                 spellcheck="true"
+                 style="display:none;"
+        />
+        <toolbarseparator/>
+        <toolbarbutton id="facebook-login-status"
+                       status=""
+                       class="facebook-login-button button"
+                       label="&toolbar.login.label;"
+                       tooltiptext="&toolbar.login.label;"
+                       oncommand="fbLib.FacebookLogin()" />
+      </toolbaritem>
+    </toolbarpalette>
+    <toolbar id="facebook-toolbar"
+             class="chromeclass-toolbar-additional"
+             oldclass="chromeclass-toolbar"
+             iconsize="small"
+             customizable="true"
+             context="toolbar-context-menu"
+             toolbarname="&toolbar.facebook.name;"
+             crop="end"
+             defaultset="facebook-sidebar-toggle,separator,facebook-searchbox,facebook-link-menu,separator,facebook-home,separator,facebook-notification-poke,facebook-notification-reqs,facebook-notification-msgs,facebook-notification-event-invs,facebook-notification-group-invs,facebook-notification-separator,facebook-like,facebook-share,facebook-photoupload,spring,facebook-login-info">
+
+            <iframe id="facebook-auth-iframe" src="about:blank" type="content" collapsed="true"/>
+
+            <toolbaritem id="facebook-like" pack="center" align="center">
+                <deck id="facebook-like-deck">
+                    <iframe id="facebook-like-iframe" src="about:blank" type="content"
+                            height="20" flex="1" collapsed="true" />
+                    <hbox align="center" pack="center">
+                        <image id="facebook-like-loading"
+                               width='16' height='11' />
+                    </hbox>
+                    <hbox align="center" pack="center">
+                        <image id="facebook-like-noload"
+                               width='16' height='16'/>
+                    </hbox>
+                </deck>
+            </toolbaritem>
+    </toolbar>
+    <popupset>
+        <menupopup position="after_start"
+               id="PopupFacebookFriends"
+               ignorekeys="true"
+               onpopuphidden="facebook.popupHidden(event);"
+               style="width: 300px;" >
+          <richlistbox id="PopupFacebookFriendsList">
+            <richlistitem class="facebook-listheader" id="facebook-listheader-user" collapsed="true" disabled="true"><label class="header" value="&toolbar.search.user.label;"/></richlistitem>
+            <richlistitem id="FacebookHint"
+                          onmousedown="this.doCommand()"
+                          onmouseover="fbLib.SelectItemInList(this, this.parentNode)">
+              <label id="FacebookHintText"/>
+            </richlistitem>
+            <richlistitem id="PopupMessager"
+                          class="facebook-friendlinks"
+                          style="display: none;"
+                          onmousedown="this.doCommand()"
+                          onmouseover="fbLib.SelectItemInList(this, this.parentNode)"
+                          oncommand="fbLib.OpenNewStyleFBUrl('messages', this.getAttribute('userid'), event)"/>
+            <richlistitem id="PopupPoster"
+                          class="facebook-friendlinks"
+                          style="display: none;"
+                          onmousedown="this.doCommand()"
+                          onmouseover="fbLib.SelectItemInList(this, this.parentNode)"
+                          oncommand="fbLib.OpenFBUrl('profile.php', this.getAttribute('userid'), event)"/>
+            <richlistitem class="facebook-listheader" id="facebook-listheader-other" collapsed="true" disabled="true"><label class="header" value="&toolbar.search.other.label;"/></richlistitem>
+            <richlistitem class="facebook-listheader" id="facebook-listheader-page" collapsed="true" disabled="true"><label class="header" value="&toolbar.search.page.label;"/></richlistitem>
+            <richlistitem class="facebook-listheader" id="facebook-listheader-event" collapsed="true" disabled="true"><label class="header" value="&toolbar.search.event.label;"/></richlistitem>
+            <richlistitem class="facebook-listheader" id="facebook-listheader-group" collapsed="true" disabled="true"><label class="header" value="&toolbar.search.group.label;"/></richlistitem>
+            <richlistitem class="facebook-listheader" id="facebook-listheader-place" collapsed="true" disabled="true"><label class="header" value="&toolbar.search.place.label;"/></richlistitem>
+            <richlistitem id="FacebookSearchAll"
+                          onmousedown="this.doCommand()"
+                          onmouseover="fbLib.SelectItemInList(this, this.parentNode)">
+              <label id="FacebookSearchAllText"/>
+            </richlistitem>
+          </richlistbox>
+          <spacer flex="1"/>
+        </menupopup>
+    </popupset>
+  </toolbox>
+
+  <broadcasterset id="mainBroadcasterSet">
+    <broadcaster id="viewFacebookSidebar" autoCheck="false"
+                 label="&toolbar.sidebar.label;"
+                 type="checkbox" group="sidebar"
+                 sidebarurl="chrome://facebook/content/sidebar.xul"
+                 sidebartitle="&toolbar.sidebar.label;"
+                 oncommand="toggleSidebar('viewFacebookSidebar');event.stopPropagation();" />
+  </broadcasterset>
+
+  <menupopup id="viewSidebarMenu">
+    <menuitem key="viewFacebookSidebarKb" observes="viewFacebookSidebar" label="&toolbar.facebook.label;" accesskey=""/>
+  </menupopup>
+
+</overlay>

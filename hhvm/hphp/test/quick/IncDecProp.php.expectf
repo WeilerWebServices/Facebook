@@ -1,0 +1,33 @@
+Test begin
+--- C ---
+int(1)
+int(-1)
+int(0)
+int(0)
+int(1)
+NULL
+NULL
+NULL
+C Object
+(
+    [preInc] => 1
+    [preDec] => -1
+    [postInc] => 1
+    [postDec] => -1
+    [p] => 1
+    [q] => 
+    [r] => 1
+    [s] => 
+)
+--- null ---
+Error: Setting a property on a non-object
+Error: Setting a property on a non-object
+Error: Setting a property on a non-object
+Error: Setting a property on a non-object
+NULL
+--- 42 ---
+
+Warning: Attempt to increment/decrement property of non-object in %s/test/quick/IncDecProp.php on line %d
+NULL
+42
+Test end
